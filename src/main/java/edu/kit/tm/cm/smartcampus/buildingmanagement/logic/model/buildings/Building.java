@@ -42,4 +42,11 @@ public class Building extends AccessibleObject {
     public CampusLocation getCampusLocation() {
         return campusLocation;
     }
+
+    // Super class implementations
+    @Override
+    public boolean isAccessible() {
+        return false;
+        //TODO implement on values e.g., has elevator && all relevant rooms are accessible and handicapped toilet
+    }
 }

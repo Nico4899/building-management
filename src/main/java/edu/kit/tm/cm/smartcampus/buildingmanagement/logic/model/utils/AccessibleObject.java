@@ -3,8 +3,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notificatable;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.GeographicalLocation;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -93,4 +91,7 @@ public abstract class AccessibleObject implements Notificatable {
     public Collection<Notification> getNotifications() {
         return this.notifications;
     }
+
+    // Inherited methods
+    public abstract boolean isAccessible();
 }

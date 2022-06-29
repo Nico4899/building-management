@@ -13,7 +13,7 @@ public abstract class Component implements Notificatable {
 
     private final IdentificationNumber identificationNumber;
 
-    protected Component(IdentificationNumber identificationNumber) {
+    protected Component(final IdentificationNumber identificationNumber) {
         this.identificationNumber = identificationNumber;
     }
 

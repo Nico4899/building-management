@@ -15,4 +15,11 @@ public class Cafeteria extends Room {
     public String getDescription() {
         return DESCRIPTION;
     }
+
+    // Super class implementations
+    @Override
+    public boolean isAccessible() {
+        return false;
+        //TODO implement on values
+    }
 }
