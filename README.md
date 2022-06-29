@@ -30,7 +30,7 @@ This Microservice provides functionality to add, edit, remove buildings or their
 
  [Integration Tests](pages/integration_tests.md)
 
- [End-to-End Tests](pages/end-to-end-tests.md) 
+ [End-to-End Tests](pages/end_to_end_tests.md) 
 
 
 ## Organization
