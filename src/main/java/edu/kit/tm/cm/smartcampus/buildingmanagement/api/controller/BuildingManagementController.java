@@ -18,7 +18,16 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
 
     @Override
     public void getBuilding(IN request, StreamObserver<Building> responseObserver) {
-        super.getBuilding(request, responseObserver);
+        String bin = request.getIn();
+
+        /*
+        Building building = buildingManager.getBuilding(in);
+
+        BuildingResponse response = BuildingResponse.newBuilder()
+            .setBuilding(building).build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+         */
     }
 
     @Override
