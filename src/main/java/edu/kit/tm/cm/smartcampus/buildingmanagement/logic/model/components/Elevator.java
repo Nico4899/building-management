@@ -2,16 +2,28 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 
+/**
+ * A component representing an elevator.
+ *
+ * @author Bastian Bacher
+ * @version 1.0
+ */
 public class Elevator extends Component {
 
-    private static final String DESCRIPTION = "Elevator";
+  // Elevator description
+  private static final String DESCRIPTION = "Elevator";
 
-    protected Elevator(final IdentificationNumber identificationNumber) {
-        super(identificationNumber);
-    }
+  /**
+   * Instantiates a new elevator component, with the following parameters.
+   *
+   * @param identificationNumber a component's unique identification number (format "c-(int)")
+   */
+  protected Elevator(final IdentificationNumber identificationNumber) {
+    super(identificationNumber);
+  }
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
+  @Override
+  public String getDescription() {
+    return DESCRIPTION;
+  }
 }

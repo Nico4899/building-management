@@ -2,17 +2,28 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 
+/**
+ * A component representing a Door.
+ *
+ * @author Bastian Bacher
+ * @version 1.0
+ */
 public class Door extends Component {
 
-    private static final String DESCRIPTION = "Door";
+  // Door description
+  private static final String DESCRIPTION = "Door";
 
-    protected Door(final IdentificationNumber identificationNumber) {
-        super(identificationNumber);
-    }
+  /**
+   * Instantiates a new door component, with following parameters.
+   *
+   * @param identificationNumber a component's unique identification number (format: "c-(int)")
+   */
+  protected Door(final IdentificationNumber identificationNumber) {
+    super(identificationNumber);
+  }
 
-    @Override
-    public String getDescription() {
-        return DESCRIPTION;
-    }
-
+  @Override
+  public String getDescription() {
+    return DESCRIPTION;
+  }
 }
