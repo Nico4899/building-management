@@ -1,6 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.buildings.Building;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.connectors.BuildingConnector;
@@ -31,7 +32,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
     }
 
     @Override
-    public edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component getComponent(String in) {
+    public Component getComponent(String in) {
         return null;
     }
 
@@ -46,7 +47,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
     }
 
     @Override
-    public Collection<edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component> getComponents(String in) {
+    public Collection<Component> getComponents(String in) {
         return null;
     }
 
@@ -66,7 +67,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
     }
 
     @Override
-    public edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component addComponent(edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component component) {
+    public Component addComponent(Component component) {
         return null;
     }
 
@@ -81,7 +82,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
     }
 
     @Override
-    public edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component updateComponent(edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component component, String in) {
+    public Component updateComponent(Component component, String in) {
         return null;
     }
 
