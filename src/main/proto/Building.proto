@@ -6,27 +6,27 @@ option java_multiple_files = true;
 option java_package = "edu.kit.tm.cm.proto";
 
 service BuildingManagement {
-  rpc GetBuilding(IN) returns (Building);
-  rpc GetRoom(IN) returns (Room);
-  rpc GetComponent(IN) returns (Component);
+  rpc GetBuilding(IN) returns (BuildingResponse);
+  rpc GetRoom(IN) returns (RoomResponse);
+  rpc GetComponent(IN) returns (ComponentResponse);
 
-  rpc GetBuildings(Empty) returns (Buildings);
-  rpc GetFilteredBuildings(FilterValues) returns (Buildings);
-  rpc GetRooms(IN) returns (Rooms);
-  rpc GetComponents(IN) returns (Components);
-  rpc GetNotifications(IN) returns (Notifications);
-  rpc GetFavorites(Owner) returns (Buildings);
+  rpc GetBuildings(Empty) returns (BuildingsResponse);
+  rpc GetFilteredBuildings(FilterValuesRequest) returns (BuildingsResponse);
+  rpc GetRooms(IN) returns (RoomsResponse);
+  rpc GetComponents(IN) returns (ComponentsResponse);
+  rpc GetNotifications(IN) returns (NotificationsResponse);
+  rpc GetFavorites(Owner) returns (BuildingsResponse);
 
-  rpc AddBuilding(Building) returns (Building);
-  rpc AddRoom(Room) returns (Room);
-  rpc AddComponent(Component) returns (Component);
+  rpc AddBuilding(BuildingRequest) returns (BuildingResponse);
+  rpc AddRoom(RoomRequest) returns (RoomResponse);
+  rpc AddComponent(ComponentRequest) returns (ComponentResponse);
   rpc AddFavorite(Owner) returns (Empty);
   // grpc nimmt nur einen param, später noch Building hinzufügen.
   // rpc AddFavorite(Owner, Building) returns (Empty);
 
-  rpc UpdateBuilding(Building) returns (Building);
-  rpc UpdateRoom(Room) returns (Room);
-  rpc UpdateComponent(Component) returns (Component);
+  rpc UpdateBuilding(BuildingRequest) returns (BuildingResponse);
+  rpc UpdateRoom(RoomRequest) returns (RoomResponse);
+  rpc UpdateComponent(ComponentRequest) returns (ComponentResponse);
 
   rpc Delete(IN) returns (Empty);
 }
@@ -35,6 +35,11 @@ message Empty {}
 
 message IN {
   string in = 1;
+}
+
+message APIResponse {
+  bool successful = 1;
+  string message = 2;
 }
 
 message Building {
@@ -49,12 +54,22 @@ message Building {
   IN bin = 9;
 }
 
+message BuildingRequest {
+  Building building = 1;
+}
+
+message BuildingResponse {
+  Building building = 1;
+  APIResponse apiResponse = 2;
+}
+
 message Buildings {
   repeated Building buildings = 1;
 }
 
-message Owner {
-  string owner = 1;
+message BuildingsResponse {
+  Buildings buildings = 1;
+  APIResponse apiResponse = 2;
 }
 
 message Room {
@@ -69,8 +84,22 @@ message Room {
   Position position = 9;
 }
 
+message RoomRequest {
+  Room room = 1;
+}
+
+message RoomResponse {
+  Room room = 1;
+  APIResponse apiResponse = 2;
+}
+
 message Rooms {
   repeated Room rooms = 1;
+}
+
+message RoomsResponse {
+  Rooms rooms = 1;
+  APIResponse apiResponse = 2;
 }
 
 message RoomCategory {
@@ -88,6 +117,10 @@ message RoomCategory {
 
 message RoomCategories {
   repeated RoomCategory roomCategories = 1;
+}
+
+message Owner {
+  string owner = 1;
 }
 
 message Position {
@@ -117,6 +150,15 @@ message Component {
   Position position = 6;
 }
 
+message ComponentRequest {
+  Component component = 1;
+}
+
+message ComponentResponse {
+  Component component = 1;
+  APIResponse apiResponse = 2;
+}
+
 message ComponentType {
   enum TypeOfComponent {
     RAMP = 0;
@@ -132,6 +174,11 @@ message Components {
   repeated Component components = 1;
 }
 
+message ComponentsResponse {
+  Components components = 1;
+  APIResponse apiResponse = 2;
+}
+
 message Notification {
   string title = 1;
   string description = 2;
@@ -142,6 +189,11 @@ message Notification {
 
 message Notifications {
   repeated Notification notification = 1;
+}
+
+message NotificationsResponse {
+  Notifications notifications = 1;
+  APIResponse apiResponse = 2;
 }
 
 message Date {
@@ -157,4 +209,8 @@ message FilterValues {
     RoomCategories roomCategories = 3;
     string name = 4;
   }
+}
+
+message FilterValuesRequest {
+  repeated FilterValues filterValues = 1;
 }

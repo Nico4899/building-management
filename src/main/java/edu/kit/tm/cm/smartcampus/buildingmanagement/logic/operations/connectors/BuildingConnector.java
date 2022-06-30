@@ -7,7 +7,6 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
 
 import java.util.Collection;
 
-@org.springframework.stereotype.Component
 public interface BuildingConnector {
 
     Building getBuilding(String in);

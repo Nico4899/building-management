@@ -12,11 +12,9 @@ import java.util.Collection;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
-@org.springframework.stereotype.Component
 public class BuildingManager {
     private final BuildingConnector buildingConnector;
 
-@Autowired
     public BuildingManager(BuildingConnector buildingConnector) {
         this.buildingConnector = buildingConnector;
     }
