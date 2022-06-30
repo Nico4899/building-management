@@ -14,7 +14,7 @@ public class Window extends Component {
   private static final String DESCRIPTION = "Window";
 
   /**
-   * Instattiates a new window component, with following parameters.
+   * Instantiates a new window component, with following parameters.
    *
    * @param identificationNumber a component's unique identification number (format: "c-(int)")
    */
