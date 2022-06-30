@@ -35,9 +35,10 @@ public class Office extends Room {
   }
 
   // Super class implementations
+
   @Override
-  public boolean isAccessible() {
+  public boolean accessibilityConform() {
     return false;
-    // TODO implement on values
+    //TODO implement
   }
 }

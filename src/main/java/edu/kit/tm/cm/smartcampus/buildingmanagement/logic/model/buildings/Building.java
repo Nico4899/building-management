@@ -5,7 +5,8 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.Accessible
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.GeographicalLocation;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class represents an implementation of a building on campus, it extends @AccessibleObject
@@ -26,6 +27,39 @@ public class Building extends AccessibleObject {
   // number of floors the building possesses
   private final int numFloors;
 
+  /*
+  Accessibility booleans (true if accessibility conform)
+  references: - https://www.bfb-barrierefrei-bauen.de/kategorie/konzept-planung/oeffentliche-gebaeude/#:~:text=Nach%20der%20Musterbauordnung%20(MBO)%20m%C3%BCssen,Hilfe%20zug%C3%A4nglich%20und%20nutzbar%E2%80%9C%20sein.
+              - https://www.aktion-mensch.de/inklusion/bildung/impulse/barrierefreiheit/raeumliche-barrierefreiheit
+  */
+
+  // Entrance areas
+  private boolean discoverability;
+  private boolean reachability;
+  private boolean movementArea;
+  private boolean doorOpenerAndBellSystem;
+
+  // Ramps
+  private boolean widthAndLength;
+  private boolean tilt;
+  private boolean wheelDeflector;
+  private boolean rampDetectability;
+
+  // Stairs and single levels
+  private boolean stairs;
+  private boolean flightOfStairs;
+  private boolean stages;
+  private boolean stairDetectability;
+
+  // Handrails on stairs and ramps
+  private boolean arrangement;
+  private boolean height;
+  private boolean handrailDetectability;
+  private boolean form;
+  private boolean orientation;
+
+  //TODO maybe all inside components?
+
   /**
    * Instantiates a building, with the following parameters, instantiates a rooms collection and
    * calls super on @AccessibleObject.
@@ -43,7 +77,7 @@ public class Building extends AccessibleObject {
     super(identificationNumber, geographicalLocation);
     this.campusLocation = campusLocation;
     this.numFloors = numFloors;
-    this.rooms = new HashSet<>();
+    this.rooms = new HashMap<>();
   }
 
   // Room maintenance methods
@@ -54,7 +88,7 @@ public class Building extends AccessibleObject {
    * @param room the room to be added
    */
   public void addRoom(final Room room) {
-    this.rooms.add(room);
+    this.rooms.put(room.getIdentificationNumber(), room);
   }
 
   /**
@@ -73,7 +107,7 @@ public class Building extends AccessibleObject {
    * @param room the room to be removed
    */
   public void removeRoom(final Room room) {
-    this.rooms.remove(room);
+    this.rooms.remove(room.getIdentificationNumber());
   }
 
   /**
@@ -82,7 +116,7 @@ public class Building extends AccessibleObject {
    * @return a collection of rooms
    */
   public Collection<Room> getRooms() {
-    return this.rooms;
+    return this.rooms.values();
   }
 
   // Getters
@@ -106,10 +140,10 @@ public class Building extends AccessibleObject {
   }
 
   // Super class implementations
+
   @Override
-  public boolean isAccessible() {
+  public boolean accessibilityConform() {
     return false;
-    // TODO implement on values e.g., has elevator && all relevant rooms are accessible and
-    // handicapped toilet
   }
+
 }

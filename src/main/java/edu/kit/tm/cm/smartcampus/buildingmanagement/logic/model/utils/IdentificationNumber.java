@@ -1,5 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils;
 
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exceptions.InvalidIdentificationNumberException;
+
 /**
  * This record describes a unique identification number of a unit.
  * <p>
@@ -31,9 +33,31 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils;
  * @version 1.0
  */
 public record IdentificationNumber(String context, int id) {
-  public IdentificationNumber fromString(final String string) {
-    return null;
-    //TODO implement
+
+  private static final String IDENTIFICATION_NUMBER_REGEX = "[bcrnfp]-\\d+";
+
+  private static final String WRONG_FORMAT_IDENTIFICATION_NUMBER = "Input \\s is invalid format, must be \\s";
+
+  private static final String SPLITERATOR = "-";
+
+  /**
+   * Get identification number by string.
+   *
+   * @param string identification number in string format
+   * @return identification number as object
+   */
+  public IdentificationNumber fromString(final String string) throws InvalidIdentificationNumberException {
+    if (!string.matches(IDENTIFICATION_NUMBER_REGEX)) {
+      throw new InvalidIdentificationNumberException(
+        String.format(WRONG_FORMAT_IDENTIFICATION_NUMBER, string, IDENTIFICATION_NUMBER_REGEX));
+    }
+    String context = string.split(SPLITERATOR)[0];
+    int id = Integer.parseInt(string.split(SPLITERATOR)[2]);
+    return new IdentificationNumber(context, id);
   }
 
+  @Override
+  public String toString() {
+    return context + SPLITERATOR + id;
+  }
 }

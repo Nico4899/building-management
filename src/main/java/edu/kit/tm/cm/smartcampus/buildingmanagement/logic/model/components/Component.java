@@ -2,6 +2,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notificatable;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.Accessibility;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
  * @author Bastian Bacher
  * @version 1.0
  */
-public abstract class Component implements Notificatable {
+public abstract class Component implements Notificatable, Accessibility {
 
   // Notification held by this component
   private Notification notification;

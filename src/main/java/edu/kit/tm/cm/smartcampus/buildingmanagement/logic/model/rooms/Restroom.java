@@ -1,5 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms;
 
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.GeographicalLocation;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.utils.IdentificationNumber;
 
@@ -35,9 +36,10 @@ public class Restroom extends Room {
   }
 
   // Super class implementations
+
   @Override
-  public boolean isAccessible() {
+  public boolean accessibilityConform() {
     return false;
-    // TODO implement on values
+    //TODO implement
   }
 }

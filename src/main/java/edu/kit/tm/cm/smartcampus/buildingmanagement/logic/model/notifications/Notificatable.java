@@ -1,5 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications;
 
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
+
 import java.util.Collection;
 
 /**

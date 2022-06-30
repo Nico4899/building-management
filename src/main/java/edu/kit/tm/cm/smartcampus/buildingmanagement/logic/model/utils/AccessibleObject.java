@@ -4,7 +4,8 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Compo
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notificatable;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An accessible object acts as superclass for @Building and @Room, as it collects their redundant
@@ -13,15 +14,15 @@ import java.util.HashSet;
  * @author Bastian Bacher
  * @version 1.0
  */
-public abstract class AccessibleObject implements Notificatable {
+public abstract class AccessibleObject implements Notificatable, Accessibility {
 
   // Name and AccessibleObjectNumber of the accessible object
   private String name;
   private String accessibleObjectNumber;
 
   // Components and Notifications
-  private final Collection<Component> components;
-  private final Collection<Notification> notifications;
+  private final Map<IdentificationNumber, Component> components;
+  private final Map<IdentificationNumber, Notification> notifications;
 
   // Geographical location and identification number
   private final GeographicalLocation geographicalLocation;
@@ -37,8 +38,8 @@ public abstract class AccessibleObject implements Notificatable {
   protected AccessibleObject(
       final IdentificationNumber identificationNumber,
       final GeographicalLocation geographicalLocation) {
-    this.components = new HashSet<>();
-    this.notifications = new HashSet<>();
+    this.components = new HashMap<>();
+    this.notifications = new HashMap<>();
     this.identificationNumber = identificationNumber;
     this.geographicalLocation = geographicalLocation;
   }
@@ -50,7 +51,7 @@ public abstract class AccessibleObject implements Notificatable {
    */
   // Component maintenance methods
   public void addComponent(final Component component) {
-    this.components.add(component);
+    this.components.put(component.getIdentificationNumber(), component);
   }
 
   /**
@@ -69,7 +70,7 @@ public abstract class AccessibleObject implements Notificatable {
    * @param component the component to be removed
    */
   public void removeComponent(final Component component) {
-    this.components.remove(component);
+    this.components.remove(component.getIdentificationNumber());
   }
 
   /**
@@ -78,7 +79,7 @@ public abstract class AccessibleObject implements Notificatable {
    * @return the components the accessible object possesses
    */
   public Collection<Component> getComponents() {
-    return this.components;
+    return this.components.values();
   }
 
   /**
@@ -141,7 +142,7 @@ public abstract class AccessibleObject implements Notificatable {
   // Implemented methods from @Notificatable
   @Override
   public void addNotification(final Notification notification) {
-    this.notifications.add(notification);
+    this.notifications.put(notification.identificationNumber(), notification);
   }
 
   @Override
@@ -152,21 +153,12 @@ public abstract class AccessibleObject implements Notificatable {
 
   @Override
   public void removeNotification(final Notification notification) {
-    this.notifications.remove(notification);
+    this.notifications.remove(notification.identificationNumber());
   }
 
   @Override
   public Collection<Notification> getNotifications() {
-    return this.notifications;
+    return this.notifications.values();
   }
 
-  // Inherited methods
-
-  /**
-   * Is accessible boolean. Describes if this accessible object fulfills the accessibility
-   * restrictions.
-   *
-   * @return is accessible boolean
-   */
-  public abstract boolean isAccessible();
 }

@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.connectors;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.buildings.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component;

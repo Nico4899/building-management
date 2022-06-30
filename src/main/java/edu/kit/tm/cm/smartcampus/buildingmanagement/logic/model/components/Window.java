@@ -27,4 +27,10 @@ public class Window extends Component {
   public String getDescription() {
     return DESCRIPTION;
   }
+
+  @Override
+  public boolean accessibilityConform() {
+    return false;
+    //TODO implement
+  }
 }
