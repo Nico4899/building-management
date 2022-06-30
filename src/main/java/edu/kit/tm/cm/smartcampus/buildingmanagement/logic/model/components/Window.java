@@ -18,7 +18,8 @@ public class Window extends Component {
    *
    * @param identificationNumber a component's unique identification number (format: "c-(int)")
    */
-  protected Window(final IdentificationNumber identificationNumber) {
+  protected Window(
+      final IdentificationNumber identificationNumber, final IdentificationNumber parent) {
     super(identificationNumber, parent);
   }
 

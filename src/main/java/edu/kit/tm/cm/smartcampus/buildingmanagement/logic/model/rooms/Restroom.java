@@ -24,7 +24,8 @@ public class Restroom extends Room {
   protected Restroom(
       final IdentificationNumber identificationNumber,
       final GeographicalLocation geographicalLocation,
-      final int floor) {
+      final int floor,
+      final IdentificationNumber parent) {
     super(identificationNumber, geographicalLocation, floor, parent);
   }
 

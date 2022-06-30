@@ -18,7 +18,8 @@ public class Elevator extends Component {
    *
    * @param identificationNumber a component's unique identification number (format "c-(int)")
    */
-  protected Elevator(final IdentificationNumber identificationNumber) {
+  protected Elevator(
+      final IdentificationNumber identificationNumber, final IdentificationNumber parent) {
     super(identificationNumber, parent);
   }
 

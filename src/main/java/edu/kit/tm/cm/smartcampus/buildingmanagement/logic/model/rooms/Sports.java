@@ -24,7 +24,8 @@ public class Sports extends Room {
   protected Sports(
       final IdentificationNumber identificationNumber,
       final GeographicalLocation geographicalLocation,
-      final int floor) {
+      final int floor,
+      final IdentificationNumber parent) {
     super(identificationNumber, geographicalLocation, floor, parent);
   }
 

@@ -24,8 +24,9 @@ public class RestRoomHandicapped extends Restroom {
   protected RestRoomHandicapped(
       final IdentificationNumber identificationNumber,
       final GeographicalLocation geographicalLocation,
-      final int floor) {
-    super(identificationNumber, geographicalLocation, floor);
+      final int floor,
+      final IdentificationNumber parent) {
+    super(identificationNumber, geographicalLocation, floor, parent);
   }
 
   @Override
