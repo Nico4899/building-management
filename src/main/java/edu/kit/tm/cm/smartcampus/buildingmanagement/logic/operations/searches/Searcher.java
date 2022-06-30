@@ -1,5 +1,5 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.searches;
 
-public class Searcher {
+public interface Searcher {
     //TODO beta idee ansprechen
 }
