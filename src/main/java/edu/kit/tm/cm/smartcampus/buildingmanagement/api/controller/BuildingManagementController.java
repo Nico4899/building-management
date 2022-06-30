@@ -1,14 +1,24 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.connectors.BuildingManager;
 import io.grpc.stub.StreamObserver;
+import net.devh.boot.grpc.server.service.GrpcService;
+import org.springframework.beans.factory.annotation.Autowired;
 
+@GrpcService
 public class BuildingManagementController extends BuildingManagementGrpc.BuildingManagementImplBase {
-    public BuildingManagementController() {
+
+    private final BuildingManager buildingManager;
+
+    @Autowired
+    public BuildingManagementController(BuildingManager buildingManager) {
+        this.buildingManager = buildingManager;
     }
 
     @Override
     public void getBuilding(IN request, StreamObserver<Building> responseObserver) {
+        super.getBuilding(request, responseObserver);
     }
 
     @Override

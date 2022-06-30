@@ -10,19 +10,19 @@ import java.util.Collection;
 @org.springframework.stereotype.Component
 public interface BuildingConnector {
 
-    Building getBuilding(int in);
+    Building getBuilding(String in);
 
-    Room getRoom(int in);
+    Room getRoom(String in);
 
-    Component getComponent(int in);
+    Component getComponent(String in);
 
     Collection<Building> getBuildings();
 
-    Collection<Room> getRooms(int in);
+    Collection<Room> getRooms(String in);
 
-    Collection<Component> getComponents(int in);
+    Collection<Component> getComponents(String in);
 
-    Collection<Notification> getNotifications(int in);
+    Collection<Notification> getNotifications(String in);
 
     Building addBuilding(Building building);
 
@@ -30,11 +30,11 @@ public interface BuildingConnector {
 
     Component addComponent(Component component);
 
-    Building updateBuilding(Building building);
+    Building updateBuilding(Building building, String in);
 
-    Room updateRoom(Room room);
+    Room updateRoom(Room room, String in);
 
-    Component updateComponent(Component component);
+    Component updateComponent(Component component, String in);
 
     void delete(String in);
 
