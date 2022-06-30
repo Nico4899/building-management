@@ -18,7 +18,7 @@ import java.util.HashSet;
 public class Building extends AccessibleObject {
 
   // collection of rooms held by the building
-  private final Collection<Room> rooms;
+  private final Map<IdentificationNumber, Room> rooms;
 
   // location on campus
   private final CampusLocation campusLocation;

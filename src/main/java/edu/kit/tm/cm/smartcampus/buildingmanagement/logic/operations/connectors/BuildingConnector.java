@@ -7,21 +7,22 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
 
 import java.util.Collection;
 
+@org.springframework.stereotype.Component
 public interface BuildingConnector {
 
-    Building getBuilding(String in);
+    Building getBuilding(int in);
 
-    Room getRoom(String in);
+    Room getRoom(int in);
 
-    Component getComponent(String in);
+    Component getComponent(int in);
 
     Collection<Building> getBuildings();
 
-    Collection<Room> getRooms(String in);
+    Collection<Room> getRooms(int in);
 
-    Collection<Component> getComponents(String in);
+    Collection<Component> getComponents(int in);
 
-    Collection<Notification> getNotifications(String in);
+    Collection<Notification> getNotifications(int in);
 
     Building addBuilding(Building building);
 
@@ -29,11 +30,11 @@ public interface BuildingConnector {
 
     Component addComponent(Component component);
 
-    Building updateBuilding(Building building, String in);
+    Building updateBuilding(Building building);
 
-    Room updateRoom(Room room, String in);
+    Room updateRoom(Room room);
 
-    Component updateComponent(Component component, String in);
+    Component updateComponent(Component component);
 
     void delete(String in);
 

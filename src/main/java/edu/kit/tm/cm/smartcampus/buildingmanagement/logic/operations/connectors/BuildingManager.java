@@ -1,106 +1,65 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.connectors;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.buildings.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filters.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
+@Component
 public class BuildingManager {
     private final BuildingConnector buildingConnector;
 
+    @Autowired
     public BuildingManager(BuildingConnector buildingConnector) {
         this.buildingConnector = buildingConnector;
     }
 
-    public Building getBuilding(String in) {
-        Building building = buildingConnector.getBuilding(in);
-        return building;
+    public void getBuilding() {
     }
 
-    public Room getRoom(String in) {
-        Room room = buildingConnector.getRoom(in);
-        return room;
+    public void getRoom() {
     }
 
-    public Component getComponent(String in) {
-        Component component = buildingConnector.getComponent(in);
-        return component;
+    public void getComponent() {
     }
-    public Collection<Building> getBuildings() {
-        Collection<Building> buildings = buildingConnector.getBuildings();
-        return buildings;
+    public void getBuildings() {
     }
 
-    public Collection<Building> getFilteredBuildings() {
-    Collection<Building> buildings = buildingConnector.getBuildings();
-
-    return buildings.stream()
-            //.filter()
-            .collect(Collectors.toList());
+    public void getFilteredBuildings() {
     }
 
-    public Collection<Room> getRooms(String in) {
-    Collection<Room> rooms = buildingConnector.getRooms(in);
-    return rooms;
+    public void getRooms() {
     }
 
-    public Collection<Component> getComponents(String in) {
-    Collection<Component> components = buildingConnector.getComponents(in);
-    return components;
+    public void getComponents() {
     }
 
-    public Collection<Notification> getNotifications(String in) {
-    Collection<Notification> notifications = buildingConnector.getNotifications(in);
-    return notifications;
+    public void getNotifications() {
     }
 
     public void getFavorites() {
     }
 
-    public Building addBuilding(Building building) {
-    return buildingConnector.addBuilding(building);
+    public void addBuilding() {
     }
 
-    public Room addRoom(Room room) {
-    return buildingConnector.addRoom(room);
+    public void addRoom() {
     }
 
-    public Component addComponent(Component component) {
-    return buildingConnector.addComponent(component);
+    public void addComponent() {
     }
 
     public void addFavorite() {
     }
 
-    public Building updateBuilding(Building newBuilding, String in) {
-    Building building = buildingConnector.getBuilding(in);
-    building = newBuilding;
-    return buildingConnector.addBuilding(building);
-
-
+    public void updateBuilding() {
     }
 
-    public Room updateRoom(Room newRoom, String in) {
-    Room room = buildingConnector.getRoom(in);
-    room = newRoom;
-    return buildingConnector.addRoom(room);
+    public void updateRoom() {
     }
 
-    public Component updateComponent(Component newComponent, String in) {
-    Component component = buildingConnector.getComponent(in);
-    component = newComponent;
-    return buildingConnector.addComponent(component);
+    public void updateComponent() {
     }
 
-    public void delete(String in) {
-    buildingConnector.delete(in);
+    public void delete() {
     }
 
     @Override

@@ -1,110 +1,78 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.buildings.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.connectors.BuildingManager;
 import io.grpc.stub.StreamObserver;
 
 public class BuildingManagementController extends BuildingManagementGrpc.BuildingManagementImplBase {
-
-    private final BuildingManager buildingManager;
-
-    public BuildingManagementController(BuildingManager buildingManager) {
-        this.buildingManager = buildingManager;
+    public BuildingManagementController() {
     }
 
     @Override
-    public void getBuilding(IN request, StreamObserver<BuildingResponse> responseObserver) {
-        String bin = request.getIn();
-
-        Building building = buildingManager.getBuilding(bin);
-        BuildingResponse response = BuildingResponse.newBuilder()
-                //.setBuilding(building) TODO: wird nicht erkannt?
-                .build();
-
-        responseObserver.onNext(response);
-        responseObserver.onCompleted();
-
+    public void getBuilding(IN request, StreamObserver<Building> responseObserver) {
     }
 
     @Override
-    public void getRoom(IN request, StreamObserver<RoomResponse> responseObserver) {
-        super.getRoom(request, responseObserver);
+    public void getRoom(IN request, StreamObserver<Room> responseObserver) {
     }
 
     @Override
-    public void getComponent(IN request, StreamObserver<ComponentResponse> responseObserver) {
-        super.getComponent(request, responseObserver);
+    public void getComponent(IN request, StreamObserver<Component> responseObserver) {
     }
 
     @Override
-    public void getBuildings(Empty request, StreamObserver<BuildingsResponse> responseObserver) {
-        super.getBuildings(request, responseObserver);
+    public void getBuildings(Empty request, StreamObserver<Buildings> responseObserver) {
     }
 
     @Override
-    public void getFilteredBuildings(FilterValuesRequest request, StreamObserver<BuildingsResponse> responseObserver) {
-        super.getFilteredBuildings(request, responseObserver);
+    public void getFilteredBuildings(FilterValues request, StreamObserver<Buildings> responseObserver) {
     }
 
     @Override
-    public void getRooms(IN request, StreamObserver<RoomsResponse> responseObserver) {
-        super.getRooms(request, responseObserver);
+    public void getRooms(IN request, StreamObserver<Rooms> responseObserver) {
     }
 
     @Override
-    public void getComponents(IN request, StreamObserver<ComponentsResponse> responseObserver) {
-        super.getComponents(request, responseObserver);
+    public void getComponents(IN request, StreamObserver<Components> responseObserver) {
     }
 
     @Override
-    public void getNotifications(IN request, StreamObserver<NotificationsResponse> responseObserver) {
-        super.getNotifications(request, responseObserver);
+    public void getNotifications(IN request, StreamObserver<Notifications> responseObserver) {
     }
 
     @Override
-    public void getFavorites(Owner request, StreamObserver<BuildingsResponse> responseObserver) {
-        super.getFavorites(request, responseObserver);
+    public void getFavorites(Owner request, StreamObserver<Buildings> responseObserver) {
     }
 
     @Override
-    public void addBuilding(BuildingRequest request, StreamObserver<BuildingResponse> responseObserver) {
-        super.addBuilding(request, responseObserver);
+    public void addBuilding(Building request, StreamObserver<Building> responseObserver) {
     }
 
     @Override
-    public void addRoom(RoomRequest request, StreamObserver<RoomResponse> responseObserver) {
-        super.addRoom(request, responseObserver);
+    public void addRoom(Room request, StreamObserver<Room> responseObserver) {
     }
 
     @Override
-    public void addComponent(ComponentRequest request, StreamObserver<ComponentResponse> responseObserver) {
-        super.addComponent(request, responseObserver);
+    public void addComponent(Component request, StreamObserver<Component> responseObserver) {
     }
 
     @Override
     public void addFavorite(Owner request, StreamObserver<Empty> responseObserver) {
-        super.addFavorite(request, responseObserver);
     }
 
     @Override
-    public void updateBuilding(BuildingRequest request, StreamObserver<BuildingResponse> responseObserver) {
-        super.updateBuilding(request, responseObserver);
+    public void updateBuilding(Building request, StreamObserver<Building> responseObserver) {
     }
 
     @Override
-    public void updateRoom(RoomRequest request, StreamObserver<RoomResponse> responseObserver) {
-        super.updateRoom(request, responseObserver);
+    public void updateRoom(Room request, StreamObserver<Room> responseObserver) {
     }
 
     @Override
-    public void updateComponent(ComponentRequest request, StreamObserver<ComponentResponse> responseObserver) {
-        super.updateComponent(request, responseObserver);
+    public void updateComponent(Component request, StreamObserver<Component> responseObserver) {
     }
 
     @Override
     public void delete(IN request, StreamObserver<Empty> responseObserver) {
-        super.delete(request, responseObserver);
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public class AccessibilityFilter implements Filter<Building> {
 
-  // Accesibility Keyword
+  // Accessibility Keyword
   private static final String KEYWORD = "Building Accessibility";
 
   // Collection of buildings
