@@ -1,5 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filters;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Collection;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Collection;
  * @author Bastian Bacher
  * @version 1.0
  */
+@Component
 public interface Filter<S> {
 
   /**
