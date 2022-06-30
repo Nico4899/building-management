@@ -10,11 +10,13 @@ import java.util.Date;
  * @param description the notification's description
  * @param date the notification's creation date
  * @param identificationNumber the notification's unique identification number (format: "n-(int)")
+ * @param parent the notification's parent's unique identification number (formats: "b-(int)",
+ *              "c-(int)" or "r-(int)")
  *
  * @author Bastian Bacher
  * @version 1.0
  */
-public record Notification(String title, String description,
+public record Notification(IdentificationNumber parent, String title, String description,
                            Date date, IdentificationNumber identificationNumber){
 
 }

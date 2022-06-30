@@ -19,7 +19,7 @@ public class Door extends Component {
    * @param identificationNumber a component's unique identification number (format: "c-(int)")
    */
   protected Door(final IdentificationNumber identificationNumber) {
-    super(identificationNumber);
+    super(identificationNumber, parent);
   }
 
   @Override

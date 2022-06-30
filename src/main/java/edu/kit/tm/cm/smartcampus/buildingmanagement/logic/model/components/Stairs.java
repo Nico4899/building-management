@@ -19,7 +19,7 @@ public class Stairs extends Component {
    * @param identificationNumber a component's unique identification number (format: "c-(int)")
    */
   protected Stairs(final IdentificationNumber identificationNumber) {
-    super(identificationNumber);
+    super(identificationNumber, parent);
   }
 
   @Override

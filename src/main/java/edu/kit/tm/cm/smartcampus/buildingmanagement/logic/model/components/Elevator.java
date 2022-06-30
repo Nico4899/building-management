@@ -19,7 +19,7 @@ public class Elevator extends Component {
    * @param identificationNumber a component's unique identification number (format "c-(int)")
    */
   protected Elevator(final IdentificationNumber identificationNumber) {
-    super(identificationNumber);
+    super(identificationNumber, parent);
   }
 
   @Override

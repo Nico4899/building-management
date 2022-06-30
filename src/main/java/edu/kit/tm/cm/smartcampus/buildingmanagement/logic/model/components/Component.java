@@ -21,13 +21,20 @@ public abstract class Component implements Notificatable {
   // Unique identification number
   private final IdentificationNumber identificationNumber;
 
+  // Components parent
+  private final IdentificationNumber parent;
+
   /**
    * Instantiates component with following parameters, it implements @Notificatable.
    *
    * @param identificationNumber the unique component identification number (format: "c-(int)")
+   * @param parent the unique component's parent's identification number (format: "r-(int)" or
+   *     "b-(int)")
    */
-  protected Component(final IdentificationNumber identificationNumber) {
+  protected Component(
+      final IdentificationNumber identificationNumber, IdentificationNumber parent) {
     this.identificationNumber = identificationNumber;
+    this.parent = parent;
   }
 
   // Implemented methods from @Notificatable
@@ -60,6 +67,15 @@ public abstract class Component implements Notificatable {
    */
   public IdentificationNumber getIdentificationNumber() {
     return identificationNumber;
+  }
+
+  /**
+   * Gets the component's parent object.
+   *
+   * @return component's parent's unique identification number
+   */
+  public IdentificationNumber getParent() {
+    return parent;
   }
 
   // Abstract methods for subclasses
