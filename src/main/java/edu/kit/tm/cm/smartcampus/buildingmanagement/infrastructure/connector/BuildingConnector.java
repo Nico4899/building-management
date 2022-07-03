@@ -1,42 +1,39 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.buildings.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.components.Component;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.notifications.Notification;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.rooms.Room;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 
 import java.util.Collection;
 
-@org.springframework.stereotype.Component
 public interface BuildingConnector {
 
-    Building getBuilding(int in);
+  Collection<Building> listBuildings();
+  Building createBuilding(Building building);
+  Building getBuilding(String identificationNumber);
+  Building updateBuilding(Building building);
+  void removeBuilding(String identificationNumber);
 
-    Room getRoom(int in);
+  Collection<Room> listBuildingRooms(String identificationNumber);
+  Room createBuildingRoom(Room room);
+  Room getRoom(String identificationNumber);
+  Room updateRoom(Room room);
+  void removeRoom(String identificationNumber);
 
-    Component getComponent(int in);
 
-    Collection<Building> getBuildings();
+  Collection<Component> listBuildingComponents(String identificationNumber);
+  Collection<Component> listRoomComponents(String identificationNumber);
+  Component createBuildingComponent(Component component);
+  Component createRoomComponent(Component component);
+  Component getComponent(String identificationNumber);
+  Component updateComponent(Component component);
+  void removeComponent(String identificationNumber);
 
-    Collection<Room> getRooms(int in);
+  Collection<Notification> listBuildingNotifications(String identificationNumber);
+  Collection<Notification> listRoomNotifications(String identificationNumber);
+  Collection<Notification> listComponentNotifications(String identificationNumber);
 
-    Collection<Component> getComponents(int in);
-
-    Collection<Notification> getNotifications(int in);
-
-    Building addBuilding(Building building);
-
-    Room addRoom(Room room);
-
-    Component addComponent(Component component);
-
-    Building updateBuilding(Building building);
-
-    Room updateRoom(Room room);
-
-    Component updateComponent(Component component);
-
-    void delete(String in);
 
 
 

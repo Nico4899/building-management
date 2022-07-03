@@ -1,0 +1,283 @@
+syntax = "proto3";
+
+package edu.kit.tm.cm.proto;
+
+option java_multiple_files = true;
+option java_package = "edu.kit.tm.cm.proto";
+
+import "google/protobuf/timestamp.proto";
+
+//TODO add filter variants or more endpoints
+
+// building management service
+
+service BuildingManagement {
+
+  rpc GetBuilding(GetBuildingRequest) returns (GetBuildingResponse);
+  rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
+  rpc GetComponent(GetComponentRequest) returns (GetRoomResponse);
+
+  rpc ListBuildings(ListBuildingsRequest) returns (ListBuildingsResponse);
+  rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
+  rpc ListComponents(ListComponentsRequest) returns (ListComponentsResponse);
+  rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListFavorites(ListFavoritesRequest) returns (ListFavoritesResponse);
+
+  rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
+  rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
+  rpc CreateComponent(CreateComponentRequest) returns (CreateComponentResponse);
+  rpc CreateFavorite(CreateFavoriteRequest) returns (CreateFavoriteResponse);
+
+  rpc UpdateBuilding(UpdateBuildingRequest) returns (UpdateBuildingResponse);
+  rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse);
+  rpc UpdateComponent(UpdateComponentRequest) returns (UpdateComponentResponse);
+
+  rpc Remove(RemoveRequest) returns (RemoveResponse);
+  
+}
+
+// request and response messages
+
+message GetBuildingRequest{
+  string identification_number = 1;
+}
+
+message GetBuildingResponse{
+  Building building = 1;
+  ResponseMessage response_message = 2;
+}
+
+message GetRoomRequest{
+  string identification_number = 1;
+}
+
+message GetRoomResponse{
+  Room room = 1;
+  ResponseMessage response_message = 2;
+}
+
+message GetComponentRequest{
+  string identification_number = 1;
+}
+
+message GetComponentResponse{
+  Component component = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListBuildingsRequest{}
+
+message ListBuildingsResponse{
+  Buildings buildings = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListRoomsRequest{
+  string identification_number = 1;
+}
+
+message ListRoomsResponse{
+  Rooms rooms = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListComponentsRequest{
+  string identification_number = 1;
+}
+
+message ListComponentsResponse{
+  Components components = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListFavoritesRequest{
+  string owner = 1;
+}
+
+message ListFavoritesResponse{
+  Buildings buildings = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListNotificationsRequest{
+  string identification_number = 1;
+}
+
+message ListNotificationsResponse{
+  Notifications notifications = 1;
+  ResponseMessage response_message = 2;
+}
+
+message CreateBuildingRequest{
+  Building building = 1;
+}
+
+message CreateBuildingResponse{
+  Building building = 1;
+  ResponseMessage response_message = 2;
+}
+
+message CreateRoomRequest{
+  Room room = 1;
+}
+
+message CreateRoomResponse{
+  Room room = 1;
+  ResponseMessage response_message = 2;
+}
+
+message CreateComponentRequest{
+  Component component = 1;
+}
+
+message CreateComponentResponse{
+  Component component = 1;
+  ResponseMessage response_message = 2;
+}
+
+message CreateFavoriteRequest{
+  Favorite favorite = 1;
+}
+
+message CreateFavoriteResponse{
+  Favorite favorite = 1;
+  ResponseMessage response_message = 2;
+}
+
+message UpdateBuildingRequest{
+  Building building = 1;
+}
+
+message UpdateBuildingResponse{
+  Building building = 1;
+  ResponseMessage response_message = 2;
+}
+
+message UpdateRoomRequest{
+  Room room = 1;
+}
+
+message UpdateRoomResponse{
+  Room room = 1;
+  ResponseMessage response_message = 2;
+}
+
+message UpdateComponentRequest{
+  Component component = 1;
+}
+
+message UpdateComponentResponse{
+  Component component = 1;
+  ResponseMessage response_message = 2;
+}
+
+message RemoveRequest{
+  oneof object{
+    Building building = 1;
+    Favorite favorite = 2;
+    Room room = 3;
+    Component component = 4;
+  }
+}
+
+message RemoveResponse{
+  ResponseMessage response_message = 1;
+}
+
+// api response piece
+
+message ResponseMessage {
+  bool successful = 1;
+  string message = 2;
+}
+
+// single message constructions
+
+message Notification{
+  google.protobuf.Timestamp creation_time = 1;
+  string identification_number = 2;
+  string parent_identification_number = 3;
+  string notification_title = 4;
+  string notification_description = 5;
+}
+
+message Room{
+  string room_name = 1;
+  string room_number = 2;
+  int32 floor = 3;
+  GeographicalLocation geographical_location = 4;
+  string identification_number = 5;
+  string parent_identification_number = 6;
+  RoomType room_type = 7;
+}
+
+message Building{
+  string building_name = 1;
+  string building_number = 2;
+  int32 num_floors = 3;
+  GeographicalLocation geographical_location = 4;
+  CampusLocation campus_location = 5;
+  string identification_number = 6;
+}
+
+message CampusLocation{
+  enum CampusLocation {
+    SOUTH_CAMPUS = 0;
+    NORTH_CAMPUS = 1;
+    EAST_CAMPUS = 2;
+    WEST_CAMPUS = 3;
+  }
+}
+
+message GeographicalLocation{
+  double latitude = 1;
+  double longitude = 2;
+}
+
+message Favorite{
+  string identification_number = 1;
+  string reference_identification_number = 2;
+  string owner = 3;
+}
+
+message RoomType{
+  enum RoomType {
+    CAFETERIA = 0;
+    RESTROOM = 1;
+    RESTROOM_HANDICAPPED = 2;
+    OFFICE = 3;
+    LIBRARY = 4;
+    SEMINAR_ROOM = 5;
+    LECTURE_ROOM = 6;
+    SPORTS = 7;
+  }
+}
+
+message Component{
+  string component_description = 1;
+  string identification_number = 2;
+  GeographicalLocation geographical_location = 3;
+  string parent_identification_number = 4;
+}
+
+// multi message constructions
+
+message Buildings{
+  repeated Building buildings = 1;
+}
+
+message Rooms{
+  repeated Room rooms = 1;
+}
+
+message Components{
+  repeated Component components = 1;
+}
+
+message Favorites{
+  repeated Favorite favorites = 1;
+}
+
+message Notifications{
+  repeated Notification notifications = 1;
+}
