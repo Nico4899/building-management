@@ -1,9 +1,12 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
+import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import io.grpc.stub.StreamObserver;
+
+import java.util.Collection;
 
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
@@ -115,7 +118,8 @@ public class BuildingManagementController
     component.setComponentDescription(grpcComponent.getComponentDescription());
     component.setParentIdentificationNumber(grpcComponent.getParentIdentificationNumber());
     component.setComponentType(readComponentType(grpcComponent.getComponentType()));
-    component.setGeographicalLocation(readGeographicalLocation(grpcComponent.getGeographicalLocation()));
+    component.setGeographicalLocation(
+        readGeographicalLocation(grpcComponent.getGeographicalLocation()));
     return component;
   }
 
@@ -130,13 +134,14 @@ public class BuildingManagementController
     Building building = new Building();
     building.setBuildingName(grpcBuilding.getBuildingName());
     building.setBuildingNumber(grpcBuilding.getBuildingNumber());
-    building.setGeographicalLocation(readGeographicalLocation(grpcBuilding.getGeographicalLocation()));
+    building.setGeographicalLocation(
+        readGeographicalLocation(grpcBuilding.getGeographicalLocation()));
     building.setCampusLocation(readCampusLocation(grpcBuilding.getCampusLocation()));
     building.setNumFloors(grpcBuilding.getNumFloors());
     return building;
   }
 
-  private Room readRoom(GrpcRoom grpcRoom){
+  private Room readRoom(GrpcRoom grpcRoom) {
     Room room = new Room();
     room.setRoomName(grpcRoom.getRoomName());
     room.setRoomNumber(grpcRoom.getRoomNumber());
@@ -155,7 +160,8 @@ public class BuildingManagementController
     return CampusLocation.valueOf(grpcCampusLocation.name());
   }
 
-  private GeographicalLocation readGeographicalLocation(GrpcGeographicalLocation grpcGeographicalLocation) {
+  private GeographicalLocation readGeographicalLocation(
+      GrpcGeographicalLocation grpcGeographicalLocation) {
     GeographicalLocation geographicalLocation = new GeographicalLocation();
     geographicalLocation.setLatitude(grpcGeographicalLocation.getLatitude());
     geographicalLocation.setLongitude(grpcGeographicalLocation.getLongitude());
@@ -197,6 +203,39 @@ public class BuildingManagementController
         .setCampusLocation(writeCampusLocation(building.getCampusLocation()))
         .setGeographicalLocation(writeGeographicalLocation(building.getGeographicalLocation()))
         .setNumFloors(building.getNumFloors())
+        .build();
+  }
+
+  private GrpcNotification writeNotification(Notification notification) {
+    return GrpcNotification.newBuilder()
+        .setNotificationTitle(notification.getNotificationTitle())
+        .setNotificationDescription(notification.getNotificationDescription())
+        .setParentIdentificationNumber(notification.getParentIdentificationNumber())
+        .setIdentificationNumber(notification.getIdentificationNumber())
+        .setCreationTime(
+            Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
+        .build();
+  }
+
+  private GrpcBuildings writeBuildings(Collection<Building> buildings) {
+    return GrpcBuildings.newBuilder()
+        .addAllBuildings(buildings.stream().map(this::writeBuilding).toList())
+        .build();
+  }
+
+  private GrpcComponents writeComponents(Collection<Component> components) {
+    return GrpcComponents.newBuilder()
+        .addAllComponents(components.stream().map(this::writeComponent).toList())
+        .build();
+  }
+
+  private GrpcRooms writeRooms(Collection<Room> rooms) {
+    return GrpcRooms.newBuilder().addAllRooms(rooms.stream().map(this::writeRoom).toList()).build();
+  }
+
+  private GrpcNotifications writeNotifications(Collection<Notification> notifications) {
+    return GrpcNotifications.newBuilder()
+        .addAllNotifications(notifications.stream().map(this::writeNotification).toList())
         .build();
   }
 

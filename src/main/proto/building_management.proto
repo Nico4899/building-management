@@ -279,10 +279,6 @@ message GrpcComponents{
   repeated GrpcComponent components = 1;
 }
 
-message GrpcFavorites{
-  repeated GrpcFavorite favorites = 1;
-}
-
 message GrpcNotifications{
   repeated GrpcNotification notifications = 1;
 }
