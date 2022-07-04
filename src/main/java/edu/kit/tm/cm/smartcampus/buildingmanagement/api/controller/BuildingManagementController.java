@@ -21,6 +21,13 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
     String identificationNumber = request.getIdentificationNumber();
 
     Building building = buildingManagementManager.getBuilding(identificationNumber);
+
+    GetBuildingResponse response = GetBuildingResponse.newBuilder()
+            .setBuilding(restBuildingToGrpcBuilding(building))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
   }
 
   @Override
@@ -104,7 +111,6 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
   }
 
   private GrpcBuilding restBuildingToGrpcBuilding(Building building) {
-
     GrpcBuilding.Builder builder = GrpcBuilding.newBuilder();
     if(building.getBuildingName() != null) builder.setBuildingName(building.getBuildingName());
     if(building.getBuildingNumber() != null) builder.setBuildingNumber(building.getBuildingNumber());
