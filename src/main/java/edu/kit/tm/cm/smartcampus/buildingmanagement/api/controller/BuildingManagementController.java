@@ -17,9 +17,8 @@ public class BuildingManagementController
   @Override
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
-    String identificationNumber = request.getIdentificationNumber();
 
-    Building building = buildingManagementManager.getBuilding(identificationNumber);
+    Building building = buildingManagementManager.getBuilding(request.getIdentificationNumber());
 
     GetBuildingResponse response =
         GetBuildingResponse.newBuilder().setBuilding(writeBuilding(building)).setResponseMessage(writeResponseMessage("hello", true)).build();
