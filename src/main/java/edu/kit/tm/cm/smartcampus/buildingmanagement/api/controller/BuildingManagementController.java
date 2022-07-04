@@ -99,6 +99,9 @@ public class BuildingManagementController
     CreateFavoriteResponse response = CreateFavoriteResponse.newBuilder()
             .setFavorite(writeFavorite(favorite))
             .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
   }
 
   @Override
