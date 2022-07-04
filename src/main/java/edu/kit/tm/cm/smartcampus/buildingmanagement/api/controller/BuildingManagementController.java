@@ -107,6 +107,16 @@ public class BuildingManagementController
     return super.toString();
   }
 
+  // read model object from grpc object
+
+  private Component readComponent(GrpcComponent grpcComponent) {
+    Component component = new Component();
+    component.setComponentDescription(grpcComponent.getComponentDescription());
+    component.setParentIdentificationNumber(grpcComponent.getParentIdentificationNumber());
+    //TODO fertig machen
+    return component;
+  }
+
   // write model object to grpc object
 
   private GrpcComponent writeComponent(Component component) {
