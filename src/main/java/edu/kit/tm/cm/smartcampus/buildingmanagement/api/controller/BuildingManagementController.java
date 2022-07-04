@@ -119,6 +119,13 @@ public class BuildingManagementController
     return component;
   }
 
+  private Favorite readFavorite(GrpcFavorite grpcFavorite) {
+    Favorite favorite = new Favorite();
+    favorite.setOwner(grpcFavorite.getOwner());
+    favorite.setReverenceIdentificationNumber(grpcFavorite.getIdentificationNumber());
+    return favorite;
+  }
+
   private Building readBuilding(GrpcBuilding grpcBuilding) {
     Building building = new Building();
     building.setBuildingName(grpcBuilding.getBuildingName());
