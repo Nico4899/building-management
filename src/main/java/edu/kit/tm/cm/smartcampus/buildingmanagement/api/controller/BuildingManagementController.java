@@ -202,11 +202,11 @@ public class BuildingManagementController
   }
 
   private RoomType readRoomType(GrpcRoomType grpcRoomType) {
-    return RoomType.valueOf(grpcRoomType.name());
+    return RoomType.forNumber(grpcRoomType.ordinal() + 1);
   }
 
   private CampusLocation readCampusLocation(GrpcCampusLocation grpcCampusLocation) {
-    return CampusLocation.valueOf(grpcCampusLocation.name());
+    return CampusLocation.forNumber(grpcCampusLocation.ordinal() + 1);
   }
 
   private GeographicalLocation readGeographicalLocation(
@@ -218,7 +218,7 @@ public class BuildingManagementController
   }
 
   private ComponentType readComponentType(GrpcComponentType grpcComponentType) {
-    return ComponentType.valueOf(grpcComponentType.name());
+    return ComponentType.forNumber(grpcComponentType.ordinal() + 1);
   }
 
   // write model object to grpc object
