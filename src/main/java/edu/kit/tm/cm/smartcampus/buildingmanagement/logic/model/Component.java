@@ -10,4 +10,5 @@ public class Component {
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
   private String parentIdentificationNumber;
+  private ComponentType componentType;
 }

@@ -33,7 +33,7 @@ service BuildingManagement {
   rpc UpdateComponent(UpdateComponentRequest) returns (UpdateComponentResponse);
 
   rpc Remove(RemoveRequest) returns (RemoveResponse);
-  
+
 }
 
 // request and response messages
@@ -256,6 +256,13 @@ message GrpcComponent{
   string identification_number = 2;
   GrpcGeographicalLocation geographical_location = 3;
   string parent_identification_number = 4;
+  GrpcComponentType component_type = 5;
+}
+
+enum GrpcComponentType{
+  UNKNOWN_COMPONENT_TYPE = 0;
+  ELEVATOR = 1;
+  STAIRS = 2;
 }
 
 // multi message constructions

@@ -18,11 +18,13 @@ public class BuildingManagementController
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
 
-    Building building = buildingManagementManager.getBuilding(request.getIdentificationNumber());
-
     GetBuildingResponse response =
-        GetBuildingResponse.newBuilder().setBuilding(writeBuilding(building)).setResponseMessage(writeResponseMessage("hello", true)).build();
-    //TODO responsemessage stuff
+        GetBuildingResponse.newBuilder()
+            .setBuilding(
+                writeBuilding(
+                    buildingManagementManager.getBuilding(request.getIdentificationNumber())))
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -32,7 +34,7 @@ public class BuildingManagementController
 
   @Override
   public void getComponent(
-      GetComponentRequest request, StreamObserver<GetRoomResponse> responseObserver) {}
+      GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {}
 
   @Override
   public void listBuildings(
@@ -112,8 +114,49 @@ public class BuildingManagementController
     Component component = new Component();
     component.setComponentDescription(grpcComponent.getComponentDescription());
     component.setParentIdentificationNumber(grpcComponent.getParentIdentificationNumber());
-    //TODO fertig machen
+    component.setComponentType(readComponentType(grpcComponent.getComponentType()));
+    component.setGeographicalLocation(readGeographicalLocation(grpcComponent.getGeographicalLocation()));
     return component;
+  }
+
+  private Building readBuilding(GrpcBuilding grpcBuilding) {
+    Building building = new Building();
+    building.setBuildingName(grpcBuilding.getBuildingName());
+    building.setBuildingNumber(grpcBuilding.getBuildingNumber());
+    building.setGeographicalLocation(readGeographicalLocation(grpcBuilding.getGeographicalLocation()));
+    building.setCampusLocation(readCampusLocation(grpcBuilding.getCampusLocation()));
+    building.setNumFloors(grpcBuilding.getNumFloors());
+    return building;
+  }
+
+  private Room readRoom(GrpcRoom grpcRoom){
+    Room room = new Room();
+    room.setRoomName(grpcRoom.getRoomName());
+    room.setRoomNumber(grpcRoom.getRoomNumber());
+    room.setRoomType(readRoomType(grpcRoom.getRoomType()));
+    room.setFloor(grpcRoom.getFloor());
+    room.setParentIdentificationNumber(grpcRoom.getParentIdentificationNumber());
+    room.setGeographicalLocation(readGeographicalLocation(grpcRoom.getGeographicalLocation()));
+    return room;
+  }
+
+  private RoomType readRoomType(GrpcRoomType grpcRoomType) {
+    return RoomType.valueOf(grpcRoomType.name());
+  }
+
+  private CampusLocation readCampusLocation(GrpcCampusLocation grpcCampusLocation) {
+    return CampusLocation.valueOf(grpcCampusLocation.name());
+  }
+
+  private GeographicalLocation readGeographicalLocation(GrpcGeographicalLocation grpcGeographicalLocation) {
+    GeographicalLocation geographicalLocation = new GeographicalLocation();
+    geographicalLocation.setLatitude(grpcGeographicalLocation.getLatitude());
+    geographicalLocation.setLongitude(grpcGeographicalLocation.getLongitude());
+    return geographicalLocation;
+  }
+
+  private ComponentType readComponentType(GrpcComponentType grpcComponentType) {
+    return ComponentType.valueOf(grpcComponentType.name());
   }
 
   // write model object to grpc object
