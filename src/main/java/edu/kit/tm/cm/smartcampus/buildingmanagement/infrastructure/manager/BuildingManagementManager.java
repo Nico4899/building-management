@@ -2,10 +2,15 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.util.BuildingFilterOptions;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.util.RoomFilterOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 @org.springframework.stereotype.Component
 public class BuildingManagementManager {
@@ -23,13 +28,15 @@ public class BuildingManagementManager {
 
   // list elements
 
-  public Collection<Building> listBuildings() {
-    return this.buildingConnector.listBuildings();
+  public Collection<Building> listBuildings(BuildingFilterOptions buildingFilterOptions) {
+    return filterBuildingByOptions(buildingFilterOptions, this.buildingConnector.listBuildings());
   }
 
-  public Collection<Room> listRooms(String identificationNumber) {
+  public Collection<Room> listRooms(
+      RoomFilterOptions roomFilterOptions, String identificationNumber) {
     if (identificationNumber.matches(BIN_PATTERN)) {
-      return this.buildingConnector.listBuildingRooms(identificationNumber);
+      return filterRoomByOptions(
+          roomFilterOptions, this.buildingConnector.listBuildingRooms(identificationNumber));
     }
     return Collections.emptyList();
   }
@@ -96,7 +103,7 @@ public class BuildingManagementManager {
 
   public Favorite createFavorite(Favorite favorite) {
     return null;
-    //TODO close to own database implementation
+    // TODO close to own database implementation
   }
 
   // update element
@@ -127,5 +134,63 @@ public class BuildingManagementManager {
     }
   }
 
-}
+  private Collection<Room> filterRoomByOptions(
+      RoomFilterOptions roomFilterOptions, Collection<Room> rooms) {
+    Collection<Room> collectionToFilter = rooms;
+    if (roomFilterOptions.getRoomTypeFilterOption().isSelected()) {
+      Filter<Room> filter =
+          new RoomRoomTypeFilter(
+              rooms, roomFilterOptions.getRoomTypeFilterOption().getFilterValues());
+      collectionToFilter = filter.filter();
+    }
+    if (roomFilterOptions.getComponentTypeFilterOption().isSelected()) {
+      Map<Room, Collection<Component>> roomComponentsMap = new HashMap<>();
+      for (Room room : rooms) {
+        roomComponentsMap.put(
+            room, buildingConnector.listRoomComponents(room.getIdentificationNumber()));
+      }
+      Filter<Room> filter =
+          new RoomComponentTypeFilter(
+              roomComponentsMap,
+              roomFilterOptions.getComponentTypeFilterOption().getFilterValues());
+      collectionToFilter = filter.filter();
+    }
+    return collectionToFilter;
+  }
 
+  private Collection<Building> filterBuildingByOptions(
+      BuildingFilterOptions buildingFilterOptions, Collection<Building> buildings) {
+    Collection<Building> collectionToFilter = buildings;
+    if (buildingFilterOptions.getCampusLocationFilterOption().isSelected()) {
+      Filter<Building> filter =
+          new BuildingCampusLocationFilter(
+              collectionToFilter,
+              buildingFilterOptions.getCampusLocationFilterOption().getFilterValues());
+      collectionToFilter = filter.filter();
+    }
+    if (buildingFilterOptions.getRoomTypeFilterOption().isSelected()) {
+      Map<Building, Collection<Room>> buildingRoomsMap = new HashMap<>();
+      for (Building building : collectionToFilter) {
+        buildingRoomsMap.put(
+            building, buildingConnector.listBuildingRooms(building.getIdentificationNumber()));
+      }
+      Filter<Building> filter =
+          new BuildingRoomTypeFilter(
+              buildingRoomsMap, buildingFilterOptions.getRoomTypeFilterOption().getFilterValues());
+      collectionToFilter = filter.filter();
+    }
+    if (buildingFilterOptions.getComponentTypeFilterOption().isSelected()) {
+      Map<Building, Collection<Component>> buildingComponentsMap = new HashMap<>();
+      for (Building building : collectionToFilter) {
+        buildingComponentsMap.put(
+            building, buildingConnector.listBuildingComponents(building.getIdentificationNumber()));
+      }
+      Filter<Building> filter =
+          new BuildingComponentTypeFilter(
+              buildingComponentsMap,
+              buildingFilterOptions.getComponentTypeFilterOption().getFilterValues());
+      collectionToFilter = filter.filter();
+    }
+    return collectionToFilter;
+  }
+}

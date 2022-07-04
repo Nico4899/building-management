@@ -65,7 +65,9 @@ message GetComponentResponse{
   ResponseMessage response_message = 2;
 }
 
-message ListBuildingsRequest{}
+message ListBuildingsRequest{
+  BuildingFilterOptions building_filter_options = 1;
+}
 
 message ListBuildingsResponse{
   GrpcBuildings buildings = 1;
@@ -73,7 +75,8 @@ message ListBuildingsResponse{
 }
 
 message ListRoomsRequest{
-  string identification_number = 1;
+  RoomFilterOptions room_filter_options = 1;
+  string identification_number = 2;
 }
 
 message ListRoomsResponse{
@@ -226,6 +229,32 @@ enum GrpcCampusLocation{
   EAST_CAMPUS = 2;
   WEST_CAMPUS = 3;
   SOUTH_CAMPUS = 4;
+}
+
+message BuildingFilterOptions{
+  ComponentTypeFilterMapping component_type_filter_mapping = 1;
+  RoomTypeFilterMapping room_type_filter_mapping = 2;
+  CampusLocationFilterMapping campus_location_filter_mapping = 3;
+}
+
+message RoomFilterOptions{
+  ComponentTypeFilterMapping component_type_filter_mapping = 1;
+  RoomTypeFilterMapping room_type_filter_mapping = 2;
+}
+
+message CampusLocationFilterMapping{
+  bool selected = 1;
+  repeated GrpcCampusLocation campus_locations = 2;
+}
+
+message RoomTypeFilterMapping{
+  bool selected = 1;
+  repeated GrpcRoomType room_types = 2;
+}
+
+message ComponentTypeFilterMapping{
+  bool selected = 1;
+  repeated GrpcComponentType component_types = 2;
 }
 
 message GrpcGeographicalLocation{

@@ -56,7 +56,6 @@ public class BuildingManagementController
   @Override
   public void createBuilding(CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
     Building building = readBuilding(request.getBuilding());
-    //TODO wo wird ID generiert?
 
     CreateBuildingResponse response = CreateBuildingResponse.newBuilder()
             .setBuilding(writeBuilding(building))
@@ -69,7 +68,6 @@ public class BuildingManagementController
   @Override
   public void createRoom(CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
     Room room = readRoom(request.getRoom());
-    //TODO wo wird ID generiert?
 
     CreateRoomResponse response = CreateRoomResponse.newBuilder()
             .setRoom(writeRoom(room))
@@ -82,7 +80,6 @@ public class BuildingManagementController
   @Override
   public void createComponent(CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
     Component component = readComponent(request.getComponent());
-    //TODO wo wird ID generiert?
 
     CreateComponentResponse response = CreateComponentResponse.newBuilder()
             .setComponent(writeComponent(component))
