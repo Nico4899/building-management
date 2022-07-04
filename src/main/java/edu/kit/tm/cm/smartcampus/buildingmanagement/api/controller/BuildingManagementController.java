@@ -22,8 +22,8 @@ public class BuildingManagementController
     Building building = buildingManagementManager.getBuilding(identificationNumber);
 
     GetBuildingResponse response =
-        GetBuildingResponse.newBuilder().setBuilding(writeBuilding(building)).build();
-
+        GetBuildingResponse.newBuilder().setBuilding(writeBuilding(building)).setResponseMessage(writeResponseMessage("hello", true)).build();
+    //TODO responsemessage stuff
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
