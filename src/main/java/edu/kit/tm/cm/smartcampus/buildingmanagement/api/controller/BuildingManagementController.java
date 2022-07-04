@@ -2,9 +2,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.CampusLocation;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.GeographicalLocation;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 
 import io.grpc.stub.StreamObserver;
 
@@ -32,10 +30,30 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
 
   @Override
   public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {
+    String identificationNumber = request.getIdentificationNumber();
+
+    Room room = buildingManagementManager.getRoom(identificationNumber);
+
+    GetRoomResponse response = GetRoomResponse.newBuilder()
+            .setRoom(restRoomToGrpcRoom(room))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
   }
 
   @Override
-  public void getComponent(GetComponentRequest request, StreamObserver<GetRoomResponse> responseObserver) {
+  public void getComponent(GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
+    String identificationNumber = request.getIdentificationNumber();
+
+    Component component = buildingManagementManager.getComponent(identificationNumber);
+
+    GetComponentResponse response = GetComponentResponse.newBuilder()
+            .setComponent(restComponentToGrpcComponent(component))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
   }
 
   @Override
@@ -122,6 +140,28 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
     return builder.build();
   }
 
+  private GrpcRoom restRoomToGrpcRoom(Room room) {
+    GrpcRoom.Builder builder = GrpcRoom.newBuilder();
+    builder.setFloor(room.getFloor());
+    builder.setRoomName(room.getRoomName());
+    builder.setRoomNumber(room.getRoomNumber());
+    builder.setIdentificationNumber(room.getIdentificationNumber());
+    builder.setParentIdentificationNumber(room.getParentIdentificationNumber());
+    builder.setGeographicalLocation(writeGeographicalLocation(room.getGeographicalLocation()));
+    builder.setRoomType(writeRoomType(room.getRoomType()));
+    return builder.build();
+  }
+
+  private GrpcComponent restComponentToGrpcComponent(Component component) {
+    GrpcComponent.Builder builder = GrpcComponent.newBuilder();
+    builder.setComponentDescription(component.getComponentDescription());
+    builder.setIdentificationNumber(component.getIdentificationNumber());
+    builder.setGeographicalLocation(writeGeographicalLocation(component.getGeographicalLocation()));
+    builder.setParentIdentificationNumber(component.getParentIdentificationNumber());
+    return builder.build();
+
+  }
+
   private GrpcGeographicalLocation writeGeographicalLocation(GeographicalLocation geographicalLocation) {
     GrpcGeographicalLocation.Builder builder = GrpcGeographicalLocation.newBuilder();
     builder.setLatitude(geographicalLocation.getLatitude());
@@ -131,6 +171,10 @@ public class BuildingManagementController extends BuildingManagementGrpc.Buildin
 
   private GrpcCampusLocation writeCampusLocation (CampusLocation campusLocation) {
     return GrpcCampusLocation.forNumber(campusLocation.ordinal() + 1);
+ }
+
+ private GrpcRoomType writeRoomType(RoomType roomType) {
+    return GrpcRoomType.forNumber(roomType.ordinal() + 1);
  }
 
 }

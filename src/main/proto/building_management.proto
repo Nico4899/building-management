@@ -15,7 +15,7 @@ service BuildingManagement {
 
   rpc GetBuilding(GetBuildingRequest) returns (GetBuildingResponse);
   rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
-  rpc GetComponent(GetComponentRequest) returns (GetRoomResponse);
+  rpc GetComponent(GetComponentRequest) returns (GetComponentResponse);
 
   rpc ListBuildings(ListBuildingsRequest) returns (ListBuildingsResponse);
   rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
