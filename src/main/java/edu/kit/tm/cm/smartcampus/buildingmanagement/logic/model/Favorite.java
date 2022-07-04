@@ -6,5 +6,5 @@ import lombok.Data;
 public class Favorite {
   private String owner;
   private String identificationNumber;
-  private String reverenceIdentificationNumber;
+  private String referenceIdentificationNumber;
 }

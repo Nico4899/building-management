@@ -33,11 +33,73 @@ public class BuildingManagementController
   }
 
   @Override
-  public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {}
+  public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {
+    GetRoomResponse response = GetRoomResponse.newBuilder()
+            .setRoom(writeRoom(buildingManagementManager.getRoom(request.getIdentificationNumber())))
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .build();
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
 
   @Override
   public void getComponent(
-      GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {}
+      GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
+    GetComponentResponse response = GetComponentResponse.newBuilder()
+            .setComponent(writeComponent(buildingManagementManager.getComponent(request.getIdentificationNumber())))
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .build();
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void createBuilding(CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
+    Building building = readBuilding(request.getBuilding());
+    //TODO wo wird ID generiert?
+
+    CreateBuildingResponse response = CreateBuildingResponse.newBuilder()
+            .setBuilding(writeBuilding(building))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void createRoom(CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
+    Room room = readRoom(request.getRoom());
+    //TODO wo wird ID generiert?
+
+    CreateRoomResponse response = CreateRoomResponse.newBuilder()
+            .setRoom(writeRoom(room))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void createComponent(CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
+    Component component = readComponent(request.getComponent());
+    //TODO wo wird ID generiert?
+
+    CreateComponentResponse response = CreateComponentResponse.newBuilder()
+            .setComponent(writeComponent(component))
+            .build();
+
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void createFavorite(CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
+    Favorite favorite = readFavorite(request.getFavorite());
+
+    CreateFavoriteResponse response = CreateFavoriteResponse.newBuilder()
+            .setFavorite(writeFavorite(favorite))
+            .build();
+  }
 
   @Override
   public void listBuildings(
@@ -59,22 +121,6 @@ public class BuildingManagementController
   @Override
   public void listFavorites(
       ListFavoritesRequest request, StreamObserver<ListFavoritesResponse> responseObserver) {}
-
-  @Override
-  public void createBuilding(
-      CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {}
-
-  @Override
-  public void createRoom(
-      CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {}
-
-  @Override
-  public void createComponent(
-      CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {}
-
-  @Override
-  public void createFavorite(
-      CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {}
 
   @Override
   public void updateBuilding(
@@ -126,7 +172,7 @@ public class BuildingManagementController
   private Favorite readFavorite(GrpcFavorite grpcFavorite) {
     Favorite favorite = new Favorite();
     favorite.setOwner(grpcFavorite.getOwner());
-    favorite.setReverenceIdentificationNumber(grpcFavorite.getIdentificationNumber());
+    favorite.setReferenceIdentificationNumber(grpcFavorite.getIdentificationNumber());
     return favorite;
   }
 
@@ -215,6 +261,14 @@ public class BuildingManagementController
         .setCreationTime(
             Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
         .build();
+  }
+
+  private GrpcFavorite writeFavorite(Favorite favorite) {
+    return GrpcFavorite.newBuilder()
+            .setOwner(favorite.getOwner())
+            .setIdentificationNumber(favorite.getIdentificationNumber())
+            .setReferenceIdentificationNumber(favorite.getReferenceIdentificationNumber())
+            .build();
   }
 
   private GrpcBuildings writeBuildings(Collection<Building> buildings) {
