@@ -1,0 +1,155 @@
+syntax = "proto3";
+
+package buildingPackage;
+
+service buildingManagement {
+    rpc GetBuilding(IN) returns (Building);
+    rpc GetRoom(IN) returns (Room);
+    rpc GetComponent(IN) returns (Component);
+
+    rpc GetBuildings(Empty) returns (Buildings);
+    rpc GetFilteredBuildings(FilterValues) returns (Buildings);
+    rpc GetRooms(IN) returns (Rooms);
+    rpc GetComponents(IN) returns (Components);
+    rpc GetNotifications(IN) returns (Notifications);
+    rpc GetFavorites(Owner) returns (Buildings);
+
+    rpc AddBuilding(Building) returns (Building);
+    rpc AddRoom(Room) returns (Room);
+    rpc AddComponent(Component) returns (Component);
+    rpc AddFavorite(Owner, Building) returns (Empty);
+
+    rpc UpdateBuilding(Building) returns (Building);
+    rpc UpdateRoom(Room) returns (Room);
+    rpc UpdateComponent(Component) returns (Component);
+    
+    rpc Delete(IN) returns (Empty);
+}
+
+message Empty {}
+
+message IN {
+    string in = 1;
+}
+
+message Building {
+    string name = 1;
+    string aoNumber = 2;
+    int32 numFloors = 3;
+    Position position = 4;
+    Components components = 5;
+    Notifications notifications = 6;
+    CampusLocation campusLocation = 7;
+    Rooms rooms = 8;
+    IN bin = 9;
+}
+
+message Buildings {
+    repeated Building buildings = 1;
+}
+
+message Owner {
+    string owner = 1;
+}
+
+message Room {
+    string name = 1;
+    string aoNumber = 2;
+    int32 floor = 3;
+    RoomCategory category = 4;
+    Components components = 5;
+    Notifications notifications = 6;
+    IN rin = 7;
+    IN parent = 8;
+    Position position = 9;
+}
+
+message Rooms {
+    repeated Room rooms = 1;
+}
+
+message RoomCategory {
+    enum RoomCategories {
+        SPORTS = 1;
+        CAFETERIA = 2;
+        RESTROOM = 3;
+        RESTROOM_HANDICAPPED = 4;
+        OFFICE = 5;
+        LECTURE_ROOM = 6;
+        SEMINAR_ROOM = 7;
+        LIBRARY = 8;
+    }
+}
+
+message RoomCategories {
+    repeated RoomCategory roomCategories = 1;
+}
+
+message Position {
+    int32 lon = 1;
+    int32 lat = 2;
+}
+
+message CampusLocation {
+    enum campus {
+        SOUTH_CAMPUS = 1;
+        NORTH_CAMPUS = 2;
+        EAST_CAMPUS = 3;
+        WEST_CAMPUS = 4;
+    }
+}
+
+message CampusLocations {
+    repeated CampusLocation locations = 1;
+}
+
+message Component {
+    ComponentType componentType = 1;
+    IN cin = 2;
+    IN parent = 3;
+    string description = 4;
+    Notifications notifications = 5;
+    Position position = 6;
+}
+
+message ComponentType {
+enum ComponentType {
+    RAMP = 1;
+    ELEVATOR = 2;
+    }
+}
+
+message ComponentTypes {
+    repeated ComponentType componentTypes = 1;
+}
+
+message Components {
+    repeated Component components = 1;
+}
+
+message Notification {
+    string title = 1;
+    string description = 2;
+    Date date = 3;
+    IN nin = 4;
+    IN parent = 5;
+}
+
+message Notifications {
+    repeated Notification notification = 1;
+}
+
+message Date {
+    int32 year = 1;
+    int32 month = 2;
+    int32 day = 3;
+}
+
+message FilterValues {
+    oneof{
+        CampusLocations campusLocations = 1;
+        ComponentTypes componentTypes = 2;
+        RoomCategories roomCategories = 3;
+        string name = 4;
+    }
+}
