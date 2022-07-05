@@ -110,11 +110,11 @@ public class BuildingManagementController
   public void createFavorite(
       CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
     Favorite favorite = readFavorite(request.getFavorite());
+    this.buildingManagementManager.createFavorite(favorite);
 
     CreateFavoriteResponse response =
         CreateFavoriteResponse.newBuilder()
             .setResponseMessage(writeResponseMessage("hello", true))
-            .setFavorite(writeFavorite(buildingManagementManager.createFavorite(favorite)))
             .build();
 
     responseObserver.onNext(response);
@@ -430,14 +430,6 @@ public class BuildingManagementController
         .setIdentificationNumber(notification.getIdentificationNumber())
         .setCreationTime(
             Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
-        .build();
-  }
-
-  private GrpcFavorite writeFavorite(Favorite favorite) {
-    return GrpcFavorite.newBuilder()
-        .setOwner(favorite.getOwner())
-        .setIdentificationNumber(favorite.getIdentificationNumber())
-        .setReferenceIdentificationNumber(favorite.getReferenceIdentificationNumber())
         .build();
   }
 

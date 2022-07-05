@@ -20,6 +20,7 @@ public class BuildingManagementManager {
   private static final String BIN_PATTERN = "b-\\d+";
   private static final String RIN_PATTERN = "r-\\d+";
   private static final String CIN_PATTERN = "c-\\d+";
+  private static final String FIN_PATTERN = "f-\\d+";
 
   private final BuildingConnector buildingConnector;
 
@@ -140,9 +141,8 @@ public class BuildingManagementManager {
     return null;
   }
 
-  public Favorite createFavorite(Favorite favorite) {
-    return null;
-    // TODO close to own database implementation
+  public void createFavorite(Favorite favorite) {
+    this.favoriteRepository.save(favorite);
   }
 
   // update element
@@ -170,6 +170,9 @@ public class BuildingManagementManager {
     }
     if (identificationNumber.matches(CIN_PATTERN)) {
       this.buildingConnector.removeComponent(identificationNumber);
+    }
+    if(identificationNumber.matches(FIN_PATTERN)) {
+      this.favoriteRepository.deleteById(identificationNumber);
     }
   }
 
