@@ -1,6 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.commands.FilterCommand;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.commands.SequentialFilterCommand;
@@ -22,8 +23,11 @@ public class BuildingManagementManager {
 
   private final BuildingConnector buildingConnector;
 
+  private final FavoriteRepository favoriteRepository;
+
   @Autowired
-  public BuildingManagementManager(BuildingConnector buildingConnector) {
+  public BuildingManagementManager(BuildingConnector buildingConnector, FavoriteRepository favoriteRepository) {
+    this.favoriteRepository = favoriteRepository;
     this.buildingConnector = buildingConnector;
   }
 
@@ -69,9 +73,34 @@ public class BuildingManagementManager {
     return notifications;
   }
 
-  public Collection<Building> listFavorites(String owner) {
-    return Collections.emptyList();
-    //TODO implement
+  public Collection<Component> listComponentFavorites(String owner) {
+    Collection<Component> components = new ArrayList<>();
+    for (Favorite favorite : favoriteRepository.findAll()) {
+      if (favorite.getOwner().equals(owner) && favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
+        components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
+      }
+    }
+    return components;
+  }
+
+  public Collection<Room> listRoomFavorites(String owner) {
+    Collection<Room> rooms = new ArrayList<>();
+    for (Favorite favorite : favoriteRepository.findAll()) {
+      if (favorite.getOwner().equals(owner) && favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
+        rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
+      }
+    }
+    return rooms;
+  }
+
+  public Collection<Building> listBuildingFavorites(String owner) {
+    Collection<Building> buildings = new ArrayList<>();
+    for (Favorite favorite : favoriteRepository.findAll()) {
+        if (favorite.getOwner().equals(owner) && favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
+          buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
+        }
+    }
+    return buildings;
   }
 
   // get single element

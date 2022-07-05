@@ -21,7 +21,10 @@ service BuildingManagement {
   rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
   rpc ListComponents(ListComponentsRequest) returns (ListComponentsResponse);
   rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
-  rpc ListFavorites(ListFavoritesRequest) returns (ListFavoritesResponse);
+
+  rpc ListBuildingFavorites(ListBuildingFavoritesRequest) returns (ListBuildingFavoritesResponse);
+  rpc ListRoomFavorites(ListRoomFavoritesRequest) returns (ListRoomFavoritesResponse);
+  rpc ListComponentFavorites(ListComponentFavoritesRequest) returns (ListComponentFavoritesResponse);
 
   rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
   rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
@@ -93,12 +96,30 @@ message ListComponentsResponse{
   ResponseMessage response_message = 2;
 }
 
-message ListFavoritesRequest{
+message ListBuildingFavoritesRequest{
   string owner = 1;
 }
 
-message ListFavoritesResponse{
+message ListRoomFavoritesRequest{
+  string owner = 1;
+}
+
+message ListComponentFavoritesRequest{
+  string owner = 1;
+}
+
+message ListBuildingFavoritesResponse{
   GrpcBuildings buildings = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListRoomFavoritesResponse{
+  GrpcRooms rooms = 1;
+  ResponseMessage response_message = 2;
+}
+
+message ListComponentFavoritesResponse{
+  GrpcComponents components = 1;
   ResponseMessage response_message = 2;
 }
 

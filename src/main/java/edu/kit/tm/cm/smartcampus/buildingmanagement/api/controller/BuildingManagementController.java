@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
 
@@ -183,13 +182,13 @@ public class BuildingManagementController
   }
 
   @Override
-  public void listFavorites(
+  public void listBuildingFavorites(
       ListFavoritesRequest request, StreamObserver<ListFavoritesResponse> responseObserver) {
     ListFavoritesResponse response =
         ListFavoritesResponse.newBuilder()
             .setResponseMessage(writeResponseMessage("hello", true))
             .setBuildings(
-                writeBuildings(buildingManagementManager.listFavorites(request.getOwner())))
+                writeBuildings(buildingManagementManager.listBuildingFavorites(request.getOwner())))
             .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
@@ -455,5 +454,4 @@ public class BuildingManagementController
   private ResponseMessage writeResponseMessage(String message, boolean successful) {
     return ResponseMessage.newBuilder().setMessage(message).setSuccessful(successful).build();
   }
-
 }
