@@ -1,11 +1,15 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
+@Setter
+@Getter
 @Entity(name = "Favorite")
 public class Favorite {
 
