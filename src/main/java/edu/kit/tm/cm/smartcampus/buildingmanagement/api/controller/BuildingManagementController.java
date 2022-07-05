@@ -181,11 +181,12 @@ public class BuildingManagementController
     responseObserver.onCompleted();
   }
 
+
   @Override
   public void listBuildingFavorites(
-      ListFavoritesRequest request, StreamObserver<ListFavoritesResponse> responseObserver) {
-    ListFavoritesResponse response =
-        ListFavoritesResponse.newBuilder()
+      ListBuildingFavoritesRequest request, StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
+    ListBuildingFavoritesResponse response =
+        ListBuildingFavoritesResponse.newBuilder()
             .setResponseMessage(writeResponseMessage("hello", true))
             .setBuildings(
                 writeBuildings(buildingManagementManager.listBuildingFavorites(request.getOwner())))
@@ -193,6 +194,33 @@ public class BuildingManagementController
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
+
+  @Override
+  public void listRoomFavorites(
+    ListRoomFavoritesRequest request, StreamObserver<ListRoomFavoritesResponse> responseObserver) {
+    ListRoomFavoritesResponse response =
+      ListRoomFavoritesResponse.newBuilder()
+        .setResponseMessage(writeResponseMessage("hello", true))
+        .setRooms(
+          writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
+        .build();
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void listComponentFavorites(
+    ListComponentFavoritesRequest request, StreamObserver<ListComponentFavoritesResponse> responseObserver) {
+    ListComponentFavoritesResponse response =
+      ListComponentFavoritesResponse.newBuilder()
+        .setResponseMessage(writeResponseMessage("hello", true))
+        .setComponents(
+          writeComponents(buildingManagementManager.listComponentFavorites(request.getOwner())))
+        .build();
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
 
   @Override
   public void updateBuilding(
