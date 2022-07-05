@@ -14,7 +14,7 @@ public class Favorite {
   @GenericGenerator(
     name = "favorite_sequence",
     strategy = "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator",
-    parameters = {@Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "B_")})
+    parameters = {@Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")})
   @Column(name = "identification_number", updatable = false, columnDefinition = "TEXT")
   private String identificationNumber;
 
