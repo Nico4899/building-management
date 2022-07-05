@@ -7,11 +7,12 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import io.grpc.stub.StreamObserver;
+import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
+@Controller
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
 
@@ -181,10 +182,10 @@ public class BuildingManagementController
     responseObserver.onCompleted();
   }
 
-
   @Override
   public void listBuildingFavorites(
-      ListBuildingFavoritesRequest request, StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
+      ListBuildingFavoritesRequest request,
+      StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
     ListBuildingFavoritesResponse response =
         ListBuildingFavoritesResponse.newBuilder()
             .setResponseMessage(writeResponseMessage("hello", true))
@@ -197,30 +198,31 @@ public class BuildingManagementController
 
   @Override
   public void listRoomFavorites(
-    ListRoomFavoritesRequest request, StreamObserver<ListRoomFavoritesResponse> responseObserver) {
+      ListRoomFavoritesRequest request,
+      StreamObserver<ListRoomFavoritesResponse> responseObserver) {
     ListRoomFavoritesResponse response =
-      ListRoomFavoritesResponse.newBuilder()
-        .setResponseMessage(writeResponseMessage("hello", true))
-        .setRooms(
-          writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
-        .build();
+        ListRoomFavoritesResponse.newBuilder()
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .setRooms(writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
+            .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listComponentFavorites(
-    ListComponentFavoritesRequest request, StreamObserver<ListComponentFavoritesResponse> responseObserver) {
+      ListComponentFavoritesRequest request,
+      StreamObserver<ListComponentFavoritesResponse> responseObserver) {
     ListComponentFavoritesResponse response =
-      ListComponentFavoritesResponse.newBuilder()
-        .setResponseMessage(writeResponseMessage("hello", true))
-        .setComponents(
-          writeComponents(buildingManagementManager.listComponentFavorites(request.getOwner())))
-        .build();
+        ListComponentFavoritesResponse.newBuilder()
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .setComponents(
+                writeComponents(
+                    buildingManagementManager.listComponentFavorites(request.getOwner())))
+            .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
-
 
   @Override
   public void updateBuilding(
@@ -360,7 +362,7 @@ public class BuildingManagementController
         new LinkedList<>(
             componentTypeFilterMapping.getComponentTypesList().stream()
                 .map(this::readComponentType)
-                .collect(Collectors.toList())));
+              .toList()));
     return filterOption;
   }
 
@@ -372,7 +374,7 @@ public class BuildingManagementController
         new LinkedList<>(
             campusLocationFilterMapping.getCampusLocationsList().stream()
                 .map(this::readCampusLocation)
-                .collect(Collectors.toList())));
+                .toList()));
     return filterOption;
   }
 
@@ -382,9 +384,7 @@ public class BuildingManagementController
     filterOption.setSelected(roomTypeFilterMapping.getSelected());
     filterOption.setFilterValues(
         new LinkedList<>(
-            roomTypeFilterMapping.getRoomTypesList().stream()
-                .map(this::readRoomType)
-                .collect(Collectors.toList())));
+            roomTypeFilterMapping.getRoomTypesList().stream().map(this::readRoomType).toList()));
     return filterOption;
   }
 
