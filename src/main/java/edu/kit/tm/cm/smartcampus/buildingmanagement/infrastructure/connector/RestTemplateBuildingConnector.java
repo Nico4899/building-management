@@ -4,11 +4,16 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
+import java.util.Collections;
 
 @org.springframework.stereotype.Component
 public class RestTemplateBuildingConnector implements BuildingConnector{
@@ -69,98 +74,196 @@ public class RestTemplateBuildingConnector implements BuildingConnector{
 
   @Override
   public Collection<Building> listBuildings() {
-    return null;
+    ResponseEntity<Collection<Building>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listBuildingsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Building>>() {
+    });
+
+    if (responseEntity.getStatusCode() == HttpStatus.OK) {
+      return responseEntity.getBody();
+    }
+
+    return Collections.emptyList();
   }
 
   @Override
   public Building createBuilding(Building building){
-    return null;
+    ResponseEntity<Building> responseEntity;
+
+    responseEntity = restTemplate.postForEntity(baseUrl + createBuildingUrl, building, Building.class);
+
+    return  responseEntity.getBody();
   }
 
   @Override
   public Building getBuilding(String identificationNumber) {
-    return null;
+    ResponseEntity<Building> responseEntity;
+
+    responseEntity = restTemplate.getForEntity(baseUrl + getBuildingUrl, Building.class, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Building updateBuilding(Building building) {
-    return null;
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<Building> entity = new HttpEntity<>(building, headers);
+
+    restTemplate.exchange(baseUrl + updateBuildingUrl, HttpMethod.PUT, entity, Void.class, building.getIdentificationNumber());
+    return building;
   }
 
   @Override
   public void removeBuilding(String identificationNumber) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> entity = new HttpEntity<>(identificationNumber, headers);
+
+    restTemplate.exchange(baseUrl + removeBuildingUrl, HttpMethod.DELETE, entity, Void.class, identificationNumber);
   }
 
   @Override
   public Collection<Room> listBuildingRooms(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Room>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listBuildingRoomsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Room>>() {
+    });
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Room createBuildingRoom(Room room){
-    return null;
+    ResponseEntity<Room> responseEntity;
+
+    responseEntity = restTemplate.postForEntity(baseUrl + createBuildingRoomUrl, room, Room.class);
+
+    return  responseEntity.getBody();
   }
 
   @Override
   public Room getRoom(String identificationNumber) {
-    return null;
+    ResponseEntity<Room> responseEntity;
+
+    responseEntity = restTemplate.getForEntity(baseUrl + getRoomUrl, Room.class, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Room updateRoom(Room room) {
-    return null;
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<Room> entity = new HttpEntity<>(room, headers);
+
+    restTemplate.exchange(baseUrl + updateBuildingUrl, HttpMethod.PUT, entity, Void.class, room.getIdentificationNumber());
+    return room;
   }
 
   @Override
   public void removeRoom(String identificationNumber) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> entity = new HttpEntity<>(identificationNumber, headers);
+
+    restTemplate.exchange(baseUrl + removeRoomUrl, HttpMethod.DELETE, entity, Void.class, identificationNumber);
   }
 
   @Override
   public Collection<Component> listBuildingComponents(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Component>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listBuildingComponentsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Component>>(){
+    }, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Collection<Component> listRoomComponents(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Component>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listRoomComponentsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Component>>(){
+    }, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Component createBuildingComponent(Component component){
-    return null;
+    ResponseEntity<Component> responseEntity;
+
+    responseEntity = restTemplate.postForEntity(baseUrl + createBuildingComponentUrl, component, Component.class);
+
+    return  responseEntity.getBody();
   }
 
   @Override
   public Component createRoomComponent(Component component){
-    return null;
+    ResponseEntity<Component> responseEntity;
+
+    responseEntity = restTemplate.postForEntity(baseUrl + createRoomComponentUrl, component, Component.class);
+
+    return  responseEntity.getBody();
   }
 
   @Override
   public Component getComponent(String identificationNumber) {
-    return null;
+    ResponseEntity<Component> responseEntity;
+
+    responseEntity = restTemplate.getForEntity(baseUrl + getComponentUrl, Component.class, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Component updateComponent(Component component) {
-    return null;
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<Component> entity = new HttpEntity<>(component, headers);
+
+    restTemplate.exchange(baseUrl + updateComponentUrl, HttpMethod.PUT, entity, Void.class, component.getIdentificationNumber());
+    return component;
   }
 
   @Override
   public void removeComponent(String identificationNumber) {
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_JSON);
+    HttpEntity<String> entity = new HttpEntity<>(identificationNumber, headers);
+
+    restTemplate.exchange(baseUrl + removeComponentUrl, HttpMethod.DELETE, entity, Void.class, identificationNumber);
+
   }
 
   @Override
   public Collection<Notification> listBuildingNotifications(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Notification>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listBuildingNotificationsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Notification>>(){
+    }, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Collection<Notification> listRoomNotifications(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Notification>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listRoomNotificationsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Notification>>(){
+    }, identificationNumber);
+
+    return responseEntity.getBody();
   }
 
   @Override
   public Collection<Notification> listComponentNotifications(String identificationNumber) {
-    return null;
+    ResponseEntity<Collection<Notification>> responseEntity;
+
+    responseEntity = restTemplate.exchange(baseUrl + listComponentNotificationsUrl, HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Notification>>(){
+    }, identificationNumber);
+
+    return responseEntity.getBody();
   }
 }
