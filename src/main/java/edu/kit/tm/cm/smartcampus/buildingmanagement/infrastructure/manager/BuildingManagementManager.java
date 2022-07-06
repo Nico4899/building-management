@@ -53,7 +53,7 @@ public class BuildingManagementManager {
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
 
     // check if valid input
-    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
       throw new InvalidArgumentsException();
     }
 
@@ -78,7 +78,7 @@ public class BuildingManagementManager {
     Collection<Component> components = Collections.emptyList();
 
     // check if valid input
-    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
       throw new InvalidArgumentsException();
     }
 
@@ -100,7 +100,7 @@ public class BuildingManagementManager {
   public Collection<Notification> listNotifications(String identificationNumber) {
 
     // check if valid input
-    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
       throw new InvalidArgumentsException();
     }
 
@@ -294,7 +294,7 @@ public class BuildingManagementManager {
   public void remove(String identificationNumber) {
 
     // check if matching some pattern
-    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
       throw new InvalidArgumentsException();
     }
 
@@ -425,11 +425,11 @@ public class BuildingManagementManager {
     return buildingComponentsMap;
   }
 
-  private boolean matchesSomeIdentificationNumberPattern(String string) {
-    return (string != null)
-        && (string.matches(BIN_PATTERN))
-        && (string.matches(RIN_PATTERN))
-        && (string.matches(CIN_PATTERN))
-        && (string.matches(FIN_PATTERN));
+  private boolean matchesNoIdentificationNumberPattern(String string) {
+    return (string == null)
+      || (!string.matches(BIN_PATTERN))
+      || (!string.matches(RIN_PATTERN))
+      || (!string.matches(CIN_PATTERN))
+      || (!string.matches(FIN_PATTERN));
   }
 }
