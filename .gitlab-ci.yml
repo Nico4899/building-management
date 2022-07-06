@@ -14,8 +14,6 @@ cache:
 
 build_job:
     stage: build
-    tags:
-        - docker
 
     script:
         - echo "Maven compile started"
@@ -23,8 +21,6 @@ build_job:
 
 test_job:
     stage: test
-    tags:
-        - docker
 
     script:
         - echo "Maven test started"
