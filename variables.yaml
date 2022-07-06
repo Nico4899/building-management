@@ -1,3 +1,0 @@
-variables:
-    MVN_BUILD_CLI_OPTIONS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
-    MVN_TEST_CLI_OPTIONS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
