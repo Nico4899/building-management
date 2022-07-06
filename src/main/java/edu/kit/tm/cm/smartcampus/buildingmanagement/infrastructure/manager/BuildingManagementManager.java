@@ -2,11 +2,8 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.commands.FilterCommand;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.commands.SequentialFilterCommand;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.BuildingRoomTypeFilter;
@@ -16,11 +13,8 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filt
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 
 @Service
 public class BuildingManagementManager {
@@ -35,7 +29,7 @@ public class BuildingManagementManager {
 
   @Autowired
   public BuildingManagementManager(
-    BuildingConnector buildingConnector, FavoriteRepository favoriteRepository) {
+      BuildingConnector buildingConnector, FavoriteRepository favoriteRepository) {
 
     // using constructor injection
     this.favoriteRepository = favoriteRepository;
@@ -58,6 +52,11 @@ public class BuildingManagementManager {
 
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
 
+    // check if valid input
+    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+      throw new InvalidArgumentsException();
+    }
+
     // instantiate empty list of rooms
     Collection<Room> rooms = Collections.emptyList();
 
@@ -78,6 +77,11 @@ public class BuildingManagementManager {
     // instantiate empty list of components
     Collection<Component> components = Collections.emptyList();
 
+    // check if valid input
+    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+      throw new InvalidArgumentsException();
+    }
+
     // if identification number matches a bin pattern, fill components with the building's
     // components
     if (identificationNumber.matches(BIN_PATTERN)) {
@@ -94,6 +98,11 @@ public class BuildingManagementManager {
   }
 
   public Collection<Notification> listNotifications(String identificationNumber) {
+
+    // check if valid input
+    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+      throw new InvalidArgumentsException();
+    }
 
     // instantiate empty list of notifications
     Collection<Notification> notifications = Collections.emptyList();
@@ -122,6 +131,11 @@ public class BuildingManagementManager {
 
   public Collection<Component> listComponentFavorites(String owner) {
 
+    // check if inputs are valid
+    if (owner == null) {
+      throw new InvalidArgumentsException();
+    }
+
     // instantiate component list
     Collection<Component> components = new ArrayList<>();
 
@@ -129,7 +143,7 @@ public class BuildingManagementManager {
     // component list
     for (Favorite favorite : favoriteRepository.findAll()) {
       if (favorite.getOwner().equals(owner)
-        && favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
+          && favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
         components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
       }
     }
@@ -140,13 +154,18 @@ public class BuildingManagementManager {
 
   public Collection<Room> listRoomFavorites(String owner) {
 
+    // check if inputs are valid
+    if (owner == null) {
+      throw new InvalidArgumentsException();
+    }
+
     // instantiate room list
     Collection<Room> rooms = new ArrayList<>();
 
     // find all favorites in system and add only rooms belonging to the "owner" to the rooms list
     for (Favorite favorite : favoriteRepository.findAll()) {
       if (favorite.getOwner().equals(owner)
-        && favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
+          && favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
         rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
       }
     }
@@ -157,6 +176,11 @@ public class BuildingManagementManager {
 
   public Collection<Building> listBuildingFavorites(String owner) {
 
+    // check if inputs are valid
+    if (owner == null) {
+      throw new InvalidArgumentsException();
+    }
+
     // instantiate building list
     Collection<Building> buildings = new ArrayList<>();
 
@@ -164,7 +188,7 @@ public class BuildingManagementManager {
     // list
     for (Favorite favorite : favoriteRepository.findAll()) {
       if (favorite.getOwner().equals(owner)
-        && favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
+          && favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
         buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
       }
     }
@@ -236,6 +260,11 @@ public class BuildingManagementManager {
 
   public void createFavorite(Favorite favorite) {
 
+    // check if inputs are valid
+    if (favorite.getOwner() == null || favorite.getReferenceIdentificationNumber() == null) {
+      throw new InvalidArgumentsException();
+    }
+
     // save the provided favorite to the favorite database
     this.favoriteRepository.save(favorite);
   }
@@ -264,6 +293,11 @@ public class BuildingManagementManager {
 
   public void remove(String identificationNumber) {
 
+    // check if matching some pattern
+    if (!matchesSomeIdentificationNumberPattern(identificationNumber)) {
+      throw new InvalidArgumentsException();
+    }
+
     // if the given identification number matches bin pattern remove the corresponding building in
     // the building connector
     if (identificationNumber.matches(BIN_PATTERN)) {
@@ -287,32 +321,35 @@ public class BuildingManagementManager {
     if (identificationNumber.matches(FIN_PATTERN)) {
       this.favoriteRepository.deleteById(identificationNumber);
     }
+
+    throw new InvalidArgumentsException();
   }
 
   // private methods for filter procedures
 
   private void applyBuildingFilters(FilterOptions filterOptions, Collection<Building> buildings) {
 
-    // create a filter command with generic building, add all selected filter options and add filters to the command
+    // create a filter command with generic building, add all selected filter options and add
+    // filters to the command
     FilterCommand<Building> filterCommand = new SequentialFilterCommand<>();
     if (filterOptions.getCampusLocationFilterOption().isSelected()) {
       filterCommand.addFilter(
-        new CampusLocationFilter(
-          buildings, filterOptions.getCampusLocationFilterOption().getFilterValues()));
+          new CampusLocationFilter(
+              buildings, filterOptions.getCampusLocationFilterOption().getFilterValues()));
     }
     if (filterOptions.getComponentTypeFilterOption().isSelected()) {
       filterCommand.addFilter(
-        new ComponentTypeFilter<>(
-          mapBuildingComponents(buildings),
-          filterOptions.getComponentTypeFilterOption().getFilterValues(),
-          buildings));
+          new ComponentTypeFilter<>(
+              mapBuildingComponents(buildings),
+              filterOptions.getComponentTypeFilterOption().getFilterValues(),
+              buildings));
     }
     if (filterOptions.getRoomTypeFilterOption().isSelected()) {
       filterCommand.addFilter(
-        new BuildingRoomTypeFilter(
-          mapBuildingRooms(buildings),
-          filterOptions.getRoomTypeFilterOption().getFilterValues(),
-          buildings));
+          new BuildingRoomTypeFilter(
+              mapBuildingRooms(buildings),
+              filterOptions.getRoomTypeFilterOption().getFilterValues(),
+              buildings));
     }
 
     // execute the filter which filters the collection reference in place
@@ -321,18 +358,19 @@ public class BuildingManagementManager {
 
   private void applyRoomFilters(FilterOptions filterOptions, Collection<Room> rooms) {
 
-    // create a filter command with generic room, add all selected filter options and add filters to the command
+    // create a filter command with generic room, add all selected filter options and add filters to
+    // the command
     FilterCommand<Room> filterCommand = new SequentialFilterCommand<>();
     if (filterOptions.getRoomTypeFilterOption().isSelected()) {
       filterCommand.addFilter(
-        new RoomRoomTypeFilter(rooms, filterOptions.getRoomTypeFilterOption().getFilterValues()));
+          new RoomRoomTypeFilter(rooms, filterOptions.getRoomTypeFilterOption().getFilterValues()));
     }
     if (filterOptions.getComponentTypeFilterOption().isSelected()) {
       filterCommand.addFilter(
-        new ComponentTypeFilter<>(
-          mapRoomComponents(rooms),
-          filterOptions.getComponentTypeFilterOption().getFilterValues(),
-          rooms));
+          new ComponentTypeFilter<>(
+              mapRoomComponents(rooms),
+              filterOptions.getComponentTypeFilterOption().getFilterValues(),
+              rooms));
     }
 
     // execute the filter which filters the collection reference in place
@@ -349,7 +387,7 @@ public class BuildingManagementManager {
     // map each building's rooms to its parents key
     for (Building building : buildings) {
       buildingRoomsMap.put(
-        building, buildingConnector.listBuildingRooms(building.getIdentificationNumber()));
+          building, buildingConnector.listBuildingRooms(building.getIdentificationNumber()));
     }
 
     // return the building rooms mapping
@@ -357,7 +395,7 @@ public class BuildingManagementManager {
   }
 
   private Map<Building, Collection<Component>> mapBuildingComponents(
-    Collection<Building> buildings) {
+      Collection<Building> buildings) {
 
     // create a map which maps a building to its child components
     Map<Building, Collection<Component>> buildingComponentsMap = new HashMap<>();
@@ -365,7 +403,7 @@ public class BuildingManagementManager {
     // map each building's components to its parents key
     for (Building building : buildings) {
       buildingComponentsMap.put(
-        building, buildingConnector.listBuildingComponents(building.getIdentificationNumber()));
+          building, buildingConnector.listBuildingComponents(building.getIdentificationNumber()));
     }
 
     // return the building components map
@@ -380,10 +418,18 @@ public class BuildingManagementManager {
     // map each room's components to its parents key
     for (Room room : rooms) {
       buildingComponentsMap.put(
-        room, buildingConnector.listRoomComponents(room.getIdentificationNumber()));
+          room, buildingConnector.listRoomComponents(room.getIdentificationNumber()));
     }
 
     // return the room component's map
     return buildingComponentsMap;
+  }
+
+  private boolean matchesSomeIdentificationNumberPattern(String string) {
+    return (string != null)
+        && (string.matches(BIN_PATTERN))
+        && (string.matches(RIN_PATTERN))
+        && (string.matches(CIN_PATTERN))
+        && (string.matches(FIN_PATTERN));
   }
 }
