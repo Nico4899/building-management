@@ -1,8 +1,0 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception;
-
-public class NotFoundException extends RuntimeException {
-
-    public NotFoundException(String message) {
-        super(message);
-    }
-}

@@ -2,7 +2,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.NotFoundException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
@@ -85,7 +85,6 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
-    throw new NotFoundException("fehife");
   }
 
   @Override
