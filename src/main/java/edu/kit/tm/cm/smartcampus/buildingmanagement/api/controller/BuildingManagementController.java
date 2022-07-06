@@ -26,13 +26,15 @@ public class BuildingManagementController
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
 
+    // retrieve identification number
+    String identificationNumber = request.getIdentificationNumber();
+    Building building = this.buildingManagementManager.getBuilding(identificationNumber);
+
+    GrpcBuilding grpcBuilding = writeBuilding(building);
+
     GetBuildingResponse response =
-        GetBuildingResponse.newBuilder()
-            .setBuilding(
-                writeBuilding(
-                    buildingManagementManager.getBuilding(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+        GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
+
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -362,7 +364,7 @@ public class BuildingManagementController
         new LinkedList<>(
             componentTypeFilterMapping.getComponentTypesList().stream()
                 .map(this::readComponentType)
-              .toList()));
+                .toList()));
     return filterOption;
   }
 
