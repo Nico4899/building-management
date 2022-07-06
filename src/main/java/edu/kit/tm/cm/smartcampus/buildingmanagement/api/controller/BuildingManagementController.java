@@ -16,6 +16,7 @@ import java.util.LinkedList;
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
 
+  // retrieve building management manager via constructor injection
   private final BuildingManagementManager buildingManagementManager;
 
   public BuildingManagementController(BuildingManagementManager buildingManagementManager) {
@@ -26,27 +27,40 @@ public class BuildingManagementController
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
 
-    // retrieve identification number
+    // retrieve identification number from request
     String identificationNumber = request.getIdentificationNumber();
+
+    // fetch building from manager with given identification number
     Building building = this.buildingManagementManager.getBuilding(identificationNumber);
 
-    GrpcBuilding grpcBuilding = writeBuilding(building);
+    // write response building
+    GrpcBuilding grpcBuilding = this.writeBuilding(building);
 
+    // build response
     GetBuildingResponse response =
         GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
 
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {
-    GetRoomResponse response =
-        GetRoomResponse.newBuilder()
-            .setRoom(
-                writeRoom(buildingManagementManager.getRoom(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+
+    // retrieve identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // fetch room from manager with given identification number
+    Room room = this.buildingManagementManager.getRoom(identificationNumber);
+
+    // write response room
+    GrpcRoom grpcRoom = this.writeRoom(room);
+
+    // build response
+    GetRoomResponse response = GetRoomResponse.newBuilder().setRoom(grpcRoom).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -55,14 +69,20 @@ public class BuildingManagementController
   public void getComponent(
       GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
 
-    GetComponentResponse response =
-        GetComponentResponse.newBuilder()
-            .setComponent(
-                writeComponent(
-                    buildingManagementManager.getComponent(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+    // retrieve identification number from request
+    String identificationNumber = request.getIdentificationNumber();
 
+    // fetch component from manager with given identification number
+    Component component = this.buildingManagementManager.getComponent(identificationNumber);
+
+    // write response component
+    GrpcComponent grpcComponent = this.writeComponent(component);
+
+    // build response
+    GetComponentResponse response =
+        GetComponentResponse.newBuilder().setComponent(grpcComponent).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -70,7 +90,10 @@ public class BuildingManagementController
   @Override
   public void createBuilding(
       CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
-    Building building = readBuilding(request.getBuilding());
+
+    GrpcBuilding grpcRequestBuilding
+
+    Building building = this.readBuilding(request.getBuilding());
 
     CreateBuildingResponse response =
         CreateBuildingResponse.newBuilder()
