@@ -97,7 +97,7 @@ public class BuildingManagementController
     // read building from grpc building request
     Building requestBuilding = this.readBuilding(grpcRequestBuilding);
 
-    // get created building from building management manager
+    // create and get created building from building management manager
     Building responseBuilding = this.buildingManagementManager.createBuilding(requestBuilding);
 
     // write building to grpc response building
@@ -115,13 +115,23 @@ public class BuildingManagementController
   @Override
   public void createRoom(
       CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
-    Room room = readRoom(request.getRoom());
 
-    CreateRoomResponse response =
-        CreateRoomResponse.newBuilder()
-            .setRoom(writeRoom(buildingManagementManager.createRoom(room)))
-            .build();
+    // fetch grpc room to create from request
+    GrpcRoom grpcRequestRoom = request.getRoom();
 
+    // read room from grpc room request
+    Room requestRoom = this.readRoom(grpcRequestRoom);
+
+    // create and get created room from building management manager
+    Room responseRoom = this.buildingManagementManager.createRoom(requestRoom);
+
+    // write room to grpc response room
+    GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
+
+    // build response
+    CreateRoomResponse response = CreateRoomResponse.newBuilder().setRoom(grpcResponseRoom).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -129,13 +139,24 @@ public class BuildingManagementController
   @Override
   public void createComponent(
       CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
-    Component component = readComponent(request.getComponent());
 
+    // fetch grpc component to create from request
+    GrpcComponent grpcRequestComponent = request.getComponent();
+
+    // read component from grpc component request
+    Component requestComponent = this.readComponent(grpcRequestComponent);
+
+    // create and get created component from building management manager
+    Component responseComponent = this.buildingManagementManager.createComponent(requestComponent);
+
+    // write component to grpc response component
+    GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
+
+    // build response
     CreateComponentResponse response =
-        CreateComponentResponse.newBuilder()
-            .setComponent(writeComponent(buildingManagementManager.createComponent(component)))
-            .build();
+        CreateComponentResponse.newBuilder().setComponent(grpcResponseComponent).build();
 
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -143,14 +164,20 @@ public class BuildingManagementController
   @Override
   public void createFavorite(
       CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
-    Favorite favorite = readFavorite(request.getFavorite());
-    this.buildingManagementManager.createFavorite(favorite);
 
-    CreateFavoriteResponse response =
-        CreateFavoriteResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+    // fetch grpc favorite to create from request
+    GrpcFavorite grpcRequestFavorite = request.getFavorite();
 
+    // read favorite from grpc favorite request
+    Favorite requestFavorite = this.readFavorite(grpcRequestFavorite);
+
+    // create favorite in building management manager
+    this.buildingManagementManager.createFavorite(requestFavorite);
+
+    // build response
+    CreateFavoriteResponse response = CreateFavoriteResponse.newBuilder().build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -158,13 +185,24 @@ public class BuildingManagementController
   @Override
   public void listBuildings(
       ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
-    FilterOptions filterOptions = readBuildingFilterOptions(request.getBuildingFilterOptions());
 
+    // fetch grpc building filter options to create from request
+    BuildingFilterOptions buildingFilterOptions = request.getBuildingFilterOptions();
+
+    // read filter options from grpc building filter options
+    FilterOptions filterOptions = this.readBuildingFilterOptions(buildingFilterOptions);
+
+    // list buildings with filter options from building management manager
+    Collection<Building> buildings = this.buildingManagementManager.listBuildings(filterOptions);
+
+    // write buildings to grpc buildings
+    GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
+
+    // build response
     ListBuildingsResponse response =
-        ListBuildingsResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setBuildings(writeBuildings(buildingManagementManager.listBuildings(filterOptions)))
-            .build();
+        ListBuildingsResponse.newBuilder().setBuildings(grpcBuildings).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -172,16 +210,27 @@ public class BuildingManagementController
   @Override
   public void listRooms(
       ListRoomsRequest request, StreamObserver<ListRoomsResponse> responseObserver) {
-    FilterOptions filterOptions = readRoomFilterOptions(request.getRoomFilterOptions());
 
-    ListRoomsResponse response =
-        ListRoomsResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setRooms(
-                writeRooms(
-                    buildingManagementManager.listRooms(
-                        filterOptions, request.getIdentificationNumber())))
-            .build();
+    // fetch room filter options from request
+    RoomFilterOptions roomFilterOptions = request.getRoomFilterOptions();
+
+    // fetch identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // read filter options from room filter options
+    FilterOptions filterOptions = this.readRoomFilterOptions(roomFilterOptions);
+
+    // list rooms by identification number and filter options from building management manager
+    Collection<Room> rooms =
+        this.buildingManagementManager.listRooms(filterOptions, identificationNumber);
+
+    // write grpc rooms from rooms
+    GrpcRooms grpcRooms = this.writeRooms(rooms);
+
+    // build response
+    ListRoomsResponse response = ListRoomsResponse.newBuilder().setRooms(grpcRooms).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -189,13 +238,22 @@ public class BuildingManagementController
   @Override
   public void listComponents(
       ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
+
+    // fetch identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // list components by identification number from building management manager
+    Collection<Component> components =
+        this.buildingManagementManager.listComponents(identificationNumber);
+
+    // write grpc components from components
+    GrpcComponents grpcComponents = this.writeComponents(components);
+
+    // build response
     ListComponentsResponse response =
-        ListComponentsResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setComponents(
-                writeComponents(
-                    buildingManagementManager.listComponents(request.getIdentificationNumber())))
-            .build();
+        ListComponentsResponse.newBuilder().setComponents(grpcComponents).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -204,13 +262,22 @@ public class BuildingManagementController
   public void listNotifications(
       ListNotificationsRequest request,
       StreamObserver<ListNotificationsResponse> responseObserver) {
+
+    // fetch identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // list notifications by identification number from building management manager
+    Collection<Notification> notifications =
+        this.buildingManagementManager.listNotifications(identificationNumber);
+
+    // write grpc notifications from notifications
+    GrpcNotifications grpcNotifications = this.writeNotifications(notifications);
+
+    // build response
     ListNotificationsResponse response =
-        ListNotificationsResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setNotifications(
-                writeNotifications(
-                    buildingManagementManager.listNotifications(request.getIdentificationNumber())))
-            .build();
+        ListNotificationsResponse.newBuilder().setNotifications(grpcNotifications).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -219,12 +286,21 @@ public class BuildingManagementController
   public void listBuildingFavorites(
       ListBuildingFavoritesRequest request,
       StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
+
+    // fetch owner from request
+    String owner = request.getOwner();
+
+    // list building favorites by identification number from building management manager
+    Collection<Building> buildings = this.buildingManagementManager.listBuildingFavorites(owner);
+
+    // write grpc buildings from buildings
+    GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
+
+    // build response
     ListBuildingFavoritesResponse response =
-        ListBuildingFavoritesResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setBuildings(
-                writeBuildings(buildingManagementManager.listBuildingFavorites(request.getOwner())))
-            .build();
+        ListBuildingFavoritesResponse.newBuilder().setBuildings(grpcBuildings).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -233,11 +309,21 @@ public class BuildingManagementController
   public void listRoomFavorites(
       ListRoomFavoritesRequest request,
       StreamObserver<ListRoomFavoritesResponse> responseObserver) {
+
+    // fetch owner from request
+    String owner = request.getOwner();
+
+    // list room favorites by identification number from building management manager
+    Collection<Room> rooms = this.buildingManagementManager.listRoomFavorites(owner);
+
+    // write grpc rooms from rooms
+    GrpcRooms grpcRooms = this.writeRooms(rooms);
+
+    // build response
     ListRoomFavoritesResponse response =
-        ListRoomFavoritesResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setRooms(writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
-            .build();
+        ListRoomFavoritesResponse.newBuilder().setRooms(grpcRooms).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -246,13 +332,21 @@ public class BuildingManagementController
   public void listComponentFavorites(
       ListComponentFavoritesRequest request,
       StreamObserver<ListComponentFavoritesResponse> responseObserver) {
+
+    // fetch owner from request
+    String owner = request.getOwner();
+
+    // list component favorites by identification number from building management manager
+    Collection<Component> components = this.buildingManagementManager.listComponentFavorites(owner);
+
+    // write grpc components from components
+    GrpcComponents grpcComponents = this.writeComponents(components);
+
+    // build response
     ListComponentFavoritesResponse response =
-        ListComponentFavoritesResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setComponents(
-                writeComponents(
-                    buildingManagementManager.listComponentFavorites(request.getOwner())))
-            .build();
+        ListComponentFavoritesResponse.newBuilder().setComponents(grpcComponents).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -260,13 +354,24 @@ public class BuildingManagementController
   @Override
   public void updateBuilding(
       UpdateBuildingRequest request, StreamObserver<UpdateBuildingResponse> responseObserver) {
+
+    // fetch grpc building to be updated from request
+    GrpcBuilding grpcRequestBuilding = request.getBuilding();
+
+    // read  request building from grpc request building
+    Building requestBuilding = this.readBuilding(grpcRequestBuilding);
+
+    // get and update building in building management manager with request building
+    Building responseBuilding = this.buildingManagementManager.updateBuilding(requestBuilding);
+
+    // write grpc response building from response building
+    GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
+
+    // build response
     UpdateBuildingResponse response =
-        UpdateBuildingResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setBuilding(
-                writeBuilding(
-                    buildingManagementManager.updateBuilding(readBuilding(request.getBuilding()))))
-            .build();
+        UpdateBuildingResponse.newBuilder().setBuilding(grpcResponseBuilding).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -274,11 +379,23 @@ public class BuildingManagementController
   @Override
   public void updateRoom(
       UpdateRoomRequest request, StreamObserver<UpdateRoomResponse> responseObserver) {
-    UpdateRoomResponse response =
-        UpdateRoomResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setRoom(writeRoom(buildingManagementManager.updateRoom(readRoom(request.getRoom()))))
-            .build();
+
+    // fetch grpc room to be updated from request
+    GrpcRoom grpcRequestRoom = request.getRoom();
+
+    // read  request room from grpc request room
+    Room requestRoom = this.readRoom(grpcRequestRoom);
+
+    // get and update room in building management manager with request room
+    Room responseRoom = this.buildingManagementManager.updateRoom(requestRoom);
+
+    // write grpc response room from response room
+    GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
+
+    // build response
+    UpdateRoomResponse response = UpdateRoomResponse.newBuilder().setRoom(grpcResponseRoom).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -286,22 +403,42 @@ public class BuildingManagementController
   @Override
   public void updateComponent(
       UpdateComponentRequest request, StreamObserver<UpdateComponentResponse> responseObserver) {
+
+    // fetch grpc component to be updated from request
+    GrpcComponent grpcRequestComponent = request.getComponent();
+
+    // read  request component from grpc request component
+    Component requestComponent = this.readComponent(grpcRequestComponent);
+
+    // get and update component in building management manager with request component
+    Component responseComponent = this.buildingManagementManager.updateComponent(requestComponent);
+
+    // write grpc response component from response component
+    GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
+
+    // build response
     UpdateComponentResponse response =
-        UpdateComponentResponse.newBuilder()
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .setComponent(
-                writeComponent(
-                    buildingManagementManager.updateComponent(
-                        readComponent(request.getComponent()))))
-            .build();
+        UpdateComponentResponse.newBuilder().setComponent(grpcResponseComponent).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void remove(RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+
+    // fetch identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // remove piece belonging to identification number in building management manager
+    this.buildingManagementManager.remove(identificationNumber);
+
+    // build response
     RemoveResponse response =
-        RemoveResponse.newBuilder().setResponseMessage(writeResponseMessage("hello", true)).build();
+        RemoveResponse.newBuilder().build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
