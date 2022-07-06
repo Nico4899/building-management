@@ -21,7 +21,6 @@ public interface BuildingConnector {
   Room updateRoom(Room room);
   void removeRoom(String identificationNumber);
 
-
   Collection<Component> listBuildingComponents(String identificationNumber);
   Collection<Component> listRoomComponents(String identificationNumber);
   Component createBuildingComponent(Component component);
@@ -33,8 +32,5 @@ public interface BuildingConnector {
   Collection<Notification> listBuildingNotifications(String identificationNumber);
   Collection<Notification> listRoomNotifications(String identificationNumber);
   Collection<Notification> listComponentNotifications(String identificationNumber);
-
-
-
 
 }

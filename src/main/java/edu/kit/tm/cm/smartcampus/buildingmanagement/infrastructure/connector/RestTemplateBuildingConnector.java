@@ -96,7 +96,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listBuildingsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Building>>() {});
+            new ParameterizedTypeReference<>() {});
 
     if (responseEntity.getStatusCode() == HttpStatus.OK) {
       return responseEntity.getBody();
@@ -159,7 +159,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listBuildingRoomsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Room>>() {});
+            new ParameterizedTypeReference<>() {});
 
     return responseEntity.getBody();
   }
@@ -217,7 +217,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listBuildingComponentsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Component>>() {},
+            new ParameterizedTypeReference<>() {},
             identificationNumber);
 
     return responseEntity.getBody();
@@ -232,7 +232,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listRoomComponentsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Component>>() {},
+            new ParameterizedTypeReference<>() {},
             identificationNumber);
 
     return responseEntity.getBody();
@@ -303,7 +303,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listBuildingNotificationsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Notification>>() {},
+            new ParameterizedTypeReference<>() {},
             identificationNumber);
 
     return responseEntity.getBody();
@@ -318,7 +318,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listRoomNotificationsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Notification>>() {},
+            new ParameterizedTypeReference<>() {},
             identificationNumber);
 
     return responseEntity.getBody();
@@ -333,7 +333,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listComponentNotificationsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<Collection<Notification>>() {},
+            new ParameterizedTypeReference<>() {},
             identificationNumber);
 
     return responseEntity.getBody();

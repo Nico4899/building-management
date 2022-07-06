@@ -2,12 +2,13 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import io.grpc.stub.StreamObserver;
-import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,6 +16,19 @@ import java.util.Collection;
 @Service
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
+
+  // successful message
+  private static final String SUCCESSFUL_MESSAGE = "Operation was successful!";
+
+  // response successful or not
+  private static final boolean SUCCESSFUL = true;
+  private static final boolean UNSUCCESSFUL = false;
+
+  // operations
+  public static final String GET_BUILDING = "GetBuilding";
+  public static final String GET_COMPONENT = "GetComponent";
+  public static final String GET_ROOM = "GetRoom";
+  public static final String CREATE_BUILDING = "CreateBuilding";
 
   // retrieve building management manager via constructor injection
   private final BuildingManagementManager buildingManagementManager;
@@ -30,19 +44,48 @@ public class BuildingManagementController
     // retrieve identification number from request
     String identificationNumber = request.getIdentificationNumber();
 
-    // fetch building from manager with given identification number
-    Building building = this.buildingManagementManager.getBuilding(identificationNumber);
+    try {
 
-    // write response building
-    GrpcBuilding grpcBuilding = this.writeBuilding(building);
+      // fetch building from manager with given identification number
+      Building building = this.buildingManagementManager.getBuilding(identificationNumber);
 
-    // build response
-    GetBuildingResponse response =
-        GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
+      // write response building
+      GrpcBuilding grpcBuilding = this.writeBuilding(building);
 
-    // complete response call procedure
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+      // build response
+      GetBuildingResponse response =
+          GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_BUILDING);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetBuildingResponse response =
+          GetBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (ResourceNotFoundException resourceNotFoundException) {
+
+      // build response message
+      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetBuildingResponse response =
+          GetBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
@@ -51,18 +94,47 @@ public class BuildingManagementController
     // retrieve identification number from request
     String identificationNumber = request.getIdentificationNumber();
 
-    // fetch room from manager with given identification number
-    Room room = this.buildingManagementManager.getRoom(identificationNumber);
+    try {
 
-    // write response room
-    GrpcRoom grpcRoom = this.writeRoom(room);
+      // fetch room from manager with given identification number
+      Room room = this.buildingManagementManager.getRoom(identificationNumber);
 
-    // build response
-    GetRoomResponse response = GetRoomResponse.newBuilder().setRoom(grpcRoom).build();
+      // write response room
+      GrpcRoom grpcRoom = this.writeRoom(room);
 
-    // complete response call procedure
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+      // build response
+      GetRoomResponse response = GetRoomResponse.newBuilder().setRoom(grpcRoom).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_ROOM);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetRoomResponse response =
+          GetRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (ResourceNotFoundException resourceNotFoundException) {
+
+      // build response message
+      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetRoomResponse response =
+          GetRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
@@ -72,24 +144,55 @@ public class BuildingManagementController
     // retrieve identification number from request
     String identificationNumber = request.getIdentificationNumber();
 
-    // fetch component from manager with given identification number
-    Component component = this.buildingManagementManager.getComponent(identificationNumber);
+    try {
 
-    // write response component
-    GrpcComponent grpcComponent = this.writeComponent(component);
+      // fetch component from manager with given identification number
+      Component component = this.buildingManagementManager.getComponent(identificationNumber);
 
-    // build response
-    GetComponentResponse response =
-        GetComponentResponse.newBuilder().setComponent(grpcComponent).build();
+      // write response component
+      GrpcComponent grpcComponent = this.writeComponent(component);
 
-    // complete response call procedure
-    responseObserver.onNext(response);
-    responseObserver.onCompleted();
+      // build response
+      GetComponentResponse response =
+          GetComponentResponse.newBuilder().setComponent(grpcComponent).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+          GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    } catch (ResourceNotFoundException resourceNotFoundException) {
+
+      // build response message
+      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+          GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      // complete response call procedure
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
   public void createBuilding(
       CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
+
+    try {
 
     // fetch grpc building to create from request
     GrpcBuilding grpcRequestBuilding = request.getBuilding();
@@ -110,6 +213,20 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), CREATE_BUILDING);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      CreateBuildingResponse response =
+        CreateBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
