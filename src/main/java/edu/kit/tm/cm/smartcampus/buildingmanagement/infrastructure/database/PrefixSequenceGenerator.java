@@ -13,9 +13,9 @@ import java.io.Serializable;
 import java.util.Properties;
 
 /**
- * Custom prefix sequence generator for database primary key generation. It generates a prefixed
- * sequence from {@link SequenceStyleGenerator}. The prefix can now be configured by the {@link
- * org.hibernate.annotations.GenericGenerator} annotation.
+ * This class represents a custom prefix sequence generator for database primary key generation. It
+ * generates a prefixed sequence from {@link SequenceStyleGenerator}. The prefix can now be
+ * configured by the {@link org.hibernate.annotations.GenericGenerator} annotation.
  */
 public class PrefixSequenceGenerator extends SequenceStyleGenerator {
 
