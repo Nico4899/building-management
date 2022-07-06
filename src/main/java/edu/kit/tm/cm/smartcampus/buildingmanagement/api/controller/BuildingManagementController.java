@@ -7,14 +7,16 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import io.grpc.stub.StreamObserver;
+import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
+@Controller
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
 
+  // retrieve building management manager via constructor injection
   private final BuildingManagementManager buildingManagementManager;
 
   public BuildingManagementController(BuildingManagementManager buildingManagementManager) {
@@ -25,25 +27,40 @@ public class BuildingManagementController
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
 
+    // retrieve identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // fetch building from manager with given identification number
+    Building building = this.buildingManagementManager.getBuilding(identificationNumber);
+
+    // write response building
+    GrpcBuilding grpcBuilding = this.writeBuilding(building);
+
+    // build response
     GetBuildingResponse response =
-        GetBuildingResponse.newBuilder()
-            .setBuilding(
-                writeBuilding(
-                    buildingManagementManager.getBuilding(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+        GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {
-    GetRoomResponse response =
-        GetRoomResponse.newBuilder()
-            .setRoom(
-                writeRoom(buildingManagementManager.getRoom(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+
+    // retrieve identification number from request
+    String identificationNumber = request.getIdentificationNumber();
+
+    // fetch room from manager with given identification number
+    Room room = this.buildingManagementManager.getRoom(identificationNumber);
+
+    // write response room
+    GrpcRoom grpcRoom = this.writeRoom(room);
+
+    // build response
+    GetRoomResponse response = GetRoomResponse.newBuilder().setRoom(grpcRoom).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -52,14 +69,20 @@ public class BuildingManagementController
   public void getComponent(
       GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
 
-    GetComponentResponse response =
-        GetComponentResponse.newBuilder()
-            .setComponent(
-                writeComponent(
-                    buildingManagementManager.getComponent(request.getIdentificationNumber())))
-            .setResponseMessage(writeResponseMessage("hello", true))
-            .build();
+    // retrieve identification number from request
+    String identificationNumber = request.getIdentificationNumber();
 
+    // fetch component from manager with given identification number
+    Component component = this.buildingManagementManager.getComponent(identificationNumber);
+
+    // write response component
+    GrpcComponent grpcComponent = this.writeComponent(component);
+
+    // build response
+    GetComponentResponse response =
+        GetComponentResponse.newBuilder().setComponent(grpcComponent).build();
+
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -67,13 +90,24 @@ public class BuildingManagementController
   @Override
   public void createBuilding(
       CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
-    Building building = readBuilding(request.getBuilding());
 
+    // fetch grpc building to create from request
+    GrpcBuilding grpcRequestBuilding = request.getBuilding();
+
+    // read building from grpc building request
+    Building requestBuilding = this.readBuilding(grpcRequestBuilding);
+
+    // get created building from building management manager
+    Building responseBuilding = this.buildingManagementManager.createBuilding(requestBuilding);
+
+    // write building to grpc response building
+    GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
+
+    // build response
     CreateBuildingResponse response =
-        CreateBuildingResponse.newBuilder()
-            .setBuilding(writeBuilding(buildingManagementManager.createBuilding(building)))
-            .build();
+        CreateBuildingResponse.newBuilder().setBuilding(grpcResponseBuilding).build();
 
+    // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -181,10 +215,10 @@ public class BuildingManagementController
     responseObserver.onCompleted();
   }
 
-
   @Override
   public void listBuildingFavorites(
-      ListBuildingFavoritesRequest request, StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
+      ListBuildingFavoritesRequest request,
+      StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
     ListBuildingFavoritesResponse response =
         ListBuildingFavoritesResponse.newBuilder()
             .setResponseMessage(writeResponseMessage("hello", true))
@@ -197,30 +231,31 @@ public class BuildingManagementController
 
   @Override
   public void listRoomFavorites(
-    ListRoomFavoritesRequest request, StreamObserver<ListRoomFavoritesResponse> responseObserver) {
+      ListRoomFavoritesRequest request,
+      StreamObserver<ListRoomFavoritesResponse> responseObserver) {
     ListRoomFavoritesResponse response =
-      ListRoomFavoritesResponse.newBuilder()
-        .setResponseMessage(writeResponseMessage("hello", true))
-        .setRooms(
-          writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
-        .build();
+        ListRoomFavoritesResponse.newBuilder()
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .setRooms(writeRooms(buildingManagementManager.listRoomFavorites(request.getOwner())))
+            .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listComponentFavorites(
-    ListComponentFavoritesRequest request, StreamObserver<ListComponentFavoritesResponse> responseObserver) {
+      ListComponentFavoritesRequest request,
+      StreamObserver<ListComponentFavoritesResponse> responseObserver) {
     ListComponentFavoritesResponse response =
-      ListComponentFavoritesResponse.newBuilder()
-        .setResponseMessage(writeResponseMessage("hello", true))
-        .setComponents(
-          writeComponents(buildingManagementManager.listComponentFavorites(request.getOwner())))
-        .build();
+        ListComponentFavoritesResponse.newBuilder()
+            .setResponseMessage(writeResponseMessage("hello", true))
+            .setComponents(
+                writeComponents(
+                    buildingManagementManager.listComponentFavorites(request.getOwner())))
+            .build();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
-
 
   @Override
   public void updateBuilding(
@@ -360,7 +395,7 @@ public class BuildingManagementController
         new LinkedList<>(
             componentTypeFilterMapping.getComponentTypesList().stream()
                 .map(this::readComponentType)
-                .collect(Collectors.toList())));
+                .toList()));
     return filterOption;
   }
 
@@ -372,7 +407,7 @@ public class BuildingManagementController
         new LinkedList<>(
             campusLocationFilterMapping.getCampusLocationsList().stream()
                 .map(this::readCampusLocation)
-                .collect(Collectors.toList())));
+                .toList()));
     return filterOption;
   }
 
@@ -382,9 +417,7 @@ public class BuildingManagementController
     filterOption.setSelected(roomTypeFilterMapping.getSelected());
     filterOption.setFilterValues(
         new LinkedList<>(
-            roomTypeFilterMapping.getRoomTypesList().stream()
-                .map(this::readRoomType)
-                .collect(Collectors.toList())));
+            roomTypeFilterMapping.getRoomTypesList().stream().map(this::readRoomType).toList()));
     return filterOption;
   }
 
