@@ -10,7 +10,6 @@ import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 @Controller
 public class BuildingManagementController
@@ -435,160 +434,259 @@ public class BuildingManagementController
     this.buildingManagementManager.remove(identificationNumber);
 
     // build response
-    RemoveResponse response =
-        RemoveResponse.newBuilder().build();
+    RemoveResponse response = RemoveResponse.newBuilder().build();
 
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
-  // read model object from grpc object
+  // parse model object from grpc object
 
   private Component readComponent(GrpcComponent grpcComponent) {
-    Component component = new Component();
-    component.setComponentDescription(grpcComponent.getComponentDescription());
-    component.setParentIdentificationNumber(grpcComponent.getParentIdentificationNumber());
-    component.setComponentType(readComponentType(grpcComponent.getComponentType()));
-    component.setGeographicalLocation(
-        readGeographicalLocation(grpcComponent.getGeographicalLocation()));
-    return component;
+
+    // retrieve attributes from grpc object
+    String componentDescription = grpcComponent.getComponentDescription();
+    String parentIdentificationNumber = grpcComponent.getParentIdentificationNumber();
+    ComponentType componentType = this.readComponentType(grpcComponent.getComponentType());
+    GeographicalLocation geographicalLocation =
+        this.readGeographicalLocation(grpcComponent.getGeographicalLocation());
+
+    // build model object
+    return Component.builder()
+        .componentDescription(componentDescription)
+        .componentType(componentType)
+        .geographicalLocation(geographicalLocation)
+        .parentIdentificationNumber(parentIdentificationNumber)
+        .build();
   }
 
   private Favorite readFavorite(GrpcFavorite grpcFavorite) {
-    Favorite favorite = new Favorite();
-    favorite.setOwner(grpcFavorite.getOwner());
-    favorite.setReferenceIdentificationNumber(grpcFavorite.getIdentificationNumber());
-    return favorite;
+
+    // retrieve attributes from grpc object
+    String owner = grpcFavorite.getOwner();
+    String referenceIdentificationNumber = grpcFavorite.getReferenceIdentificationNumber();
+
+    // build model object
+    return Favorite.builder()
+        .referenceIdentificationNumber(referenceIdentificationNumber)
+        .owner(owner)
+        .build();
   }
 
   private Building readBuilding(GrpcBuilding grpcBuilding) {
-    Building building = new Building();
-    building.setBuildingName(grpcBuilding.getBuildingName());
-    building.setBuildingNumber(grpcBuilding.getBuildingNumber());
-    building.setGeographicalLocation(
-        readGeographicalLocation(grpcBuilding.getGeographicalLocation()));
-    building.setCampusLocation(readCampusLocation(grpcBuilding.getCampusLocation()));
-    building.setNumFloors(grpcBuilding.getNumFloors());
-    return building;
+
+    // retrieve attributes from grpc object
+    String buildingName = grpcBuilding.getBuildingName();
+    String buildingNumber = grpcBuilding.getBuildingNumber();
+    GeographicalLocation geographicalLocation =
+        this.readGeographicalLocation(grpcBuilding.getGeographicalLocation());
+    CampusLocation campusLocation = this.readCampusLocation(grpcBuilding.getCampusLocation());
+    int numFloors = grpcBuilding.getNumFloors();
+
+    // build model object
+    return Building.builder()
+        .buildingName(buildingName)
+        .buildingNumber(buildingNumber)
+        .geographicalLocation(geographicalLocation)
+        .campusLocation(campusLocation)
+        .numFloors(numFloors)
+        .build();
   }
 
   private Room readRoom(GrpcRoom grpcRoom) {
-    Room room = new Room();
-    room.setRoomName(grpcRoom.getRoomName());
-    room.setRoomNumber(grpcRoom.getRoomNumber());
-    room.setRoomType(readRoomType(grpcRoom.getRoomType()));
-    room.setFloor(grpcRoom.getFloor());
-    room.setParentIdentificationNumber(grpcRoom.getParentIdentificationNumber());
-    room.setGeographicalLocation(readGeographicalLocation(grpcRoom.getGeographicalLocation()));
-    return room;
+
+    // retrieve attributes from grpc object
+    String roomName = grpcRoom.getRoomName();
+    String roomNumber = grpcRoom.getRoomNumber();
+    RoomType roomType = readRoomType(grpcRoom.getRoomType());
+    int floor = grpcRoom.getFloor();
+    String parentIdentificationNumber = grpcRoom.getParentIdentificationNumber();
+    GeographicalLocation geographicalLocation =
+        readGeographicalLocation(grpcRoom.getGeographicalLocation());
+
+    // build model object
+    return Room.builder()
+        .roomName(roomName)
+        .roomType(roomType)
+        .roomNumber(roomNumber)
+        .floor(floor)
+        .parentIdentificationNumber(parentIdentificationNumber)
+        .geographicalLocation(geographicalLocation)
+        .build();
   }
 
   private RoomType readRoomType(GrpcRoomType grpcRoomType) {
+
+    // parse room type from grpc room type
     return RoomType.forNumber(grpcRoomType.ordinal() + 1);
   }
 
   private CampusLocation readCampusLocation(GrpcCampusLocation grpcCampusLocation) {
+
+    // parse campus location from grpc campus location
     return CampusLocation.forNumber(grpcCampusLocation.ordinal() + 1);
   }
 
   private GeographicalLocation readGeographicalLocation(
       GrpcGeographicalLocation grpcGeographicalLocation) {
-    GeographicalLocation geographicalLocation = new GeographicalLocation();
-    geographicalLocation.setLatitude(grpcGeographicalLocation.getLatitude());
-    geographicalLocation.setLongitude(grpcGeographicalLocation.getLongitude());
-    return geographicalLocation;
+
+    // retrieve attributes from grpc object
+    double latitude = grpcGeographicalLocation.getLatitude();
+    double longitude = grpcGeographicalLocation.getLongitude();
+
+    // build model object
+    return GeographicalLocation.builder().longitude(longitude).latitude(latitude).build();
   }
 
   private ComponentType readComponentType(GrpcComponentType grpcComponentType) {
+
+    // parse component type from grpc component type
     return ComponentType.forNumber(grpcComponentType.ordinal() + 1);
   }
 
   private FilterOptions readBuildingFilterOptions(BuildingFilterOptions buildingFilterOptions) {
-    FilterOptions filterOptions = new FilterOptions();
-    filterOptions.setCampusLocationFilterOption(
-        readCampusLocationFilterOption(buildingFilterOptions.getCampusLocationFilterMapping()));
-    filterOptions.setComponentTypeFilterOption(
-        readComponentTypeFilterOption(buildingFilterOptions.getComponentTypeFilterMapping()));
-    filterOptions.setRoomTypeFilterOption(
-        readRoomTypeFilterOption(buildingFilterOptions.getRoomTypeFilterMapping()));
-    return filterOptions;
+
+    // retrieve attributes from grpc object
+    FilterOption<CampusLocation> campusLocationFilterOption =
+        readCampusLocationFilterOption(buildingFilterOptions.getCampusLocationFilterMapping());
+    FilterOption<ComponentType> componentTypeFilterOption =
+        readComponentTypeFilterOption(buildingFilterOptions.getComponentTypeFilterMapping());
+    FilterOption<RoomType> roomTypeFilterOption =
+        readRoomTypeFilterOption(buildingFilterOptions.getRoomTypeFilterMapping());
+
+    // build model object
+    return FilterOptions.builder()
+        .campusLocationFilterOption(campusLocationFilterOption)
+        .roomTypeFilterOption(roomTypeFilterOption)
+        .componentTypeFilterOption(componentTypeFilterOption)
+        .build();
   }
 
   private FilterOptions readRoomFilterOptions(RoomFilterOptions roomFilterOptions) {
-    FilterOptions filterOptions = new FilterOptions();
-    filterOptions.setRoomTypeFilterOption(
-        readRoomTypeFilterOption(roomFilterOptions.getRoomTypeFilterMapping()));
-    filterOptions.setComponentTypeFilterOption(
-        readComponentTypeFilterOption(roomFilterOptions.getComponentTypeFilterMapping()));
-    return filterOptions;
+
+    // retrieve attributes from grpc object
+    FilterOption<ComponentType> componentTypeFilterOption =
+        readComponentTypeFilterOption(roomFilterOptions.getComponentTypeFilterMapping());
+    FilterOption<RoomType> roomTypeFilterOption =
+        readRoomTypeFilterOption(roomFilterOptions.getRoomTypeFilterMapping());
+
+    // build model object
+    return FilterOptions.builder()
+        .roomTypeFilterOption(roomTypeFilterOption)
+        .componentTypeFilterOption(componentTypeFilterOption)
+        .build();
   }
 
   private FilterOption<ComponentType> readComponentTypeFilterOption(
       ComponentTypeFilterMapping componentTypeFilterMapping) {
-    FilterOption<ComponentType> filterOption = new FilterOption<>();
-    filterOption.setSelected(componentTypeFilterMapping.getSelected());
-    filterOption.setFilterValues(
-        new LinkedList<>(
-            componentTypeFilterMapping.getComponentTypesList().stream()
-                .map(this::readComponentType)
-                .toList()));
-    return filterOption;
+
+    // retrieve attributes from grpc object
+    boolean selected = componentTypeFilterMapping.getSelected();
+    Collection<ComponentType> filterValues =
+        componentTypeFilterMapping.getComponentTypesList().stream()
+            .map(this::readComponentType)
+            .toList();
+
+    // build model object
+    return FilterOption.<ComponentType>builder()
+        .selected(selected)
+        .filterValues(filterValues)
+        .build();
   }
 
   private FilterOption<CampusLocation> readCampusLocationFilterOption(
       CampusLocationFilterMapping campusLocationFilterMapping) {
-    FilterOption<CampusLocation> filterOption = new FilterOption<>();
-    filterOption.setSelected(campusLocationFilterMapping.getSelected());
-    filterOption.setFilterValues(
-        new LinkedList<>(
-            campusLocationFilterMapping.getCampusLocationsList().stream()
-                .map(this::readCampusLocation)
-                .toList()));
-    return filterOption;
+
+    // retrieve attributes from grpc object
+    boolean selected = campusLocationFilterMapping.getSelected();
+    Collection<CampusLocation> filterValues =
+        campusLocationFilterMapping.getCampusLocationsList().stream()
+            .map(this::readCampusLocation)
+            .toList();
+
+    // build model object
+    return FilterOption.<CampusLocation>builder()
+        .selected(selected)
+        .filterValues(filterValues)
+        .build();
   }
 
   private FilterOption<RoomType> readRoomTypeFilterOption(
       RoomTypeFilterMapping roomTypeFilterMapping) {
-    FilterOption<RoomType> filterOption = new FilterOption<>();
-    filterOption.setSelected(roomTypeFilterMapping.getSelected());
-    filterOption.setFilterValues(
-        new LinkedList<>(
-            roomTypeFilterMapping.getRoomTypesList().stream().map(this::readRoomType).toList()));
-    return filterOption;
+
+    // retrieve attributes from grpc object
+    boolean selected = roomTypeFilterMapping.getSelected();
+    Collection<RoomType> filterValues =
+        roomTypeFilterMapping.getRoomTypesList().stream().map(this::readRoomType).toList();
+
+    // build model object
+    return FilterOption.<RoomType>builder().selected(selected).filterValues(filterValues).build();
   }
 
-  // write model object to grpc object
+  // parse model object to grpc object
 
   private GrpcComponent writeComponent(Component component) {
+
+    // retrieve attributes from model object
+    String componentDescription = component.getComponentDescription();
+    GrpcGeographicalLocation grpcGeographicalLocation =
+        this.writeGeographicalLocation(component.getGeographicalLocation());
+    String parentIdentificationNumber = component.getParentIdentificationNumber();
+    String identificationNumber = component.getIdentificationNumber();
+
+    // build grpc object
     return GrpcComponent.newBuilder()
-        .setComponentDescription(component.getComponentDescription())
-        .setGeographicalLocation(writeGeographicalLocation(component.getGeographicalLocation()))
-        .setParentIdentificationNumber(component.getParentIdentificationNumber())
-        .setIdentificationNumber(component.getIdentificationNumber())
+        .setComponentDescription(componentDescription)
+        .setGeographicalLocation(grpcGeographicalLocation)
+        .setParentIdentificationNumber(parentIdentificationNumber)
+        .setIdentificationNumber(identificationNumber)
         .build();
   }
 
   private GrpcRoom writeRoom(Room room) {
+
+    // retrieve attributes from model object
+    int floor = room.getFloor();
+    GrpcGeographicalLocation grpcGeographicalLocation =
+      this.writeGeographicalLocation(room.getGeographicalLocation());
+    String roomName = room.getRoomName();
+    String roomNumber = room.getRoomNumber();
+    String parentIdentificationNumber = room.getParentIdentificationNumber();
+    String identificationNumber = room.getIdentificationNumber();
+    GrpcRoomType grpcRoomType = this.writeRoomType(room.getRoomType());
+
+    // build grpc object
     return GrpcRoom.newBuilder()
-        .setFloor(room.getFloor())
-        .setGeographicalLocation(writeGeographicalLocation(room.getGeographicalLocation()))
-        .setRoomName(room.getRoomName())
-        .setRoomNumber(room.getRoomNumber())
-        .setParentIdentificationNumber(room.getParentIdentificationNumber())
-        .setRoomType(writeRoomType(room.getRoomType()))
-        .setIdentificationNumber(room.getIdentificationNumber())
+        .setFloor(floor)
+        .setGeographicalLocation(grpcGeographicalLocation)
+        .setRoomName(roomName)
+        .setRoomNumber(roomNumber)
+        .setParentIdentificationNumber(parentIdentificationNumber)
+        .setRoomType(grpcRoomType)
+        .setIdentificationNumber(identificationNumber)
         .build();
   }
 
   private GrpcBuilding writeBuilding(Building building) {
+
+    // retrieve attributes from model object
+    String buildingName = building.getBuildingName();
+    String buildingNumber = building.getBuildingNumber();
+    String identificationNumber = building.getIdentificationNumber();
+    GrpcCampusLocation grpcCampusLocation = this.writeCampusLocation(building.getCampusLocation());
+    GrpcGeographicalLocation grpcGeographicalLocation = this.writeGeographicalLocation(building.getGeographicalLocation());
+    int numfloors = building.getNumFloors();
+
+
+    // build grpc object
     return GrpcBuilding.newBuilder()
-        .setBuildingName(building.getBuildingName())
-        .setBuildingNumber(building.getBuildingNumber())
-        .setIdentificationNumber(building.getIdentificationNumber())
-        .setCampusLocation(writeCampusLocation(building.getCampusLocation()))
-        .setGeographicalLocation(writeGeographicalLocation(building.getGeographicalLocation()))
-        .setNumFloors(building.getNumFloors())
+        .setBuildingName(buildingName)
+        .setBuildingNumber(buildingNumber)
+        .setIdentificationNumber(identificationNumber)
+        .setCampusLocation(grpcCampusLocation)
+        .setGeographicalLocation(grpcGeographicalLocation)
+        .setNumFloors(numfloors)
         .build();
   }
 
@@ -604,22 +702,30 @@ public class BuildingManagementController
   }
 
   private GrpcBuildings writeBuildings(Collection<Building> buildings) {
+
+    // parse grpc buildings from buildings
     return GrpcBuildings.newBuilder()
         .addAllBuildings(buildings.stream().map(this::writeBuilding).toList())
         .build();
   }
 
   private GrpcComponents writeComponents(Collection<Component> components) {
+
+    // parse grpc components from components
     return GrpcComponents.newBuilder()
         .addAllComponents(components.stream().map(this::writeComponent).toList())
         .build();
   }
 
   private GrpcRooms writeRooms(Collection<Room> rooms) {
+
+    // parse grpc rooms from rooms
     return GrpcRooms.newBuilder().addAllRooms(rooms.stream().map(this::writeRoom).toList()).build();
   }
 
   private GrpcNotifications writeNotifications(Collection<Notification> notifications) {
+
+    // parse grpc notifications from notifications
     return GrpcNotifications.newBuilder()
         .addAllNotifications(notifications.stream().map(this::writeNotification).toList())
         .build();
@@ -627,21 +733,33 @@ public class BuildingManagementController
 
   private GrpcGeographicalLocation writeGeographicalLocation(
       GeographicalLocation geographicalLocation) {
+
+    // retrieve attributes from model object
+    double longitude = geographicalLocation.getLongitude();
+    double latitude = geographicalLocation.getLatitude();
+
+    // build grpc object
     return GrpcGeographicalLocation.newBuilder()
-        .setLatitude(geographicalLocation.getLatitude())
-        .setLongitude(geographicalLocation.getLongitude())
+        .setLatitude(latitude)
+        .setLongitude(longitude)
         .build();
   }
 
   private GrpcCampusLocation writeCampusLocation(CampusLocation campusLocation) {
+
+    // parse enum constant with ordinal + 1 since it starts with 0 but in grpc with 1
     return GrpcCampusLocation.forNumber(campusLocation.ordinal() + 1);
   }
 
   private GrpcRoomType writeRoomType(RoomType roomType) {
+
+    // parse enum constant with ordinal + 1 since it starts with 0 but in grpc with 1
     return GrpcRoomType.forNumber(roomType.ordinal() + 1);
   }
 
   private ResponseMessage writeResponseMessage(String message, boolean successful) {
+
+    // instantiate response message from message and boolean
     return ResponseMessage.newBuilder().setMessage(message).setSuccessful(successful).build();
   }
 }
