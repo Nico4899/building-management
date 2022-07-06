@@ -51,7 +51,8 @@ public class BuildingManagementManager {
     return buildings;
   }
 
-  public Collection<Room> listRooms(@NonNull FilterOptions filterOptions, @NonNull String identificationNumber) {
+  public Collection<Room> listRooms(
+      @NonNull FilterOptions filterOptions, @NonNull String identificationNumber) {
 
     // instantiate empty list of rooms
     Collection<Room> rooms = Collections.emptyList();

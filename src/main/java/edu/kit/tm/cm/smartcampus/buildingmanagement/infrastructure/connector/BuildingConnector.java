@@ -10,27 +10,42 @@ import java.util.Collection;
 public interface BuildingConnector {
 
   Collection<Building> listBuildings();
+
   Building createBuilding(Building building);
+
   Building getBuilding(String identificationNumber);
+
   Building updateBuilding(Building building);
+
   void removeBuilding(String identificationNumber);
 
   Collection<Room> listBuildingRooms(String identificationNumber);
+
   Room createBuildingRoom(Room room);
+
   Room getRoom(String identificationNumber);
+
   Room updateRoom(Room room);
+
   void removeRoom(String identificationNumber);
 
   Collection<Component> listBuildingComponents(String identificationNumber);
+
   Collection<Component> listRoomComponents(String identificationNumber);
+
   Component createBuildingComponent(Component component);
+
   Component createRoomComponent(Component component);
+
   Component getComponent(String identificationNumber);
+
   Component updateComponent(Component component);
+
   void removeComponent(String identificationNumber);
 
   Collection<Notification> listBuildingNotifications(String identificationNumber);
-  Collection<Notification> listRoomNotifications(String identificationNumber);
-  Collection<Notification> listComponentNotifications(String identificationNumber);
 
+  Collection<Notification> listRoomNotifications(String identificationNumber);
+
+  Collection<Notification> listComponentNotifications(String identificationNumber);
 }

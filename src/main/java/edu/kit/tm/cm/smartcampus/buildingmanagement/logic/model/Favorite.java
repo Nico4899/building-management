@@ -2,7 +2,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator;
 import lombok.*;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -24,9 +23,12 @@ public class Favorite {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_sequence")
   @GenericGenerator(
-    name = "favorite_sequence",
-    strategy = "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator",
-    parameters = {@Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")})
+      name = "favorite_sequence",
+      strategy =
+          "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator",
+      parameters = {
+        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")
+      })
   @Column(name = "identification_number", updatable = false, columnDefinition = "TEXT")
   private String identificationNumber;
 

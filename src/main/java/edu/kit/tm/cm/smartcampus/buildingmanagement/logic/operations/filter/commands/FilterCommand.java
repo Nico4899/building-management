@@ -4,5 +4,6 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filt
 
 public interface FilterCommand<T> {
   void execute();
+
   void addFilter(Filter<T> filter);
 }

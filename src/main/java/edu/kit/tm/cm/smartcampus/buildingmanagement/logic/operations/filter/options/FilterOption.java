@@ -9,7 +9,7 @@ import java.util.Collection;
 @Data
 @AllArgsConstructor
 @Builder
-public class FilterOption<T>{
+public class FilterOption<T> {
   private boolean selected;
   private Collection<T> filterValues;
 }

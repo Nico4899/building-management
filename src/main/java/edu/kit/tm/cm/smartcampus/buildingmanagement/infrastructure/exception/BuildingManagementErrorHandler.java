@@ -18,8 +18,7 @@ public class BuildingManagementErrorHandler implements ResponseErrorHandler {
   public boolean hasError(ClientHttpResponse response) throws IOException {
 
     // return true if error occurred
-    return (
-      response.getStatusCode().series() == CLIENT_ERROR
+    return (response.getStatusCode().series() == CLIENT_ERROR
         || response.getStatusCode().series() == SERVER_ERROR);
   }
 
@@ -28,7 +27,7 @@ public class BuildingManagementErrorHandler implements ResponseErrorHandler {
 
     // throw exception when 4XX error occurred
     if (response.getStatusCode().series() == CLIENT_ERROR) {
-      if (response.getRawStatusCode() ==  REQUESTED_DATA_DOESNT_EXIST){
+      if (response.getRawStatusCode() == REQUESTED_DATA_DOESNT_EXIST) {
         throw new ResourceNotFoundException();
       }
       if (response.getRawStatusCode() == INVALID_REQUEST_MESSAGE_FRAMING) {
