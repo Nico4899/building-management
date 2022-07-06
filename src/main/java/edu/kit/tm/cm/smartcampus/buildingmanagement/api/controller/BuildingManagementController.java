@@ -233,6 +233,8 @@ public class BuildingManagementController
   public void createRoom(
       CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
 
+    try {
+
     // fetch grpc room to create from request
     GrpcRoom grpcRequestRoom = request.getRoom();
 
@@ -251,11 +253,27 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+        GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
   public void createComponent(
       CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
+
+    try {
 
     // fetch grpc component to create from request
     GrpcComponent grpcRequestComponent = request.getComponent();
@@ -276,11 +294,27 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+        GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
   public void createFavorite(
       CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
+
+    try{
 
     // fetch grpc favorite to create from request
     GrpcFavorite grpcRequestFavorite = request.getFavorite();
@@ -297,11 +331,27 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
+
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+        GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
   public void listBuildings(
       ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
+
+    try{
 
     // fetch grpc building filter options to create from request
     BuildingFilterOptions buildingFilterOptions = request.getBuildingFilterOptions();
@@ -322,6 +372,19 @@ public class BuildingManagementController
     // complete response call procedure
     responseObserver.onNext(response);
     responseObserver.onCompleted();
+    } catch (InvalidArgumentsException invalidArgumentsException) {
+
+      // build response message
+      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
+      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
+
+      // build response
+      GetComponentResponse response =
+        GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
+
+      responseObserver.onNext(response);
+      responseObserver.onCompleted();
+    }
   }
 
   @Override
