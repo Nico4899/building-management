@@ -196,12 +196,7 @@ message UpdateComponentResponse{
 }
 
 message RemoveRequest{
-  oneof object{
-    GrpcBuilding building = 1;
-    GrpcFavorite favorite = 2;
-    GrpcRoom room = 3;
-    GrpcComponent component = 4;
-  }
+  string identification_number = 1;
 }
 
 message RemoveResponse{

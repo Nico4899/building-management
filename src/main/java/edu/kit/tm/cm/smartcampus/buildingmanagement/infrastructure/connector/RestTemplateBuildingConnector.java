@@ -34,6 +34,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector{
   private String createBuildingRoomUrl;
   @Value("${room.getRoomUrl}")
   private String getRoomUrl;
+
   @Value("${room.updateRoomUrl}")
   private String updateRoomUrl;
   @Value("${room.removeRoomUrl}")
@@ -156,7 +157,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector{
     headers.setContentType(MediaType.APPLICATION_JSON);
     HttpEntity<Room> entity = new HttpEntity<>(room, headers);
 
-    restTemplate.exchange(baseUrl + updateBuildingUrl, HttpMethod.PUT, entity, Void.class, room.getIdentificationNumber());
+    restTemplate.exchange(baseUrl + updateRoomUrl, HttpMethod.PUT, entity, Void.class, room.getIdentificationNumber());
     return room;
   }
 

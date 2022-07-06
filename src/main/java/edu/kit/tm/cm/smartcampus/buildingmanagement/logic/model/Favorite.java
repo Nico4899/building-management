@@ -16,6 +16,11 @@ import javax.persistence.*;
 @Entity(name = "Favorite")
 public class Favorite {
 
+  public Favorite(String owner, String referenceIdentificationNumber) {
+    this.owner = owner;
+    this.referenceIdentificationNumber = referenceIdentificationNumber;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_sequence")
   @GenericGenerator(
