@@ -11,6 +11,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filt
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.ComponentTypeFilter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.RoomRoomTypeFilter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class BuildingManagementManager {
 
   // list elements
 
-  public Collection<Building> listBuildings(FilterOptions filterOptions) {
+  public Collection<Building> listBuildings(@NonNull FilterOptions filterOptions) {
 
     // retrieve all buildings from connector
     Collection<Building> buildings = buildingConnector.listBuildings();
@@ -50,12 +51,7 @@ public class BuildingManagementManager {
     return buildings;
   }
 
-  public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
-
-    // check if valid input
-    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
-      throw new InvalidArgumentsException();
-    }
+  public Collection<Room> listRooms(@NonNull FilterOptions filterOptions, @NonNull String identificationNumber) {
 
     // instantiate empty list of rooms
     Collection<Room> rooms = Collections.emptyList();
@@ -72,15 +68,10 @@ public class BuildingManagementManager {
     return rooms;
   }
 
-  public Collection<Component> listComponents(String identificationNumber) {
+  public Collection<Component> listComponents(@NonNull String identificationNumber) {
 
     // instantiate empty list of components
     Collection<Component> components = Collections.emptyList();
-
-    // check if valid input
-    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
-      throw new InvalidArgumentsException();
-    }
 
     // if identification number matches a bin pattern, fill components with the building's
     // components
@@ -97,12 +88,7 @@ public class BuildingManagementManager {
     return components;
   }
 
-  public Collection<Notification> listNotifications(String identificationNumber) {
-
-    // check if valid input
-    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
-      throw new InvalidArgumentsException();
-    }
+  public Collection<Notification> listNotifications(@NonNull String identificationNumber) {
 
     // instantiate empty list of notifications
     Collection<Notification> notifications = Collections.emptyList();
@@ -129,12 +115,7 @@ public class BuildingManagementManager {
     return notifications;
   }
 
-  public Collection<Component> listComponentFavorites(String owner) {
-
-    // check if inputs are valid
-    if (owner == null) {
-      throw new InvalidArgumentsException();
-    }
+  public Collection<Component> listComponentFavorites(@NonNull String owner) {
 
     // instantiate component list
     Collection<Component> components = new ArrayList<>();
@@ -152,12 +133,7 @@ public class BuildingManagementManager {
     return components;
   }
 
-  public Collection<Room> listRoomFavorites(String owner) {
-
-    // check if inputs are valid
-    if (owner == null) {
-      throw new InvalidArgumentsException();
-    }
+  public Collection<Room> listRoomFavorites(@NonNull String owner) {
 
     // instantiate room list
     Collection<Room> rooms = new ArrayList<>();
@@ -174,12 +150,7 @@ public class BuildingManagementManager {
     return rooms;
   }
 
-  public Collection<Building> listBuildingFavorites(String owner) {
-
-    // check if inputs are valid
-    if (owner == null) {
-      throw new InvalidArgumentsException();
-    }
+  public Collection<Building> listBuildingFavorites(@NonNull String owner) {
 
     // instantiate building list
     Collection<Building> buildings = new ArrayList<>();
@@ -199,19 +170,19 @@ public class BuildingManagementManager {
 
   // get single element
 
-  public Building getBuilding(String identificationNumber) {
+  public Building getBuilding(@NonNull String identificationNumber) {
 
     // return the building retrieved from the building connector
     return this.buildingConnector.getBuilding(identificationNumber);
   }
 
-  public Room getRoom(String identificationNumber) {
+  public Room getRoom(@NonNull String identificationNumber) {
 
     // return the room retrieved from the building connector
     return this.buildingConnector.getRoom(identificationNumber);
   }
 
-  public Component getComponent(String identificationNumber) {
+  public Component getComponent(@NonNull String identificationNumber) {
 
     // return the component retrieved from the building connector
     return this.buildingConnector.getComponent(identificationNumber);
@@ -219,13 +190,13 @@ public class BuildingManagementManager {
 
   // create element
 
-  public Building createBuilding(Building building) {
+  public Building createBuilding(@NonNull Building building) {
 
     // create building in the building connector, and return the created building as response
     return this.buildingConnector.createBuilding(building);
   }
 
-  public Room createRoom(Room room) {
+  public Room createRoom(@NonNull Room room) {
 
     // if room's parent identification number matches bin pattern, create a building's room in the
     // building connector,
@@ -238,7 +209,7 @@ public class BuildingManagementManager {
     return null;
   }
 
-  public Component createComponent(Component component) {
+  public Component createComponent(@NonNull Component component) {
 
     // if component's parent identification number matches bin pattern, create a building's
     // component in the building connector,
@@ -258,7 +229,7 @@ public class BuildingManagementManager {
     return null;
   }
 
-  public void createFavorite(Favorite favorite) {
+  public void createFavorite(@NonNull Favorite favorite) {
 
     // check if inputs are valid
     if (favorite.getOwner() == null || favorite.getReferenceIdentificationNumber() == null) {
@@ -271,19 +242,19 @@ public class BuildingManagementManager {
 
   // update element
 
-  public Building updateBuilding(Building building) {
+  public Building updateBuilding(@NonNull Building building) {
 
     // update the provided building in the building connector and return the updated building
     return this.buildingConnector.updateBuilding(building);
   }
 
-  public Room updateRoom(Room room) {
+  public Room updateRoom(@NonNull Room room) {
 
     // update the provided room in the building connector and return the updated room
     return this.buildingConnector.updateRoom(room);
   }
 
-  public Component updateComponent(Component component) {
+  public Component updateComponent(@NonNull Component component) {
 
     // update the provided component in the building connector and return the updated component
     return this.buildingConnector.updateComponent(component);
@@ -291,12 +262,7 @@ public class BuildingManagementManager {
 
   // remove element
 
-  public void remove(String identificationNumber) {
-
-    // check if matching some pattern
-    if (matchesNoIdentificationNumberPattern(identificationNumber)) {
-      throw new InvalidArgumentsException();
-    }
+  public void remove(@NonNull String identificationNumber) {
 
     // if the given identification number matches bin pattern remove the corresponding building in
     // the building connector
@@ -423,13 +389,5 @@ public class BuildingManagementManager {
 
     // return the room component's map
     return buildingComponentsMap;
-  }
-
-  private boolean matchesNoIdentificationNumberPattern(String string) {
-    return (string == null)
-      || (!string.matches(BIN_PATTERN))
-      || (!string.matches(RIN_PATTERN))
-      || (!string.matches(CIN_PATTERN))
-      || (!string.matches(FIN_PATTERN));
   }
 }

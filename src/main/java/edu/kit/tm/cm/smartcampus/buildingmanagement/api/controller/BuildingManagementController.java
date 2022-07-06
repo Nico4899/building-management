@@ -2,12 +2,12 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import io.grpc.stub.StreamObserver;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -30,8 +30,8 @@ public class BuildingManagementController
     // retrieve identification number from request
     String identificationNumber = request.getIdentificationNumber();
 
-      // fetch building from manager with given identification number
-      Building building = this.buildingManagementManager.getBuilding(identificationNumber);
+    // fetch building from manager with given identification number
+    Building building = this.buildingManagementManager.getBuilding(identificationNumber);
 
     // write response building
     GrpcBuilding grpcBuilding = this.writeBuilding(building);
@@ -650,7 +650,7 @@ public class BuildingManagementController
     // retrieve attributes from model object
     int floor = room.getFloor();
     GrpcGeographicalLocation grpcGeographicalLocation =
-      this.writeGeographicalLocation(room.getGeographicalLocation());
+        this.writeGeographicalLocation(room.getGeographicalLocation());
     String roomName = room.getRoomName();
     String roomNumber = room.getRoomNumber();
     String parentIdentificationNumber = room.getParentIdentificationNumber();
@@ -676,9 +676,9 @@ public class BuildingManagementController
     String buildingNumber = building.getBuildingNumber();
     String identificationNumber = building.getIdentificationNumber();
     GrpcCampusLocation grpcCampusLocation = this.writeCampusLocation(building.getCampusLocation());
-    GrpcGeographicalLocation grpcGeographicalLocation = this.writeGeographicalLocation(building.getGeographicalLocation());
+    GrpcGeographicalLocation grpcGeographicalLocation =
+        this.writeGeographicalLocation(building.getGeographicalLocation());
     int numfloors = building.getNumFloors();
-
 
     // build grpc object
     return GrpcBuilding.newBuilder()
