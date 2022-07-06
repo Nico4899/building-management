@@ -21,12 +21,16 @@ public class PrefixSequenceGenerator extends SequenceStyleGenerator {
   @Override
   public Serializable generate(SharedSessionContractImplementor session, Object object)
       throws HibernateException {
+
+    // add prefix value to the classic SEQUENCED strategy
     return valuePrefix + super.generate(session, object);
   }
 
   @Override
   public void configure(Type type, Properties params, ServiceRegistry serviceRegistry)
       throws MappingException {
+
+    // enable annotation configuration for the wished prefix value
     super.configure(LongType.INSTANCE, params, serviceRegistry);
     valuePrefix =
         ConfigurationHelper.getString(VALUE_PREFIX_PARAMETER, params, VALUE_PREFIX_DEFAULT);
