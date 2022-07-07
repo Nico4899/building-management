@@ -4,14 +4,14 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.Bui
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class represents the building management application microservice manager. It holds and
@@ -49,9 +49,21 @@ public class BuildingManagementManager {
    */
   public Collection<Building> listBuildings(FilterOptions filterOptions) {
     Collection<Building> buildings = buildingConnector.listBuildings();
-    filterOptions.setBuildingComponentMap(mapBuildingComponents(buildings));
-    filterOptions.setBuildingRoomMap(mapBuildingRooms(buildings));
-    filterOptions.filterBuildings(buildings);
+    if (filterOptions.getCampusLocationFilterOption().isSelected()) {
+      Filter<Building, CampusLocation> filter = new CLFilter();
+      filter.setFilterValues(filterOptions.getCampusLocationFilterOption().getFilterValues());
+      buildings = filter.filter(buildings);
+    }
+    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
+      Filter<Building, RoomType> filter = new BRTFilter();
+      filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
+      buildings = filter.filter(buildings);
+    }
+    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
+      Filter<Building, ComponentType> filter = new BCTFilter();
+      filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
+      buildings = filter.filter(buildings);
+    }
     return buildings;
   }
 
@@ -65,8 +77,16 @@ public class BuildingManagementManager {
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
     if (identificationNumber.matches(BIN_PATTERN)) {
       Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
-      filterOptions.setRoomComponentMap(mapRoomComponents(rooms));
-      filterOptions.filterRooms(rooms);
+      if (filterOptions.getRoomTypeFilterOption().isSelected()) {
+        Filter<Room, RoomType> filter = new RRTFilter();
+        filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
+        rooms = filter.filter(rooms);
+      }
+      if (filterOptions.getComponentTypeFilterOption().isSelected()) {
+        Filter<Room, ComponentType> filter = new RCTFilter();
+        filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
+        rooms = filter.filter(rooms);
+      }
       return rooms;
     }
     throw new InvalidArgumentsException();
@@ -284,31 +304,21 @@ public class BuildingManagementManager {
     throw new InvalidArgumentsException();
   }
 
-  private Map<Building, Collection<Room>> mapBuildingRooms(Collection<Building> buildings) {
-    Map<Building, Collection<Room>> buildingRoomsMap = new HashMap<>();
-    for (Building building : buildings) {
-      buildingRoomsMap.put(
-          building, buildingConnector.listBuildingRooms(building.getIdentificationNumber()));
-    }
-    return buildingRoomsMap;
+  private void buildBuildingRooms(Building building) {
+    Collection<Room> rooms =
+        this.buildingConnector.listBuildingRooms(building.getIdentificationNumber());
+    building.setRooms(rooms);
   }
 
-  private Map<Building, Collection<Component>> mapBuildingComponents(
-      Collection<Building> buildings) {
-    Map<Building, Collection<Component>> buildingComponentsMap = new HashMap<>();
-    for (Building building : buildings) {
-      buildingComponentsMap.put(
-          building, buildingConnector.listBuildingComponents(building.getIdentificationNumber()));
-    }
-    return buildingComponentsMap;
+  private void buildBuildingComponents(Building building) {
+    Collection<Component> components =
+        this.buildingConnector.listBuildingComponents(building.getIdentificationNumber());
+    building.setComponents(components);
   }
 
-  private Map<Room, Collection<Component>> mapRoomComponents(Collection<Room> rooms) {
-    Map<Room, Collection<Component>> buildingComponentsMap = new HashMap<>();
-    for (Room room : rooms) {
-      buildingComponentsMap.put(
-          room, buildingConnector.listRoomComponents(room.getIdentificationNumber()));
-    }
-    return buildingComponentsMap;
+  private void buildRoomComponents(Room room) {
+    Collection<Component> components =
+        this.buildingConnector.listRoomComponents(room.getIdentificationNumber());
+    room.setComponents(components);
   }
 }

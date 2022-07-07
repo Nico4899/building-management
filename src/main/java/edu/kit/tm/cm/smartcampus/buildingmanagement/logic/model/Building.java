@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * This class describes a building with its attributes on KIT campus. It possesses a campus
  * location, name, number, number floors, identification number and a geographical location.
@@ -21,4 +24,7 @@ public class Building {
   private String buildingNumber;
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
+
+  private Collection<Room> rooms = new ArrayList<>();
+  private Collection<Component> components = new ArrayList<>();
 }

@@ -1,75 +1,20 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.BuildingRoomTypeFilter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.CampusLocationFilter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.ComponentTypeFilter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.RoomRoomTypeFilter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.CampusLocation;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.ComponentType;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.RoomType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Collection;
-import java.util.Map;
-
-/**
- * This class describes an object containing of filter options for the building management service
- * filter system.
- */
-@Data
-@AllArgsConstructor
+/** This class represents a container for filter options since their generic */
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
 public class FilterOptions {
   private FilterOption<CampusLocation> campusLocationFilterOption;
-  private FilterOption<RoomType> roomTypeFilterOption;
   private FilterOption<ComponentType> componentTypeFilterOption;
-
-  private Map<Room, Collection<Component>> roomComponentMap;
-  private Map<Building, Collection<Room>> buildingRoomMap;
-  private Map<Building, Collection<Component>> buildingComponentMap;
-
-  /**
-   * This method filters a given collection of {@link Building} by the given filter options.
-   *
-   * @param collection collection to be filtered
-   */
-  public void filterBuildings(Collection<Building> collection) {
-    if (campusLocationFilterOption.isSelected()) {
-      Filter<Building> filter =
-          new CampusLocationFilter(collection, campusLocationFilterOption.getFilterValues());
-      filter.filter();
-    }
-    if (roomTypeFilterOption.isSelected()) {
-      Filter<Building> filter =
-          new BuildingRoomTypeFilter(
-              buildingRoomMap, roomTypeFilterOption.getFilterValues(), collection);
-      filter.filter();
-    }
-    if (componentTypeFilterOption.isSelected()) {
-      Filter<Building> filter =
-          new ComponentTypeFilter<>(
-              buildingComponentMap, componentTypeFilterOption.getFilterValues(), collection);
-      filter.filter();
-    }
-  }
-
-  /**
-   * This method filters a given collection of {@link Room} by the given filter options.
-   *
-   * @param collection collection to be filtered
-   */
-  public void filterRooms(Collection<Room> collection) {
-    if (roomTypeFilterOption.isSelected()) {
-      Filter<Room> filter =
-          new RoomRoomTypeFilter(collection, roomTypeFilterOption.getFilterValues());
-      filter.filter();
-    }
-    if (componentTypeFilterOption.isSelected()) {
-      Filter<Room> filter =
-          new ComponentTypeFilter<>(
-              roomComponentMap, componentTypeFilterOption.getFilterValues(), collection);
-      filter.filter();
-    }
-  }
+  private FilterOption<RoomType> roomTypeFilterOption;
 }

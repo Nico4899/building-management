@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * This class represents a room which can hold {@link Component} and is being held by {@link
  * Building}.
@@ -21,4 +24,6 @@ public class Room {
   private String parentIdentificationNumber;
   private GeographicalLocation geographicalLocation;
   private RoomType roomType;
+
+  private Collection<Component> components = new ArrayList<>();
 }

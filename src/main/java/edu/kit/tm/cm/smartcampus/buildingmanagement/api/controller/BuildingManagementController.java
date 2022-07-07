@@ -321,8 +321,8 @@ public class BuildingManagementController
 
     try {
 
-      BuildingFilterOptions buildingFilterOptions = request.getBuildingFilterOptions();
-      FilterOptions filterOptions = this.readBuildingFilterOptions(buildingFilterOptions);
+      GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
+      FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
       Collection<Building> buildings = this.buildingManagementManager.listBuildings(filterOptions);
       GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
@@ -357,8 +357,8 @@ public class BuildingManagementController
 
     try {
 
-      RoomFilterOptions roomFilterOptions = request.getRoomFilterOptions();
-      FilterOptions filterOptions = this.readRoomFilterOptions(roomFilterOptions);
+      GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
+      FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
       Collection<Room> rooms =
           this.buildingManagementManager.listRooms(filterOptions, identificationNumber);
       GrpcRooms grpcRooms = this.writeRooms(rooms);
@@ -862,28 +862,16 @@ public class BuildingManagementController
     return ComponentType.forNumber(grpcComponentType.ordinal() + 1);
   }
 
-  private FilterOptions readBuildingFilterOptions(BuildingFilterOptions buildingFilterOptions) {
+  private FilterOptions readFilterOptions(GrpcFilterOptions grpcFilterOptions) {
     FilterOption<CampusLocation> campusLocationFilterOption =
-        readCampusLocationFilterOption(buildingFilterOptions.getCampusLocationFilterMapping());
+        readCampusLocationFilterOption(grpcFilterOptions.getCampusLocationFilterMapping());
     FilterOption<ComponentType> componentTypeFilterOption =
-        readComponentTypeFilterOption(buildingFilterOptions.getComponentTypeFilterMapping());
+        readComponentTypeFilterOption(grpcFilterOptions.getComponentTypeFilterMapping());
     FilterOption<RoomType> roomTypeFilterOption =
-        readRoomTypeFilterOption(buildingFilterOptions.getRoomTypeFilterMapping());
+        readRoomTypeFilterOption(grpcFilterOptions.getRoomTypeFilterMapping());
 
     return FilterOptions.builder()
         .campusLocationFilterOption(campusLocationFilterOption)
-        .roomTypeFilterOption(roomTypeFilterOption)
-        .componentTypeFilterOption(componentTypeFilterOption)
-        .build();
-  }
-
-  private FilterOptions readRoomFilterOptions(RoomFilterOptions roomFilterOptions) {
-    FilterOption<ComponentType> componentTypeFilterOption =
-        readComponentTypeFilterOption(roomFilterOptions.getComponentTypeFilterMapping());
-    FilterOption<RoomType> roomTypeFilterOption =
-        readRoomTypeFilterOption(roomFilterOptions.getRoomTypeFilterMapping());
-
-    return FilterOptions.builder()
         .roomTypeFilterOption(roomTypeFilterOption)
         .componentTypeFilterOption(componentTypeFilterOption)
         .build();
