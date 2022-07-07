@@ -12,8 +12,19 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "Favorite")
+@Entity(name = Favorite.FAVORITE_ENTITY)
 public class Favorite {
+
+  private static final String IDENTIFICATION_NUMBER_COLUMN_NAME = "identification_number";
+  private static final String REFERENCE_IDENTIFICATION_NUMBER_COLUMN_NAME =
+      "reference_identification_number";
+  private static final String OWNER_COLUMN_NAME = "owner";
+  private static final String FAVORITE_SEQUENCE = "favorite_sequence";
+  private static final String TEXT = "TEXT";
+  private static final String FAVORITE_PREFIX = "f-";
+  private static final String PREFIX_GENERATOR_URL =
+      "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator";
+  protected static final String FAVORITE_ENTITY = "Favorite";
 
   public Favorite(String owner, String referenceIdentificationNumber) {
     this.owner = owner;
@@ -21,20 +32,22 @@ public class Favorite {
   }
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_sequence")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = FAVORITE_SEQUENCE)
   @GenericGenerator(
-      name = "favorite_sequence",
-      strategy =
-          "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator",
+      name = FAVORITE_SEQUENCE,
+      strategy = PREFIX_GENERATOR_URL,
       parameters = {
-        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")
+        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = FAVORITE_PREFIX)
       })
-  @Column(name = "identification_number", updatable = false, columnDefinition = "TEXT")
+  @Column(name = IDENTIFICATION_NUMBER_COLUMN_NAME, updatable = false, columnDefinition = TEXT)
   private String identificationNumber;
 
-  @Column(name = "owner", nullable = false, updatable = false, columnDefinition = "TEXT")
+  @Column(name = OWNER_COLUMN_NAME, nullable = false, updatable = false, columnDefinition = TEXT)
   private String owner;
 
-  @Column(name = "reference_identification_number", nullable = false, columnDefinition = "TEXT")
+  @Column(
+      name = REFERENCE_IDENTIFICATION_NUMBER_COLUMN_NAME,
+      nullable = false,
+      columnDefinition = TEXT)
   private String referenceIdentificationNumber;
 }

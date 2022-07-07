@@ -19,20 +19,14 @@ import java.util.Properties;
  */
 public class PrefixSequenceGenerator extends SequenceStyleGenerator {
 
-  // prefix value string parameter
   public static final String VALUE_PREFIX_PARAMETER = "valuePrefix";
-
-  // default prefix parameter
   public static final String VALUE_PREFIX_DEFAULT = "";
-
-  // prefix value can be custom or default
   private String valuePrefix;
 
   @Override
   public Serializable generate(SharedSessionContractImplementor session, Object object)
       throws HibernateException {
 
-    // call prefixed super generate with classic SEQUENCE strategy
     return valuePrefix + super.generate(session, object);
   }
 
@@ -40,7 +34,6 @@ public class PrefixSequenceGenerator extends SequenceStyleGenerator {
   public void configure(Type type, Properties params, ServiceRegistry serviceRegistry)
       throws MappingException {
 
-    // enable configure annotation for value prefix
     super.configure(LongType.INSTANCE, params, serviceRegistry);
     valuePrefix =
         ConfigurationHelper.getString(VALUE_PREFIX_PARAMETER, params, VALUE_PREFIX_DEFAULT);
