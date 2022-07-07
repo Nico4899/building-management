@@ -55,7 +55,9 @@ public class BuildingManagementManager {
    */
   public Collection<Building> listBuildings(FilterOptions filterOptions) {
     Collection<Building> buildings = buildingConnector.listBuildings();
-    applyBuildingFilters(filterOptions, buildings);
+    filterOptions.setBuildingComponentMap(mapBuildingComponents(buildings));
+    filterOptions.setBuildingRoomMap(mapBuildingRooms(buildings));
+    filterOptions.executeBuildingFilter(buildings);
     return buildings;
   }
 
@@ -69,7 +71,8 @@ public class BuildingManagementManager {
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
     if (identificationNumber.matches(BIN_PATTERN)) {
       Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
-      applyRoomFilters(filterOptions, rooms);
+      filterOptions.setRoomComponentMap(mapRoomComponents(rooms));
+      filterOptions.executeRoomFilter(rooms);
       return rooms;
     }
     throw new InvalidArgumentsException();
@@ -285,46 +288,6 @@ public class BuildingManagementManager {
       this.favoriteRepository.deleteById(identificationNumber);
     }
     throw new InvalidArgumentsException();
-  }
-
-  private void applyBuildingFilters(FilterOptions filterOptions, Collection<Building> buildings) {
-    FilterCommand<Building> filterCommand = new SequentialFilterCommand<>();
-    if (filterOptions.getCampusLocationFilterOption().isSelected()) {
-      filterCommand.addFilter(
-          new CampusLocationFilter(
-              buildings, filterOptions.getCampusLocationFilterOption().getFilterValues()));
-    }
-    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
-      filterCommand.addFilter(
-          new ComponentTypeFilter<>(
-              mapBuildingComponents(buildings),
-              filterOptions.getComponentTypeFilterOption().getFilterValues(),
-              buildings));
-    }
-    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-      filterCommand.addFilter(
-          new BuildingRoomTypeFilter(
-              mapBuildingRooms(buildings),
-              filterOptions.getRoomTypeFilterOption().getFilterValues(),
-              buildings));
-    }
-    filterCommand.execute();
-  }
-
-  private void applyRoomFilters(FilterOptions filterOptions, Collection<Room> rooms) {
-    FilterCommand<Room> filterCommand = new SequentialFilterCommand<>();
-    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-      filterCommand.addFilter(
-          new RoomRoomTypeFilter(rooms, filterOptions.getRoomTypeFilterOption().getFilterValues()));
-    }
-    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
-      filterCommand.addFilter(
-          new ComponentTypeFilter<>(
-              mapRoomComponents(rooms),
-              filterOptions.getComponentTypeFilterOption().getFilterValues(),
-              rooms));
-    }
-    filterCommand.execute();
   }
 
   private Map<Building, Collection<Room>> mapBuildingRooms(Collection<Building> buildings) {
