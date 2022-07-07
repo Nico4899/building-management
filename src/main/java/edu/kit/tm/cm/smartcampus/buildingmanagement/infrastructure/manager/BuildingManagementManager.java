@@ -7,17 +7,18 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This class represents the building management application microservice manager. It holds and
  * manages all the microservice logic.
  */
 @Service
+@RestController
+@RequestMapping
 public class BuildingManagementManager {
 
   private static final String BIN_PATTERN = "b-\\d+";
@@ -110,14 +111,15 @@ public class BuildingManagementManager {
    * @param owner owner of the favorites list
    * @return collection of components marked as favorite
    */
-  public Collection<Component> listComponentFavorites(String owner) {
+  @GetMapping("/favorites/{owner}")
+  public Collection<Component> listComponentFavorites(@PathVariable String owner) {
+
     Collection<Component> components = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findAll()) {
-      if (favorite.getOwner().equals(owner)
-          && favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
-        components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
-      }
-    }
+    Optional<Favorite> favorites = favoriteRepository.findById(owner);
+
+    components = favorites.stream()
+            .map(f -> buildingConnector.getComponent(f.getReferenceIdentificationNumber()))
+            .collect(Collectors.toList());
     return components;
   }
 
@@ -127,14 +129,14 @@ public class BuildingManagementManager {
    * @param owner owner of the favorites list
    * @return collection of rooms marked as favorite
    */
-  public Collection<Room> listRoomFavorites(String owner) {
+  @GetMapping("/favorites/{owner}")
+  public Collection<Room> listRoomFavorites(@PathVariable String owner) {
     Collection<Room> rooms = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findAll()) {
-      if (favorite.getOwner().equals(owner)
-          && favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
-        rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
-      }
-    }
+    Optional<Favorite> favorites = favoriteRepository.findById(owner);
+
+    rooms = favorites.stream()
+            .map(f -> buildingConnector.getRoom(f.getReferenceIdentificationNumber()))
+            .collect(Collectors.toList());
     return rooms;
   }
 
@@ -144,14 +146,14 @@ public class BuildingManagementManager {
    * @param owner owner of the favorites list
    * @return collection of buildings marked as favorite
    */
-  public Collection<Building> listBuildingFavorites(String owner) {
+  @GetMapping("/favorites/{owner}")
+  public Collection<Building> listBuildingFavorites(@PathVariable String owner) {
     Collection<Building> buildings = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findAll()) {
-      if (favorite.getOwner().equals(owner)
-          && favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
-        buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
-      }
-    }
+    Optional<Favorite> favorites = favoriteRepository.findById(owner);
+
+    buildings = favorites.stream()
+            .map(f -> buildingConnector.getBuilding(f.getReferenceIdentificationNumber()))
+            .collect(Collectors.toList());
     return buildings;
   }
 
@@ -229,7 +231,15 @@ public class BuildingManagementManager {
    *
    * @param favorite favorite object without identification number
    */
+  @PostMapping("/favorites")
   public void createFavorite(Favorite favorite) {
+
+    // check if inputs are valid
+    if (favorite.getOwner() == null || favorite.getReferenceIdentificationNumber() == null) {
+      throw new InvalidArgumentsException();
+    }
+
+    // save the provided favorite to the favorite database
     this.favoriteRepository.save(favorite);
   }
 
@@ -268,19 +278,33 @@ public class BuildingManagementManager {
    *
    * @param identificationNumber identification number of the object to be removed
    */
-  public void remove(String identificationNumber) {
+  @DeleteMapping("favorites/{identificationNumber}")
+  public void remove(@PathVariable String identificationNumber) {
+
+    // if the given identification number matches bin pattern remove the corresponding building in
+    // the building connector
     if (identificationNumber.matches(BIN_PATTERN)) {
       this.buildingConnector.removeBuilding(identificationNumber);
     }
+
+    // if the given identification number matches rin pattern remove the corresponding room in the
+    // building connector
     if (identificationNumber.matches(RIN_PATTERN)) {
       this.buildingConnector.removeRoom(identificationNumber);
     }
+
+    // if the given identification number matches cin pattern remove the corresponding component in
+    // the building connector
     if (identificationNumber.matches(CIN_PATTERN)) {
       this.buildingConnector.removeComponent(identificationNumber);
     }
+
+    // if the given identification number matches fin pattern remove the corresponding building from
+    // the favorite database
     if (identificationNumber.matches(FIN_PATTERN)) {
       this.favoriteRepository.deleteById(identificationNumber);
     }
+
     throw new InvalidArgumentsException();
   }
 
