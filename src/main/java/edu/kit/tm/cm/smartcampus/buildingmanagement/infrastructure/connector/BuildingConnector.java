@@ -1,6 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * This class describes a building connector which is being used by {@link
- * BuildingManagementManager} to provide an interface for a REST connector to the building domain
+ * BuildingManagementService} to provide an interface for a REST connector to the building domain
  * microservice.
  */
 public interface BuildingConnector {

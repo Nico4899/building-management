@@ -4,7 +4,7 @@ import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager.BuildingManagementManager;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
@@ -45,10 +45,10 @@ public class BuildingManagementController
   private static final String UPDATE_COMPONENT = "UpdateComponent";
   private static final String REMOVE_OBJECT = "Remove";
 
-  private final BuildingManagementManager buildingManagementManager;
+  private final BuildingManagementService buildingManagementService;
 
-  public BuildingManagementController(BuildingManagementManager buildingManagementManager) {
-    this.buildingManagementManager = buildingManagementManager;
+  public BuildingManagementController(BuildingManagementService buildingManagementManager) {
+    this.buildingManagementService = buildingManagementManager;
   }
 
   @Override
@@ -59,7 +59,7 @@ public class BuildingManagementController
 
     try {
 
-      Building building = this.buildingManagementManager.getBuilding(identificationNumber);
+      Building building = this.buildingManagementService.getBuilding(identificationNumber);
       GrpcBuilding grpcBuilding = this.writeBuilding(building);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -102,7 +102,7 @@ public class BuildingManagementController
 
     try {
 
-      Room room = this.buildingManagementManager.getRoom(identificationNumber);
+      Room room = this.buildingManagementService.getRoom(identificationNumber);
       GrpcRoom grpcRoom = this.writeRoom(room);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -146,7 +146,7 @@ public class BuildingManagementController
 
     try {
 
-      Component component = this.buildingManagementManager.getComponent(identificationNumber);
+      Component component = this.buildingManagementService.getComponent(identificationNumber);
       GrpcComponent grpcComponent = this.writeComponent(component);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -190,7 +190,7 @@ public class BuildingManagementController
 
       GrpcBuilding grpcRequestBuilding = request.getBuilding();
       Building requestBuilding = this.readBuilding(grpcRequestBuilding);
-      Building responseBuilding = this.buildingManagementManager.createBuilding(requestBuilding);
+      Building responseBuilding = this.buildingManagementService.createBuilding(requestBuilding);
       GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -224,7 +224,7 @@ public class BuildingManagementController
 
       GrpcRoom grpcRequestRoom = request.getRoom();
       Room requestRoom = this.readRoom(grpcRequestRoom);
-      Room responseRoom = this.buildingManagementManager.createRoom(requestRoom);
+      Room responseRoom = this.buildingManagementService.createRoom(requestRoom);
       GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -259,7 +259,7 @@ public class BuildingManagementController
       GrpcComponent grpcRequestComponent = request.getComponent();
       Component requestComponent = this.readComponent(grpcRequestComponent);
       Component responseComponent =
-          this.buildingManagementManager.createComponent(requestComponent);
+          this.buildingManagementService.createComponent(requestComponent);
       GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -293,7 +293,7 @@ public class BuildingManagementController
 
       GrpcFavorite grpcRequestFavorite = request.getFavorite();
       Favorite requestFavorite = this.readFavorite(grpcRequestFavorite);
-      this.buildingManagementManager.createFavorite(requestFavorite);
+      this.buildingManagementService.createFavorite(requestFavorite);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
       CreateFavoriteResponse response =
@@ -323,7 +323,7 @@ public class BuildingManagementController
 
       GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
       FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
-      Collection<Building> buildings = this.buildingManagementManager.listBuildings(filterOptions);
+      Collection<Building> buildings = this.buildingManagementService.listBuildings(filterOptions);
       GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -360,7 +360,7 @@ public class BuildingManagementController
       GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
       FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
       Collection<Room> rooms =
-          this.buildingManagementManager.listRooms(filterOptions, identificationNumber);
+          this.buildingManagementService.listRooms(filterOptions, identificationNumber);
       GrpcRooms grpcRooms = this.writeRooms(rooms);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -406,7 +406,7 @@ public class BuildingManagementController
     try {
 
       Collection<Component> components =
-          this.buildingManagementManager.listComponents(identificationNumber);
+          this.buildingManagementService.listComponents(identificationNumber);
       GrpcComponents grpcComponents = this.writeComponents(components);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -453,7 +453,7 @@ public class BuildingManagementController
     try {
 
       Collection<Notification> notifications =
-          this.buildingManagementManager.listNotifications(identificationNumber);
+          this.buildingManagementService.listNotifications(identificationNumber);
       GrpcNotifications grpcNotifications = this.writeNotifications(notifications);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -497,7 +497,7 @@ public class BuildingManagementController
     try {
 
       String owner = request.getOwner();
-      Collection<Building> buildings = this.buildingManagementManager.listBuildingFavorites(owner);
+      Collection<Building> buildings = this.buildingManagementService.listBuildingFavorites(owner);
       GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -532,7 +532,7 @@ public class BuildingManagementController
     try {
 
       String owner = request.getOwner();
-      Collection<Room> rooms = this.buildingManagementManager.listRoomFavorites(owner);
+      Collection<Room> rooms = this.buildingManagementService.listRoomFavorites(owner);
       GrpcRooms grpcRooms = this.writeRooms(rooms);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -567,7 +567,7 @@ public class BuildingManagementController
 
       String owner = request.getOwner();
       Collection<Component> components =
-          this.buildingManagementManager.listComponentFavorites(owner);
+          this.buildingManagementService.listComponentFavorites(owner);
       GrpcComponents grpcComponents = this.writeComponents(components);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -603,7 +603,7 @@ public class BuildingManagementController
     try {
 
       Building requestBuilding = this.readBuilding(grpcRequestBuilding);
-      Building responseBuilding = this.buildingManagementManager.updateBuilding(requestBuilding);
+      Building responseBuilding = this.buildingManagementService.updateBuilding(requestBuilding);
       GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -652,7 +652,7 @@ public class BuildingManagementController
     try {
 
       Room requestRoom = this.readRoom(grpcRequestRoom);
-      Room responseRoom = this.buildingManagementManager.updateRoom(requestRoom);
+      Room responseRoom = this.buildingManagementService.updateRoom(requestRoom);
       GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -701,7 +701,7 @@ public class BuildingManagementController
 
       Component requestComponent = this.readComponent(grpcRequestComponent);
       Component responseComponent =
-          this.buildingManagementManager.updateComponent(requestComponent);
+          this.buildingManagementService.updateComponent(requestComponent);
       GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
 
@@ -748,7 +748,7 @@ public class BuildingManagementController
 
     try {
 
-      this.buildingManagementManager.remove(identificationNumber);
+      this.buildingManagementService.remove(identificationNumber);
 
       ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
       RemoveResponse response =

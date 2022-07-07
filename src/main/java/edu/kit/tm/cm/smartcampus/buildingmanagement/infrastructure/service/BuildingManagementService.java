@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.manager;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
@@ -18,7 +18,7 @@ import java.util.Collection;
  * manages all the microservice logic.
  */
 @Service
-public class BuildingManagementManager {
+public class BuildingManagementService {
 
   private static final String BIN_PATTERN = "b-\\d+";
   private static final String RIN_PATTERN = "r-\\d+";
@@ -35,7 +35,7 @@ public class BuildingManagementManager {
    * @param favoriteRepository the favorite repository (constructor injection)
    */
   @Autowired
-  public BuildingManagementManager(
+  public BuildingManagementService(
       BuildingConnector buildingConnector, FavoriteRepository favoriteRepository) {
     this.favoriteRepository = favoriteRepository;
     this.buildingConnector = buildingConnector;
