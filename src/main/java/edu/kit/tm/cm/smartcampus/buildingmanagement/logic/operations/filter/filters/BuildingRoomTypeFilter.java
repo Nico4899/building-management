@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * This class represents an implementation of {@link Filter}, it filters a collection of Buildings
+ * This class represents an implementation of {@link Filter}, it filters a collection of buildings
  * by room types.
  */
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class BuildingRoomTypeFilter implements Filter<Building> {
   public void filter() {
     for (Map.Entry<Building, Collection<Room>> entry : buildingRoomMap.entrySet()) {
       for (Room room : entry.getValue()) {
-        if (filterValues.contains(room.getRoomType())) {
+        if (!filterValues.contains(room.getRoomType())) {
           collectionToFilter.remove(entry.getKey());
         }
       }

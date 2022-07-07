@@ -19,6 +19,6 @@ public class CampusLocationFilter implements Filter<Building> {
 
   @Override
   public void filter() {
-    collectionToFilter.removeIf(building -> filterValues.contains(building.getCampusLocation()));
+    collectionToFilter.removeIf(building -> !filterValues.contains(building.getCampusLocation()));
   }
 }

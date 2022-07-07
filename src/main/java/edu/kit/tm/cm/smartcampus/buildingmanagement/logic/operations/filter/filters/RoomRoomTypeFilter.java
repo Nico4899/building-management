@@ -19,6 +19,6 @@ public class RoomRoomTypeFilter implements Filter<Room> {
 
   @Override
   public void filter() {
-    collectionToFilter.removeIf(room -> filterValues.contains(room.getRoomType()));
+    collectionToFilter.removeIf(room -> !filterValues.contains(room.getRoomType()));
   }
 }

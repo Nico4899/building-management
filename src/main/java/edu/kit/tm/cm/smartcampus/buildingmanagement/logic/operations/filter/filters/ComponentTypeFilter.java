@@ -23,7 +23,7 @@ public class ComponentTypeFilter<T> implements Filter<T> {
   public void filter() {
     for (Map.Entry<T, Collection<Component>> entry : genericComponentMap.entrySet()) {
       for (Component component : entry.getValue()) {
-        if (filterValues.contains(component.getComponentType())) {
+        if (!filterValues.contains(component.getComponentType())) {
           collectionToFilter.remove(entry.getKey());
         }
       }
