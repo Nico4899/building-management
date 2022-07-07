@@ -29,7 +29,12 @@ public class FilterOptions {
   private Map<Building, Collection<Room>> buildingRoomMap;
   private Map<Building, Collection<Component>> buildingComponentMap;
 
-  public void executeBuildingFilter(Collection<Building> collection) {
+  /**
+   * This method filters a given collection of {@link Building} by the given filter options.
+   *
+   * @param collection collection to be filtered
+   */
+  public void filterBuildings(Collection<Building> collection) {
     if (campusLocationFilterOption.isSelected()) {
       Filter<Building> filter =
           new CampusLocationFilter(collection, campusLocationFilterOption.getFilterValues());
@@ -49,7 +54,12 @@ public class FilterOptions {
     }
   }
 
-  public void executeRoomFilter(Collection<Room> collection) {
+  /**
+   * This method filters a given collection of {@link Room} by the given filter options.
+   *
+   * @param collection collection to be filtered
+   */
+  public void filterRooms(Collection<Room> collection) {
     if (roomTypeFilterOption.isSelected()) {
       Filter<Room> filter =
           new RoomRoomTypeFilter(collection, roomTypeFilterOption.getFilterValues());

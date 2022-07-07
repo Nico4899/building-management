@@ -51,7 +51,7 @@ public class BuildingManagementManager {
     Collection<Building> buildings = buildingConnector.listBuildings();
     filterOptions.setBuildingComponentMap(mapBuildingComponents(buildings));
     filterOptions.setBuildingRoomMap(mapBuildingRooms(buildings));
-    filterOptions.executeBuildingFilter(buildings);
+    filterOptions.filterBuildings(buildings);
     return buildings;
   }
 
@@ -66,7 +66,7 @@ public class BuildingManagementManager {
     if (identificationNumber.matches(BIN_PATTERN)) {
       Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
       filterOptions.setRoomComponentMap(mapRoomComponents(rooms));
-      filterOptions.executeRoomFilter(rooms);
+      filterOptions.filterRooms(rooms);
       return rooms;
     }
     throw new InvalidArgumentsException();
