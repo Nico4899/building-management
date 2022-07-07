@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * This class describes an object containing of filter options for the building management service
+ * filter system.
+ */
 @Data
 @AllArgsConstructor
 @Builder

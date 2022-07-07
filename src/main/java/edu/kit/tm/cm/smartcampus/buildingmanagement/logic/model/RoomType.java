@@ -1,6 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-
+/**
+ * This enum represents the possible room types.
+ */
 public enum RoomType {
   CAFETERIA,
   RESTROOM,
@@ -11,6 +13,12 @@ public enum RoomType {
   LECTURE_ROOM,
   SPORTS;
 
+  /**
+   * Get room type by ordinal number.
+   *
+   * @param value ordinal value
+   * @return room type with given ordinal
+   */
   public static RoomType forNumber(int value) {
     return switch (value) {
       case 1 -> RESTROOM;

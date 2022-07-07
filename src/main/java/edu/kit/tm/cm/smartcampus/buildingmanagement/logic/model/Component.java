@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** This class describes a component which can be held by {@link Building} or {@link Room}. */
 @Data
 @Builder
 @NoArgsConstructor

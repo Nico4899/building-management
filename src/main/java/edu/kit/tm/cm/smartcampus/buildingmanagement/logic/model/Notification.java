@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+/**
+ * This class describes a notification unit.
+ */
 @Data
 @Builder
 @NoArgsConstructor

@@ -5,6 +5,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
+/**
+ * Implementation of {@link FilterCommand}.
+ *
+ * @param <T> see in {@link FilterCommand}
+ */
 @NoArgsConstructor
 public class SequentialFilterCommand<T> implements FilterCommand<T> {
 

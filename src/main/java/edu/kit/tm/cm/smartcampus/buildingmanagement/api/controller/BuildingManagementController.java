@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
+/**
+ * This class represents the gRPC controller from server side. It provides clients with the building
+ * management application microservice api.
+ */
 @Service
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {

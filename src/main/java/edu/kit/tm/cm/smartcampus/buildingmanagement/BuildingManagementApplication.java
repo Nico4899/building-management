@@ -7,6 +7,10 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * This class represents the building management application microservice application. It holds the
+ * main class and runs the spring application.
+ */
 @SpringBootApplication
 public class BuildingManagementApplication {
 

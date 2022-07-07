@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * This class represents a room which can hold {@link Component} and is being held by {@link
+ * Building}.
+ */
 @Data
 @Builder
 @NoArgsConstructor

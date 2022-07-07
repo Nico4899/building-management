@@ -7,8 +7,6 @@ option java_package = "edu.kit.tm.cm.proto";
 
 import "google/protobuf/timestamp.proto";
 
-//TODO add filter variants or more endpoints
-
 // building management service
 
 service BuildingManagement {

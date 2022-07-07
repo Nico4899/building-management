@@ -8,6 +8,10 @@ import lombok.AllArgsConstructor;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * This class represents an implementation of {@link Filter}, it filters a collection of generic
+ * objects by component types.
+ */
 @AllArgsConstructor
 public class ComponentTypeFilter<T> implements Filter<T> {
 

@@ -1,5 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception;
 
+/**
+ * Exception thrown on invalid arguments.
+ */
 public class InvalidArgumentsException extends RuntimeException {
 
   private static final String INVALID_ARGUMENTS_EXCEPTION_MESSAGE =

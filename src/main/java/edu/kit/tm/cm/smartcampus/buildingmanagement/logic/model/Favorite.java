@@ -7,6 +7,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 
+/** This class represents a favorite entity, which is used to store favorite data. */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

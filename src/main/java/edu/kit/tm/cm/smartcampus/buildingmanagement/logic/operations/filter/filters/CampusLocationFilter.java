@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 
+/**
+ * This class represents an implementation of {@link Filter}, it filters a collection of buildings
+ * by campus location.
+ */
 @AllArgsConstructor
 public class CampusLocationFilter implements Filter<Building> {
 
