@@ -1,6 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.BuildingManagementErrorHandler;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.RestTemplateErrorHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -20,6 +20,6 @@ public class BuildingManagementApplication {
 
   @Bean
   public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
-    return restTemplateBuilder.errorHandler(new BuildingManagementErrorHandler()).build();
+    return restTemplateBuilder.errorHandler(new RestTemplateErrorHandler()).build();
   }
 }

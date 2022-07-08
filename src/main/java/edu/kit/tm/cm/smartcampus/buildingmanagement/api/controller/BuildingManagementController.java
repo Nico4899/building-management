@@ -2,48 +2,24 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.error.BuildingManagementErrorHandler;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 import io.grpc.stub.StreamObserver;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Controller;
 
 import java.util.Collection;
 
 /**
  * This class represents the gRPC controller from server side. It provides clients with the building
- * management application microservice api.
+ * management application microservice api. It uses a {@link BuildingManagementErrorHandler} to
+ * handle exception occurrences.
  */
-@Service
+@Controller
 public class BuildingManagementController
     extends BuildingManagementGrpc.BuildingManagementImplBase {
-
-  private static final String SUCCESSFUL_MESSAGE = "Operation was successful!";
-
-  private static final boolean SUCCESSFUL = true;
-  private static final boolean UNSUCCESSFUL = false;
-
-  private static final String GET_BUILDING = "GetBuilding";
-  private static final String GET_COMPONENT = "GetComponent";
-  private static final String GET_ROOM = "GetRoom";
-  private static final String CREATE_BUILDING = "CreateBuilding";
-  private static final String CREATE_ROOM = "CreateRoom";
-  private static final String CREATE_COMPONENT = "CreateComponent";
-  private static final String CREATE_FAVORITE = "CreateFavorite";
-  private static final String LIST_BUILDINGS = "ListBuildings";
-  private static final String LIST_ROOMS = "ListRooms";
-  private static final String LIST_COMPONENTS = "ListComponents";
-  private static final String LIST_NOTIFICATIONS = "ListNotifications";
-  private static final String LIST_BUILDING_FAVORITES = "ListBuildingFavorites";
-  private static final String LIST_ROOM_FAVORITES = "ListRoomFavorites";
-  private static final String LIST_COMPONENT_FAVORITES = "ListComponentFavorites";
-  private static final String UPDATE_BUILDING = "UpdateBuilding";
-  private static final String UPDATE_ROOM = "UpdateRoom";
-  private static final String UPDATE_COMPONENT = "UpdateComponent";
-  private static final String REMOVE_OBJECT = "Remove";
 
   private final BuildingManagementService buildingManagementService;
 
@@ -54,730 +30,375 @@ public class BuildingManagementController
   @Override
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
+    BuildingManagementErrorHandler<GetBuildingRequest, GetBuildingResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    GetBuildingResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Building building = this.buildingManagementService.getBuilding(identificationNumber);
+              GrpcBuilding grpcBuilding = this.writeBuilding(building);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      Building building = this.buildingManagementService.getBuilding(identificationNumber);
-      GrpcBuilding grpcBuilding = this.writeBuilding(building);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      GetBuildingResponse response =
-          GetBuildingResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setBuilding(grpcBuilding)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), GET_BUILDING);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetBuildingResponse response =
-          GetBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetBuildingResponse response =
-          GetBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return GetBuildingResponse.newBuilder().setBuilding(grpcBuilding).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void getRoom(GetRoomRequest request, StreamObserver<GetRoomResponse> responseObserver) {
+    BuildingManagementErrorHandler<GetRoomRequest, GetRoomResponse> buildingManagementErrorHandler =
+        new BuildingManagementErrorHandler<>(responseObserver);
+    GetRoomResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Room room = this.buildingManagementService.getRoom(identificationNumber);
+              GrpcRoom grpcRoom = this.writeRoom(room);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      Room room = this.buildingManagementService.getRoom(identificationNumber);
-      GrpcRoom grpcRoom = this.writeRoom(room);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      GetRoomResponse response =
-          GetRoomResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setRoom(grpcRoom)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), GET_ROOM);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetRoomResponse response =
-          GetRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetRoomResponse response =
-          GetRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return GetRoomResponse.newBuilder().setRoom(grpcRoom).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void getComponent(
       GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
+    BuildingManagementErrorHandler<GetComponentRequest, GetComponentResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    GetComponentResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Component component =
+                  this.buildingManagementService.getComponent(identificationNumber);
+              GrpcComponent grpcComponent = this.writeComponent(component);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      Component component = this.buildingManagementService.getComponent(identificationNumber);
-      GrpcComponent grpcComponent = this.writeComponent(component);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      GetComponentResponse response =
-          GetComponentResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setComponent(grpcComponent)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), GET_COMPONENT);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetComponentResponse response =
-          GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      GetComponentResponse response =
-          GetComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return GetComponentResponse.newBuilder().setComponent(grpcComponent).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void createBuilding(
       CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
+    BuildingManagementErrorHandler<CreateBuildingRequest, CreateBuildingResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    CreateBuildingResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcBuilding grpcRequestBuilding = request.getBuilding();
+              Building requestBuilding = this.readBuilding(grpcRequestBuilding);
+              Building responseBuilding =
+                  this.buildingManagementService.createBuilding(requestBuilding);
+              GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
 
-    try {
-
-      GrpcBuilding grpcRequestBuilding = request.getBuilding();
-      Building requestBuilding = this.readBuilding(grpcRequestBuilding);
-      Building responseBuilding = this.buildingManagementService.createBuilding(requestBuilding);
-      GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      CreateBuildingResponse response =
-          CreateBuildingResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setBuilding(grpcResponseBuilding)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), CREATE_BUILDING);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      CreateBuildingResponse response =
-          CreateBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return CreateBuildingResponse.newBuilder().setBuilding(grpcResponseBuilding).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void createRoom(
       CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
+    BuildingManagementErrorHandler<CreateRoomRequest, CreateRoomResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    CreateRoomResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcRoom grpcRequestRoom = request.getRoom();
+              Room requestRoom = this.readRoom(grpcRequestRoom);
+              Room responseRoom = this.buildingManagementService.createRoom(requestRoom);
+              GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
 
-    try {
-
-      GrpcRoom grpcRequestRoom = request.getRoom();
-      Room requestRoom = this.readRoom(grpcRequestRoom);
-      Room responseRoom = this.buildingManagementService.createRoom(requestRoom);
-      GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      CreateRoomResponse response =
-          CreateRoomResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setRoom(grpcResponseRoom)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), CREATE_ROOM);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      CreateRoomResponse response =
-          CreateRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return CreateRoomResponse.newBuilder().setRoom(grpcResponseRoom).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void createComponent(
       CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
+    BuildingManagementErrorHandler<CreateComponentRequest, CreateComponentResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    CreateComponentResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcComponent grpcRequestComponent = request.getComponent();
+              Component requestComponent = this.readComponent(grpcRequestComponent);
+              Component responseComponent =
+                  this.buildingManagementService.createComponent(requestComponent);
 
-    try {
-
-      GrpcComponent grpcRequestComponent = request.getComponent();
-      Component requestComponent = this.readComponent(grpcRequestComponent);
-      Component responseComponent =
-          this.buildingManagementService.createComponent(requestComponent);
-      GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      CreateComponentResponse response =
-          CreateComponentResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setComponent(grpcResponseComponent)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), CREATE_COMPONENT);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      CreateComponentResponse response =
-          CreateComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
+              return CreateComponentResponse.newBuilder()
+                  .setComponent(grpcResponseComponent)
+                  .build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void createFavorite(
       CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
+    BuildingManagementErrorHandler<CreateFavoriteRequest, CreateFavoriteResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    CreateFavoriteResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcFavorite grpcRequestFavorite = request.getFavorite();
+              Favorite requestFavorite = this.readFavorite(grpcRequestFavorite);
+              this.buildingManagementService.createFavorite(requestFavorite);
 
-    try {
-
-      GrpcFavorite grpcRequestFavorite = request.getFavorite();
-      Favorite requestFavorite = this.readFavorite(grpcRequestFavorite);
-      this.buildingManagementService.createFavorite(requestFavorite);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      CreateFavoriteResponse response =
-          CreateFavoriteResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), CREATE_FAVORITE);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      CreateFavoriteResponse response =
-          CreateFavoriteResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return CreateFavoriteResponse.newBuilder().build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listBuildings(
       ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListBuildingsRequest, ListBuildingsResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListBuildingsResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
+              FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
+              Collection<Building> buildings =
+                  this.buildingManagementService.listBuildings(filterOptions);
+              GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
 
-    try {
-
-      GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
-      FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
-      Collection<Building> buildings = this.buildingManagementService.listBuildings(filterOptions);
-      GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListBuildingsResponse response =
-          ListBuildingsResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setBuildings(grpcBuildings)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), LIST_BUILDINGS);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListBuildingsResponse response =
-          ListBuildingsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListBuildingsResponse.newBuilder().setBuildings(grpcBuildings).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listRooms(
       ListRoomsRequest request, StreamObserver<ListRoomsResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListRoomsRequest, ListRoomsResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListRoomsResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
+              FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
+              Collection<Room> rooms =
+                  this.buildingManagementService.listRooms(filterOptions, identificationNumber);
+              GrpcRooms grpcRooms = this.writeRooms(rooms);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      GrpcFilterOptions grpcFilterOptions = request.getGrpcFilterOptions();
-      FilterOptions filterOptions = this.readFilterOptions(grpcFilterOptions);
-      Collection<Room> rooms =
-          this.buildingManagementService.listRooms(filterOptions, identificationNumber);
-      GrpcRooms grpcRooms = this.writeRooms(rooms);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListRoomsResponse response =
-          ListRoomsResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setRooms(grpcRooms)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), LIST_ROOMS);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListRoomsResponse response =
-          ListRoomsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListRoomsResponse response =
-          ListRoomsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListRoomsResponse.newBuilder().setRooms(grpcRooms).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listComponents(
       ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListComponentsRequest, ListComponentsResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListComponentsResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Collection<Component> components =
+                  this.buildingManagementService.listComponents(identificationNumber);
+              GrpcComponents grpcComponents = this.writeComponents(components);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      Collection<Component> components =
-          this.buildingManagementService.listComponents(identificationNumber);
-      GrpcComponents grpcComponents = this.writeComponents(components);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListComponentsResponse response =
-          ListComponentsResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setComponents(grpcComponents)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), LIST_COMPONENTS);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListComponentsResponse response =
-          ListComponentsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListComponentsResponse response =
-          ListComponentsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListComponentsResponse.newBuilder().setComponents(grpcComponents).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listNotifications(
       ListNotificationsRequest request,
       StreamObserver<ListNotificationsResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListNotificationsRequest, ListNotificationsResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListNotificationsResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Collection<Notification> notifications =
+                  this.buildingManagementService.listNotifications(identificationNumber);
+              GrpcNotifications grpcNotifications = this.writeNotifications(notifications);
 
-    String identificationNumber = request.getIdentificationNumber();
-
-    try {
-
-      Collection<Notification> notifications =
-          this.buildingManagementService.listNotifications(identificationNumber);
-      GrpcNotifications grpcNotifications = this.writeNotifications(notifications);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListNotificationsResponse response =
-          ListNotificationsResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setNotifications(grpcNotifications)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), LIST_NOTIFICATIONS);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListNotificationsResponse response =
-          ListNotificationsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListNotificationsResponse response =
-          ListNotificationsResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListNotificationsResponse.newBuilder()
+                  .setNotifications(grpcNotifications)
+                  .build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listBuildingFavorites(
       ListBuildingFavoritesRequest request,
       StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListBuildingFavoritesRequest, ListBuildingFavoritesResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListBuildingFavoritesResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String owner = request.getOwner();
+              Collection<Building> buildings =
+                  this.buildingManagementService.listBuildingFavorites(owner);
+              GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
 
-    try {
-
-      String owner = request.getOwner();
-      Collection<Building> buildings = this.buildingManagementService.listBuildingFavorites(owner);
-      GrpcBuildings grpcBuildings = this.writeBuildings(buildings);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListBuildingFavoritesResponse response =
-          ListBuildingFavoritesResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setBuildings(grpcBuildings)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message =
-          String.format(invalidArgumentsException.getMessage(), LIST_BUILDING_FAVORITES);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListBuildingFavoritesResponse response =
-          ListBuildingFavoritesResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListBuildingFavoritesResponse.newBuilder().setBuildings(grpcBuildings).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listRoomFavorites(
       ListRoomFavoritesRequest request,
       StreamObserver<ListRoomFavoritesResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListRoomFavoritesRequest, ListRoomFavoritesResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListRoomFavoritesResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String owner = request.getOwner();
+              Collection<Room> rooms = this.buildingManagementService.listRoomFavorites(owner);
+              GrpcRooms grpcRooms = this.writeRooms(rooms);
 
-    try {
-
-      String owner = request.getOwner();
-      Collection<Room> rooms = this.buildingManagementService.listRoomFavorites(owner);
-      GrpcRooms grpcRooms = this.writeRooms(rooms);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListRoomFavoritesResponse response =
-          ListRoomFavoritesResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setRooms(grpcRooms)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), LIST_ROOM_FAVORITES);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListRoomFavoritesResponse response =
-          ListRoomFavoritesResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListRoomFavoritesResponse.newBuilder().setRooms(grpcRooms).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void listComponentFavorites(
       ListComponentFavoritesRequest request,
       StreamObserver<ListComponentFavoritesResponse> responseObserver) {
+    BuildingManagementErrorHandler<ListComponentFavoritesRequest, ListComponentFavoritesResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    ListComponentFavoritesResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String owner = request.getOwner();
+              Collection<Component> components =
+                  this.buildingManagementService.listComponentFavorites(owner);
+              GrpcComponents grpcComponents = this.writeComponents(components);
 
-    try {
-
-      String owner = request.getOwner();
-      Collection<Component> components =
-          this.buildingManagementService.listComponentFavorites(owner);
-      GrpcComponents grpcComponents = this.writeComponents(components);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      ListComponentFavoritesResponse response =
-          ListComponentFavoritesResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setComponents(grpcComponents)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message =
-          String.format(invalidArgumentsException.getMessage(), LIST_COMPONENT_FAVORITES);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      ListComponentFavoritesResponse response =
-          ListComponentFavoritesResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return ListComponentFavoritesResponse.newBuilder()
+                  .setComponents(grpcComponents)
+                  .build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void updateBuilding(
       UpdateBuildingRequest request, StreamObserver<UpdateBuildingResponse> responseObserver) {
 
-    GrpcBuilding grpcRequestBuilding = request.getBuilding();
+    BuildingManagementErrorHandler<UpdateBuildingRequest, UpdateBuildingResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    UpdateBuildingResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcBuilding grpcRequestBuilding = request.getBuilding();
+              Building requestBuilding = this.readBuilding(grpcRequestBuilding);
+              Building responseBuilding =
+                  this.buildingManagementService.updateBuilding(requestBuilding);
+              GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
 
-    try {
-
-      Building requestBuilding = this.readBuilding(grpcRequestBuilding);
-      Building responseBuilding = this.buildingManagementService.updateBuilding(requestBuilding);
-      GrpcBuilding grpcResponseBuilding = this.writeBuilding(responseBuilding);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      UpdateBuildingResponse response =
-          UpdateBuildingResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setBuilding(grpcResponseBuilding)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), UPDATE_BUILDING);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateBuildingResponse response =
-          UpdateBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message =
-          String.format(
-              resourceNotFoundException.getMessage(),
-              grpcRequestBuilding.getIdentificationNumber());
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateBuildingResponse response =
-          UpdateBuildingResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return UpdateBuildingResponse.newBuilder().setBuilding(grpcResponseBuilding).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void updateRoom(
       UpdateRoomRequest request, StreamObserver<UpdateRoomResponse> responseObserver) {
+    BuildingManagementErrorHandler<UpdateRoomRequest, UpdateRoomResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    UpdateRoomResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcRoom grpcRequestRoom = request.getRoom();
+              Room requestRoom = this.readRoom(grpcRequestRoom);
+              Room responseRoom = this.buildingManagementService.updateRoom(requestRoom);
+              GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
 
-    GrpcRoom grpcRequestRoom = request.getRoom();
-
-    try {
-
-      Room requestRoom = this.readRoom(grpcRequestRoom);
-      Room responseRoom = this.buildingManagementService.updateRoom(requestRoom);
-      GrpcRoom grpcResponseRoom = this.writeRoom(responseRoom);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      UpdateRoomResponse response =
-          UpdateRoomResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setRoom(grpcResponseRoom)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), UPDATE_ROOM);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateRoomResponse response =
-          UpdateRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message =
-          String.format(
-              resourceNotFoundException.getMessage(), grpcRequestRoom.getIdentificationNumber());
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateRoomResponse response =
-          UpdateRoomResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return UpdateRoomResponse.newBuilder().setRoom(grpcResponseRoom).build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void updateComponent(
       UpdateComponentRequest request, StreamObserver<UpdateComponentResponse> responseObserver) {
 
-    GrpcComponent grpcRequestComponent = request.getComponent();
+    BuildingManagementErrorHandler<UpdateComponentRequest, UpdateComponentResponse>
+        buildingManagementErrorHandler = new BuildingManagementErrorHandler<>(responseObserver);
+    UpdateComponentResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              GrpcComponent grpcRequestComponent = request.getComponent();
+              Component requestComponent = this.readComponent(grpcRequestComponent);
+              Component responseComponent =
+                  this.buildingManagementService.updateComponent(requestComponent);
+              GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
 
-    try {
-
-      Component requestComponent = this.readComponent(grpcRequestComponent);
-      Component responseComponent =
-          this.buildingManagementService.updateComponent(requestComponent);
-      GrpcComponent grpcResponseComponent = this.writeComponent(responseComponent);
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-
-      UpdateComponentResponse response =
-          UpdateComponentResponse.newBuilder()
-              .setResponseMessage(responseMessage)
-              .setComponent(grpcResponseComponent)
-              .build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), UPDATE_COMPONENT);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateComponentResponse response =
-          UpdateComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message =
-          String.format(
-              resourceNotFoundException.getMessage(),
-              grpcRequestComponent.getIdentificationNumber());
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      UpdateComponentResponse response =
-          UpdateComponentResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return UpdateComponentResponse.newBuilder()
+                  .setComponent(grpcResponseComponent)
+                  .build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   @Override
   public void remove(RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
 
-    String identificationNumber = request.getIdentificationNumber();
+    BuildingManagementErrorHandler<RemoveRequest, RemoveResponse> buildingManagementErrorHandler =
+        new BuildingManagementErrorHandler<>(responseObserver);
+    RemoveResponse response =
+        buildingManagementErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              this.buildingManagementService.remove(identificationNumber);
 
-    try {
-
-      this.buildingManagementService.remove(identificationNumber);
-
-      ResponseMessage responseMessage = this.writeResponseMessage(SUCCESSFUL_MESSAGE, SUCCESSFUL);
-      RemoveResponse response =
-          RemoveResponse.newBuilder().setResponseMessage(responseMessage).build();
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (InvalidArgumentsException invalidArgumentsException) {
-
-      String message = String.format(invalidArgumentsException.getMessage(), REMOVE_OBJECT);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      RemoveResponse response =
-          RemoveResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-
-    } catch (ResourceNotFoundException resourceNotFoundException) {
-
-      String message = String.format(resourceNotFoundException.getMessage(), identificationNumber);
-      ResponseMessage responseMessage = this.writeResponseMessage(message, UNSUCCESSFUL);
-
-      RemoveResponse response =
-          RemoveResponse.newBuilder().setResponseMessage(responseMessage).build();
-
-      responseObserver.onNext(response);
-      responseObserver.onCompleted();
-    }
+              return RemoveResponse.newBuilder().build();
+            },
+            request);
+    buildingManagementErrorHandler.onNext(response);
+    buildingManagementErrorHandler.onCompleted();
   }
 
   private Component readComponent(GrpcComponent grpcComponent) {
@@ -1019,9 +640,5 @@ public class BuildingManagementController
 
   private GrpcRoomType writeRoomType(RoomType roomType) {
     return GrpcRoomType.forNumber(roomType.ordinal() + 1);
-  }
-
-  private ResponseMessage writeResponseMessage(String message, boolean successful) {
-    return ResponseMessage.newBuilder().setMessage(message).setSuccessful(successful).build();
   }
 }
