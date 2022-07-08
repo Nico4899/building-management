@@ -34,13 +34,18 @@ public class Favorite {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = FAVORITE_SEQUENCE)
+  @SequenceGenerator(name = FAVORITE_SEQUENCE, allocationSize = 1)
   @GenericGenerator(
       name = FAVORITE_SEQUENCE,
       strategy = PREFIX_GENERATOR_URL,
       parameters = {
         @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = FAVORITE_PREFIX)
       })
-  @Column(name = IDENTIFICATION_NUMBER_COLUMN_NAME, updatable = false, columnDefinition = TEXT)
+  @Column(
+      name = IDENTIFICATION_NUMBER_COLUMN_NAME,
+      nullable = false,
+      updatable = false,
+      columnDefinition = "TEXT")
   private String identificationNumber;
 
   @Column(name = OWNER_COLUMN_NAME, nullable = false, updatable = false, columnDefinition = TEXT)

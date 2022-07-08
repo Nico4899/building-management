@@ -2,6 +2,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.internal.util.config.ConfigurationHelper;
@@ -15,7 +16,7 @@ import java.util.Properties;
 /**
  * This class represents a custom prefix sequence generator for database primary key generation. It
  * generates a prefixed sequence from {@link SequenceStyleGenerator}. The prefix can now be
- * configured by the {@link org.hibernate.annotations.GenericGenerator} annotation.
+ * configured by the {@link GenericGenerator} annotation.
  */
 public class PrefixSequenceGenerator extends SequenceStyleGenerator {
 

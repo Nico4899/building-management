@@ -55,11 +55,17 @@ public class BuildingManagementService {
       buildings = filter.filter(buildings);
     }
     if (filterOptions.getRoomTypeFilterOption().isSelected()) {
+      for (Building building : buildings) {
+        buildBuildingRooms(building);
+      }
       Filter<Building, RoomType> filter = new BRTFilter();
       filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
       buildings = filter.filter(buildings);
     }
     if (filterOptions.getComponentTypeFilterOption().isSelected()) {
+      for (Building building : buildings) {
+        buildBuildingComponents(building);
+      }
       Filter<Building, ComponentType> filter = new BCTFilter();
       filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
       buildings = filter.filter(buildings);
@@ -83,6 +89,9 @@ public class BuildingManagementService {
         rooms = filter.filter(rooms);
       }
       if (filterOptions.getComponentTypeFilterOption().isSelected()) {
+        for (Room room : rooms) {
+          buildRoomComponents(room);
+        }
         Filter<Room, ComponentType> filter = new RCTFilter();
         filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
         rooms = filter.filter(rooms);
