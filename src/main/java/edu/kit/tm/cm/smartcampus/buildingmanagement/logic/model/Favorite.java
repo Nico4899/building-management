@@ -45,7 +45,7 @@ public class Favorite {
       name = IDENTIFICATION_NUMBER_COLUMN_NAME,
       nullable = false,
       updatable = false,
-      columnDefinition = "TEXT")
+      columnDefinition = TEXT)
   private String identificationNumber;
 
   @Column(name = OWNER_COLUMN_NAME, nullable = false, updatable = false, columnDefinition = TEXT)

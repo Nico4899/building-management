@@ -12,9 +12,8 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
  * This class represents a custom REST error handler. It throws custom exceptions on error codes in
  * building management context.
  */
-public class BuildingManagementErrorHandler implements ResponseErrorHandler {
+public class RestClientErrorHandler implements ResponseErrorHandler {
 
-  private static final int INVALID_REQUEST_MESSAGE_FRAMING = 400;
   private static final int REQUESTED_DATA_DOESNT_EXIST = 404;
 
   @Override
@@ -26,14 +25,8 @@ public class BuildingManagementErrorHandler implements ResponseErrorHandler {
 
   @Override
   public void handleError(ClientHttpResponse response) throws IOException {
-
-    if (response.getStatusCode().series() == CLIENT_ERROR) {
       if (response.getRawStatusCode() == REQUESTED_DATA_DOESNT_EXIST) {
         throw new ResourceNotFoundException();
       }
-      if (response.getRawStatusCode() == INVALID_REQUEST_MESSAGE_FRAMING) {
-        throw new InvalidArgumentsException();
-      }
-    }
   }
 }
