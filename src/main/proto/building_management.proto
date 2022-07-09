@@ -45,7 +45,6 @@ message GetBuildingRequest{
 
 message GetBuildingResponse{
   GrpcBuilding building = 1;
-  ResponseMessage response_message = 2;
 }
 
 message GetRoomRequest{
@@ -54,7 +53,6 @@ message GetRoomRequest{
 
 message GetRoomResponse{
   GrpcRoom room = 1;
-  ResponseMessage response_message = 2;
 }
 
 message GetComponentRequest{
@@ -63,7 +61,6 @@ message GetComponentRequest{
 
 message GetComponentResponse{
   GrpcComponent component = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListBuildingsRequest{
@@ -72,7 +69,6 @@ message ListBuildingsRequest{
 
 message ListBuildingsResponse{
   GrpcBuildings buildings = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListRoomsRequest{
@@ -82,7 +78,6 @@ message ListRoomsRequest{
 
 message ListRoomsResponse{
   GrpcRooms rooms = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListComponentsRequest{
@@ -91,7 +86,6 @@ message ListComponentsRequest{
 
 message ListComponentsResponse{
   GrpcComponents components = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListBuildingFavoritesRequest{
@@ -108,17 +102,14 @@ message ListComponentFavoritesRequest{
 
 message ListBuildingFavoritesResponse{
   GrpcBuildings buildings = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListRoomFavoritesResponse{
   GrpcRooms rooms = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListComponentFavoritesResponse{
   GrpcComponents components = 1;
-  ResponseMessage response_message = 2;
 }
 
 message ListNotificationsRequest{
@@ -127,7 +118,6 @@ message ListNotificationsRequest{
 
 message ListNotificationsResponse{
   GrpcNotifications notifications = 1;
-  ResponseMessage response_message = 2;
 }
 
 message CreateBuildingRequest{
@@ -136,7 +126,6 @@ message CreateBuildingRequest{
 
 message CreateBuildingResponse{
   GrpcBuilding building = 1;
-  ResponseMessage response_message = 2;
 }
 
 message CreateRoomRequest{
@@ -145,7 +134,6 @@ message CreateRoomRequest{
 
 message CreateRoomResponse{
   GrpcRoom room = 1;
-  ResponseMessage response_message = 2;
 }
 
 message CreateComponentRequest{
@@ -154,7 +142,6 @@ message CreateComponentRequest{
 
 message CreateComponentResponse{
   GrpcComponent component = 1;
-  ResponseMessage response_message = 2;
 }
 
 message CreateFavoriteRequest{
@@ -163,7 +150,6 @@ message CreateFavoriteRequest{
 
 message CreateFavoriteResponse{
   GrpcFavorite favorite = 1;
-  ResponseMessage response_message = 2;
 }
 
 message UpdateBuildingRequest{
@@ -172,7 +158,6 @@ message UpdateBuildingRequest{
 
 message UpdateBuildingResponse{
   GrpcBuilding building = 1;
-  ResponseMessage response_message = 2;
 }
 
 message UpdateRoomRequest{
@@ -181,7 +166,6 @@ message UpdateRoomRequest{
 
 message UpdateRoomResponse{
   GrpcRoom room = 1;
-  ResponseMessage response_message = 2;
 }
 
 message UpdateComponentRequest{
@@ -190,7 +174,6 @@ message UpdateComponentRequest{
 
 message UpdateComponentResponse{
   GrpcComponent component = 1;
-  ResponseMessage response_message = 2;
 }
 
 message RemoveRequest{
@@ -198,14 +181,6 @@ message RemoveRequest{
 }
 
 message RemoveResponse{
-  ResponseMessage response_message = 1;
-}
-
-// api response piece
-
-message ResponseMessage {
-  bool successful = 1;
-  string message = 2;
 }
 
 // single message constructions
