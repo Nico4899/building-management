@@ -126,7 +126,7 @@ public class BuildingManagementController
   }
 
   @Override
-  public void createComponent(
+  public void createBuildingComponent(
       CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
     GrpcServerErrorHandler<CreateComponentRequest, CreateComponentResponse> grpcServerErrorHandler =
         new GrpcServerErrorHandler<>(responseObserver);
@@ -136,7 +136,30 @@ public class BuildingManagementController
               GrpcComponent grpcRequestComponent = request.getComponent();
               Component requestComponent = GrpcObjectReader.read(grpcRequestComponent);
               Component responseComponent =
-                  this.buildingManagementService.createComponent(requestComponent);
+                  this.buildingManagementService.createBuildingComponent(requestComponent);
+
+              GrpcComponent grpcResponseComponent = GrpcObjectWriter.write(responseComponent);
+              return CreateComponentResponse.newBuilder()
+                  .setComponent(grpcResponseComponent)
+                  .build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void createRoomComponent(
+      CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
+    GrpcServerErrorHandler<CreateComponentRequest, CreateComponentResponse> grpcServerErrorHandler =
+        new GrpcServerErrorHandler<>(responseObserver);
+    CreateComponentResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              GrpcComponent grpcRequestComponent = request.getComponent();
+              Component requestComponent = GrpcObjectReader.read(grpcRequestComponent);
+              Component responseComponent =
+                  this.buildingManagementService.createRoomComponent(requestComponent);
 
               GrpcComponent grpcResponseComponent = GrpcObjectWriter.write(responseComponent);
               return CreateComponentResponse.newBuilder()
@@ -212,7 +235,7 @@ public class BuildingManagementController
   }
 
   @Override
-  public void listComponents(
+  public void listBuildingComponents(
       ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
     GrpcServerErrorHandler<ListComponentsRequest, ListComponentsResponse> grpcServerErrorHandler =
         new GrpcServerErrorHandler<>(responseObserver);
@@ -221,7 +244,7 @@ public class BuildingManagementController
             x -> {
               String identificationNumber = request.getIdentificationNumber();
               Collection<Component> components =
-                  this.buildingManagementService.listComponents(identificationNumber);
+                  this.buildingManagementService.listBuildingComponents(identificationNumber);
               Collection<GrpcComponent> grpcComponents =
                   GrpcObjectWriter.writeComponents(components);
 
@@ -233,7 +256,28 @@ public class BuildingManagementController
   }
 
   @Override
-  public void listNotifications(
+  public void listRoomComponents(
+      ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
+    GrpcServerErrorHandler<ListComponentsRequest, ListComponentsResponse> grpcServerErrorHandler =
+        new GrpcServerErrorHandler<>(responseObserver);
+    ListComponentsResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Collection<Component> components =
+                  this.buildingManagementService.listRoomComponents(identificationNumber);
+              Collection<GrpcComponent> grpcComponents =
+                  GrpcObjectWriter.writeComponents(components);
+
+              return ListComponentsResponse.newBuilder().addAllComponents(grpcComponents).build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void listBuildingNotifications(
       ListNotificationsRequest request,
       StreamObserver<ListNotificationsResponse> responseObserver) {
     GrpcServerErrorHandler<ListNotificationsRequest, ListNotificationsResponse>
@@ -243,7 +287,55 @@ public class BuildingManagementController
             x -> {
               String identificationNumber = request.getIdentificationNumber();
               Collection<Notification> notifications =
-                  this.buildingManagementService.listNotifications(identificationNumber);
+                  this.buildingManagementService.listBuildingNotifications(identificationNumber);
+              Collection<GrpcNotification> grpcNotifications =
+                  GrpcObjectWriter.writeNotifications(notifications);
+
+              return ListNotificationsResponse.newBuilder()
+                  .addAllNotifications(grpcNotifications)
+                  .build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void listRoomNotifications(
+      ListNotificationsRequest request,
+      StreamObserver<ListNotificationsResponse> responseObserver) {
+    GrpcServerErrorHandler<ListNotificationsRequest, ListNotificationsResponse>
+        grpcServerErrorHandler = new GrpcServerErrorHandler<>(responseObserver);
+    ListNotificationsResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Collection<Notification> notifications =
+                  this.buildingManagementService.listRoomNotifications(identificationNumber);
+              Collection<GrpcNotification> grpcNotifications =
+                  GrpcObjectWriter.writeNotifications(notifications);
+
+              return ListNotificationsResponse.newBuilder()
+                  .addAllNotifications(grpcNotifications)
+                  .build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void listComponentNotifications(
+      ListNotificationsRequest request,
+      StreamObserver<ListNotificationsResponse> responseObserver) {
+    GrpcServerErrorHandler<ListNotificationsRequest, ListNotificationsResponse>
+        grpcServerErrorHandler = new GrpcServerErrorHandler<>(responseObserver);
+    ListNotificationsResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              Collection<Notification> notifications =
+                  this.buildingManagementService.listComponentNotifications(identificationNumber);
               Collection<GrpcNotification> grpcNotifications =
                   GrpcObjectWriter.writeNotifications(notifications);
 
@@ -388,14 +480,68 @@ public class BuildingManagementController
   }
 
   @Override
-  public void remove(RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+  public void removeBuilding(
+      RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
     GrpcServerErrorHandler<RemoveRequest, RemoveResponse> grpcServerErrorHandler =
         new GrpcServerErrorHandler<>(responseObserver);
     RemoveResponse response =
         grpcServerErrorHandler.execute(
             x -> {
               String identificationNumber = request.getIdentificationNumber();
-              this.buildingManagementService.remove(identificationNumber);
+              this.buildingManagementService.removeBuilding(identificationNumber);
+
+              return RemoveResponse.newBuilder().build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void removeRoom(RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+    GrpcServerErrorHandler<RemoveRequest, RemoveResponse> grpcServerErrorHandler =
+        new GrpcServerErrorHandler<>(responseObserver);
+    RemoveResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              this.buildingManagementService.removeRoom(identificationNumber);
+
+              return RemoveResponse.newBuilder().build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void removeComponent(
+      RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+    GrpcServerErrorHandler<RemoveRequest, RemoveResponse> grpcServerErrorHandler =
+        new GrpcServerErrorHandler<>(responseObserver);
+    RemoveResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              this.buildingManagementService.removeComponent(identificationNumber);
+
+              return RemoveResponse.newBuilder().build();
+            },
+            request);
+    grpcServerErrorHandler.onNext(response);
+    grpcServerErrorHandler.onCompleted();
+  }
+
+  @Override
+  public void removeFavorite(
+      RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+    GrpcServerErrorHandler<RemoveRequest, RemoveResponse> grpcServerErrorHandler =
+        new GrpcServerErrorHandler<>(responseObserver);
+    RemoveResponse response =
+        grpcServerErrorHandler.execute(
+            x -> {
+              String identificationNumber = request.getIdentificationNumber();
+              this.buildingManagementService.removeFavorite(identificationNumber);
 
               return RemoveResponse.newBuilder().build();
             },

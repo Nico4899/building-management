@@ -3,6 +3,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * This class represents the building management application microservice manager. It holds and
@@ -83,62 +82,71 @@ public class BuildingManagementService {
    * @return collection of the building's rooms
    */
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(BIN_PATTERN));
-    if (identificationNumber.matches(BIN_PATTERN)) {
-      Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
-      if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-        Filter<Room, RoomType> filter = new RRTFilter();
-        filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
-        rooms = filter.filter(rooms);
-      }
-      if (filterOptions.getComponentTypeFilterOption().isSelected()) {
-        for (Room room : rooms) {
-          buildRoomComponents(room);
-        }
-        Filter<Room, ComponentType> filter = new RCTFilter();
-        filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
-        rooms = filter.filter(rooms);
-      }
-      return rooms;
+    Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
+    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
+      Filter<Room, RoomType> filter = new RRTFilter();
+      filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
+      rooms = filter.filter(rooms);
     }
-    return Collections.emptyList();
+    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
+      for (Room room : rooms) {
+        buildRoomComponents(room);
+      }
+      Filter<Room, ComponentType> filter = new RCTFilter();
+      filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
+      rooms = filter.filter(rooms);
+    }
+    return rooms;
   }
 
   /**
-   * Lists all room's / building's components.
+   * Lists all building's components.
    *
    * @param identificationNumber of the parent building or room
-   * @return collection of room's / building's components
+   * @return collection of components
    */
-  public Collection<Component> listComponents(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(BIN_PATTERN, RIN_PATTERN));
-    if (identificationNumber.matches(BIN_PATTERN)) {
-      return buildingConnector.listBuildingComponents(identificationNumber);
-    } else if (identificationNumber.matches(RIN_PATTERN)) {
-      return buildingConnector.listRoomComponents(identificationNumber);
-    }
-    return Collections.emptyList();
+  public Collection<Component> listBuildingComponents(String identificationNumber) {
+    return buildingConnector.listBuildingComponents(identificationNumber);
   }
 
   /**
-   * Lists all room's / building's / component's notifications.
+   * Lists all room's components.
    *
    * @param identificationNumber of the parent building or room
-   * @return collection of room's / component's / building's notifications
+   * @return collection of components
    */
-  public Collection<Notification> listNotifications(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(BIN_PATTERN, RIN_PATTERN, CIN_PATTERN));
-    if (identificationNumber.matches(BIN_PATTERN)) {
-      return buildingConnector.listBuildingNotifications(identificationNumber);
-    } else if (identificationNumber.matches(RIN_PATTERN)) {
-      return buildingConnector.listRoomNotifications(identificationNumber);
-    } else if (identificationNumber.matches(CIN_PATTERN)) {
-      return buildingConnector.listComponentNotifications(identificationNumber);
-    }
-    return Collections.emptyList();
+  public Collection<Component> listRoomComponents(String identificationNumber) {
+    return buildingConnector.listRoomComponents(identificationNumber);
+  }
+
+  /**
+   * Lists all building's notifications.
+   *
+   * @param identificationNumber of the parent building or room
+   * @return collection of notifications
+   */
+  public Collection<Notification> listBuildingNotifications(String identificationNumber) {
+    return buildingConnector.listBuildingNotifications(identificationNumber);
+  }
+
+  /**
+   * Lists all room's notifications.
+   *
+   * @param identificationNumber of the parent building or room
+   * @return collection of notifications
+   */
+  public Collection<Notification> listRoomNotifications(String identificationNumber) {
+    return buildingConnector.listRoomNotifications(identificationNumber);
+  }
+
+  /**
+   * Lists all component's notifications.
+   *
+   * @param identificationNumber of the parent building or room
+   * @return collection of notifications
+   */
+  public Collection<Notification> listComponentNotifications(String identificationNumber) {
+    return buildingConnector.listComponentNotifications(identificationNumber);
   }
 
   /**
@@ -199,8 +207,6 @@ public class BuildingManagementService {
    * @return building belonging to the identification number provided
    */
   public Building getBuilding(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(BIN_PATTERN));
     return this.buildingConnector.getBuilding(identificationNumber);
   }
 
@@ -211,8 +217,6 @@ public class BuildingManagementService {
    * @return room belonging to the identification number provided
    */
   public Room getRoom(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(RIN_PATTERN));
     return this.buildingConnector.getRoom(identificationNumber);
   }
 
@@ -223,8 +227,6 @@ public class BuildingManagementService {
    * @return component belonging to the identification number provided
    */
   public Component getComponent(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(CIN_PATTERN));
     return this.buildingConnector.getComponent(identificationNumber);
   }
 
@@ -235,7 +237,6 @@ public class BuildingManagementService {
    * @return created building
    */
   public Building createBuilding(Building building) {
-    BuildingManagementErrorUtils.checkForError(building, true);
     return this.buildingConnector.createBuilding(building);
   }
 
@@ -246,28 +247,27 @@ public class BuildingManagementService {
    * @return created room
    */
   public Room createRoom(Room room) {
-    BuildingManagementErrorUtils.checkForError(room, true);
-    if (room.getParentIdentificationNumber().matches(BIN_PATTERN)) {
-      return this.buildingConnector.createBuildingRoom(room);
-    }
-    throw new InvalidArgumentsException();
+    return this.buildingConnector.createBuildingRoom(room);
   }
 
   /**
-   * Create a new component and add it to the building domain.
+   * Create a building's new component and add it to the building domain.
    *
    * @param component component object without identification number
    * @return created component
    */
-  public Component createComponent(Component component) {
-    BuildingManagementErrorUtils.checkForError(component, true);
-    if (component.getParentIdentificationNumber().matches(BIN_PATTERN)) {
-      return this.buildingConnector.createBuildingComponent(component);
-    }
-    if (component.getParentIdentificationNumber().matches(RIN_PATTERN)) {
-      return this.buildingConnector.createRoomComponent(component);
-    }
-    throw new InvalidArgumentsException();
+  public Component createBuildingComponent(Component component) {
+    return this.buildingConnector.createBuildingComponent(component);
+  }
+
+  /**
+   * Create a room's new component and add it to the building domain.
+   *
+   * @param component component object without identification number
+   * @return created component
+   */
+  public Component createRoomComponent(Component component) {
+    return this.buildingConnector.createRoomComponent(component);
   }
 
   /**
@@ -276,7 +276,15 @@ public class BuildingManagementService {
    * @param favorite favorite object without identification number
    */
   public void createFavorite(Favorite favorite) {
-    BuildingManagementErrorUtils.checkForError(favorite);
+    if (!favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)
+        || !favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)
+        || !favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
+      throw new InvalidArgumentsException(
+          "reference_identification_number",
+          favorite.getReferenceIdentificationNumber(),
+          "should match: " + BIN_PATTERN + "or " + RIN_PATTERN + "or " + CIN_PATTERN,
+          true);
+    }
     this.favoriteRepository.save(favorite);
   }
 
@@ -287,7 +295,6 @@ public class BuildingManagementService {
    * @return updated building
    */
   public Building updateBuilding(Building building) {
-    BuildingManagementErrorUtils.checkForError(building, false);
     return this.buildingConnector.updateBuilding(building);
   }
 
@@ -298,7 +305,6 @@ public class BuildingManagementService {
    * @return updated room
    */
   public Room updateRoom(Room room) {
-    BuildingManagementErrorUtils.checkForError(room, false);
     return this.buildingConnector.updateRoom(room);
   }
 
@@ -309,30 +315,50 @@ public class BuildingManagementService {
    * @return updated component.
    */
   public Component updateComponent(Component component) {
-    BuildingManagementErrorUtils.checkForError(component, false);
     return this.buildingConnector.updateComponent(component);
   }
 
   /**
-   * Removes an object from building domain.
+   * Removes a building from building domain.
    *
-   * @param identificationNumber identification number of the object to be removed
+   * @param identificationNumber identification number of the building to be removed
    */
-  public void remove(String identificationNumber) {
-    BuildingManagementErrorUtils.checkIdentificationNumber(
-        identificationNumber, List.of(BIN_PATTERN, RIN_PATTERN, CIN_PATTERN, FIN_PATTERN));
-    if (identificationNumber.matches(BIN_PATTERN)) {
-      this.buildingConnector.removeBuilding(identificationNumber);
+  public void removeBuilding(String identificationNumber) {
+    this.buildingConnector.removeBuilding(identificationNumber);
+  }
+
+  /**
+   * Removes a room from building domain.
+   *
+   * @param identificationNumber identification number of the room to be removed
+   */
+  public void removeRoom(String identificationNumber) {
+    this.buildingConnector.removeRoom(identificationNumber);
+  }
+
+  /**
+   * Removes a component from building domain.
+   *
+   * @param identificationNumber identification number of the component to be removed
+   */
+  public void removeComponent(String identificationNumber) {
+    this.buildingConnector.removeComponent(identificationNumber);
+  }
+
+  /**
+   * Removes a favorite from the application database.
+   *
+   * @param identificationNumber identification number of the favorite to be removed
+   */
+  public void removeFavorite(String identificationNumber) {
+    if (!identificationNumber.matches(FIN_PATTERN)) {
+      throw new InvalidArgumentsException(
+          "identification_number", identificationNumber, "should match: " + FIN_PATTERN, true);
     }
-    if (identificationNumber.matches(RIN_PATTERN)) {
-      this.buildingConnector.removeRoom(identificationNumber);
+    if (!this.favoriteRepository.existsById(identificationNumber)) {
+      throw new ResourceNotFoundException();
     }
-    if (identificationNumber.matches(CIN_PATTERN)) {
-      this.buildingConnector.removeComponent(identificationNumber);
-    }
-    if (identificationNumber.matches(FIN_PATTERN)) {
-      this.favoriteRepository.deleteById(identificationNumber);
-    }
+    this.favoriteRepository.deleteById(identificationNumber);
   }
 
   private void buildBuildingRooms(Building building) {

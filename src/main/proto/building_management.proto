@@ -17,8 +17,13 @@ service BuildingManagement {
 
   rpc ListBuildings(ListBuildingsRequest) returns (ListBuildingsResponse);
   rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
-  rpc ListComponents(ListComponentsRequest) returns (ListComponentsResponse);
-  rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+
+  rpc ListBuildingComponents(ListComponentsRequest) returns (ListComponentsResponse);
+  rpc ListRoomComponents(ListComponentsRequest) returns (ListComponentsResponse);
+
+  rpc ListBuildingNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListRoomNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListComponentNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
 
   rpc ListBuildingFavorites(ListBuildingFavoritesRequest) returns (ListBuildingFavoritesResponse);
   rpc ListRoomFavorites(ListRoomFavoritesRequest) returns (ListRoomFavoritesResponse);
@@ -26,14 +31,18 @@ service BuildingManagement {
 
   rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
   rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
-  rpc CreateComponent(CreateComponentRequest) returns (CreateComponentResponse);
+  rpc CreateBuildingComponent(CreateComponentRequest) returns (CreateComponentResponse);
+  rpc CreateRoomComponent(CreateComponentRequest) returns (CreateComponentResponse);
   rpc CreateFavorite(CreateFavoriteRequest) returns (CreateFavoriteResponse);
 
   rpc UpdateBuilding(UpdateBuildingRequest) returns (UpdateBuildingResponse);
   rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse);
   rpc UpdateComponent(UpdateComponentRequest) returns (UpdateComponentResponse);
 
-  rpc Remove(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveBuilding(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveRoom(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveComponent(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveFavorite(RemoveRequest) returns (RemoveResponse);
 
 }
 
@@ -247,9 +256,8 @@ message GrpcGeographicalLocation{
 }
 
 message GrpcFavorite{
-  string identification_number = 1;
-  string reference_identification_number = 2;
-  string owner = 3;
+  string reference_identification_number = 1;
+  string owner = 2;
 }
 
 enum GrpcRoomType{

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/** THis class represents a geographical location, by longitude and latitude coordinates. */
+/** This class represents a geographical location, by longitude and latitude coordinates. */
 @Data
 @Builder
 @NoArgsConstructor
