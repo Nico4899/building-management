@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.error;
 
 import com.google.protobuf.Message;
 import com.google.rpc.ErrorInfo;

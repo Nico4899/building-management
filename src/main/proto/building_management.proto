@@ -68,7 +68,7 @@ message ListBuildingsRequest{
 }
 
 message ListBuildingsResponse{
-  GrpcBuildings buildings = 1;
+  repeated GrpcBuilding buildings = 1;
 }
 
 message ListRoomsRequest{
@@ -77,7 +77,7 @@ message ListRoomsRequest{
 }
 
 message ListRoomsResponse{
-  GrpcRooms rooms = 1;
+  repeated GrpcRoom rooms = 1;
 }
 
 message ListComponentsRequest{
@@ -85,7 +85,7 @@ message ListComponentsRequest{
 }
 
 message ListComponentsResponse{
-  GrpcComponents components = 1;
+  repeated GrpcComponent components = 1;
 }
 
 message ListBuildingFavoritesRequest{
@@ -101,15 +101,15 @@ message ListComponentFavoritesRequest{
 }
 
 message ListBuildingFavoritesResponse{
-  GrpcBuildings buildings = 1;
+  repeated GrpcBuilding buildings = 1;
 }
 
 message ListRoomFavoritesResponse{
-  GrpcRooms rooms = 1;
+  repeated GrpcRoom rooms = 1;
 }
 
 message ListComponentFavoritesResponse{
-  GrpcComponents components = 1;
+  repeated GrpcComponent components = 1;
 }
 
 message ListNotificationsRequest{
@@ -117,7 +117,7 @@ message ListNotificationsRequest{
 }
 
 message ListNotificationsResponse{
-  GrpcNotifications notifications = 1;
+  repeated GrpcNotification notifications = 1;
 }
 
 message CreateBuildingRequest{
@@ -276,22 +276,4 @@ enum GrpcComponentType{
   UNKNOWN_COMPONENT_TYPE = 0;
   ELEVATOR = 1;
   STAIRS = 2;
-}
-
-// multi message constructions
-
-message GrpcBuildings{
-  repeated GrpcBuilding buildings = 1;
-}
-
-message GrpcRooms{
-  repeated GrpcRoom rooms = 1;
-}
-
-message GrpcComponents{
-  repeated GrpcComponent components = 1;
-}
-
-message GrpcNotifications{
-  repeated GrpcNotification notifications = 1;
 }
