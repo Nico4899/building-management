@@ -18,6 +18,9 @@ import java.util.Collections;
 @Service
 public class RestTemplateBuildingConnector implements BuildingConnector {
 
+  private final String baseUrl;
+  private final RestTemplate restTemplate;
+
   @Value("${building.listBuildingsUrl}")
   private String listBuildingsUrl;
 
@@ -77,9 +80,6 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
 
   @Value("${notification.listComponentNotificationsUrl}")
   private String listComponentNotificationsUrl;
-
-  private final String baseUrl;
-  private final RestTemplate restTemplate;
 
   @Autowired
   public RestTemplateBuildingConnector(
