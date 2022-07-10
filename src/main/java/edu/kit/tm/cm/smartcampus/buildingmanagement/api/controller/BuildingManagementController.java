@@ -14,10 +14,8 @@ import java.util.Collection;
 
 /**
  * This class represents the gRPC controller from server side. It provides clients with the building
- * management application microservice api. In order to ensure the input and error control flow, a
- * custom wrapper for {@link StreamObserver} is used. {@link GrpcServerErrorHandler} allows the
- * application to catch and handle all thrown exceptions and ensures to provide a client with proper
- * information.
+ * management application microservice api. It uses a {@link GrpcServerErrorHandler} to handle
+ * exception occurrences.
  */
 @Controller
 public class BuildingManagementController

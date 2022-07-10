@@ -157,8 +157,9 @@ public class BuildingManagementService {
    */
   public Collection<Component> listComponentFavorites(String owner) {
     Collection<Component> components = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
+    for (Favorite favorite : favoriteRepository.findAll()) {
+      if (favorite.getOwner().equals(owner)
+          && favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
         components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
       }
     }
@@ -173,8 +174,9 @@ public class BuildingManagementService {
    */
   public Collection<Room> listRoomFavorites(String owner) {
     Collection<Room> rooms = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
+    for (Favorite favorite : favoriteRepository.findAll()) {
+      if (favorite.getOwner().equals(owner)
+          && favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
         rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
       }
     }
@@ -189,8 +191,9 @@ public class BuildingManagementService {
    */
   public Collection<Building> listBuildingFavorites(String owner) {
     Collection<Building> buildings = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
+    for (Favorite favorite : favoriteRepository.findAll()) {
+      if (favorite.getOwner().equals(owner)
+          && favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
         buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
       }
     }

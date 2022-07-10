@@ -13,15 +13,14 @@ import java.util.function.Function;
 
 /**
  * This class is being used as wrapper class for the {@link StreamObserver} of the building management service.
- * It reduces redundant try catch procedures and ensures error handling in the application. Just as many stream
- * observers are, this is a thread unsafe implementation.
+ * It reduces redundant try catch procedures. As many stream observers it is thread unsafe.
  *
  * @param <S> request generic
  * @param <T> response generic
  */
 public class GrpcServerErrorHandler<S extends Message, T extends Message> implements StreamObserver<T> {
 
-  // TODO Error logs? util.Logger?
+  // Error logs? util.Logger?
 
   private final StreamObserver<T> grpcResponseObserver;
 
@@ -63,14 +62,6 @@ public class GrpcServerErrorHandler<S extends Message, T extends Message> implem
     }
   }
 
-  /**
-   * This is the wrapper method to run a function and catch all exceptions thrown and send them to handling.
-   * If an error occurred, it calls the overridden {@link GrpcServerErrorHandler#onError(Throwable)} method.
-   *
-   * @param function function to be applied
-   * @param request request from client
-   * @return response message
-   */
   public T execute(Function<S, T> function, S request) {
     T response = null;
     try {
