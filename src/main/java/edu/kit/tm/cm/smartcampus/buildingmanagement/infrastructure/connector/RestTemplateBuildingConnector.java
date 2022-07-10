@@ -160,8 +160,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
             baseUrl + listBuildingRoomsUrl,
             HttpMethod.GET,
             null,
-            new ParameterizedTypeReference<>() {},
-            identificationNumber);
+            new ParameterizedTypeReference<>() {});
 
     return responseEntity.getBody();
   }
