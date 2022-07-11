@@ -20,6 +20,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table
 public class Favorite {
 
   @Id

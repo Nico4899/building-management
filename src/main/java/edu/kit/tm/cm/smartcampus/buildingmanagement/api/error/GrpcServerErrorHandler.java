@@ -49,10 +49,7 @@ public class GrpcServerErrorHandler<S extends Message, T extends Message> implem
       trailers.put(errorInfoTrailerKey, errorInfo);
       this.grpcResponseObserver.onError(Status.NOT_FOUND.withCause(resourceNotFoundException).asRuntimeException(trailers));
     } else {
-      this.grpcResponseObserver.onError(Status.UNKNOWN
-        .withDescription(throwable.getMessage())
-        .withCause(throwable)
-        .asRuntimeException());
+      this.grpcResponseObserver.onError(Status.UNKNOWN.withDescription(throwable.getMessage()).withCause(throwable).asRuntimeException());
     }
   }
 
@@ -68,7 +65,7 @@ public class GrpcServerErrorHandler<S extends Message, T extends Message> implem
    * If an error occurred, it calls the overridden {@link GrpcServerErrorHandler#onError(Throwable)} method.
    *
    * @param function function to be applied
-   * @param request request from client
+   * @param request  request from client
    * @return response message
    */
   public T execute(Function<S, T> function, S request) {

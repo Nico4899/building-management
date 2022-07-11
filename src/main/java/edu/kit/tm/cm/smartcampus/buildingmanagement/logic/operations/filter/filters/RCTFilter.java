@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RCTFilter implements Filter<Room, ComponentType> {
 
-  Collection<ComponentType> filterValues = List.of(ComponentType.values());
+  private Collection<ComponentType> filterValues = List.of(ComponentType.values());
 
   @Override
   public Collection<Room> filter(@NonNull Collection<Room> collection) {
