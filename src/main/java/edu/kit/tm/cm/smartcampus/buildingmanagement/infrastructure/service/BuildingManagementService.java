@@ -51,24 +51,21 @@ public class BuildingManagementService {
   public Collection<Building> listBuildings(FilterOptions filterOptions) {
     Collection<Building> buildings = buildingConnector.listBuildings();
     if (filterOptions.getCampusLocationFilterOption().isSelected()) {
-      Filter<Building, CampusLocation> filter = new CLFilter();
-      filter.setFilterValues(filterOptions.getCampusLocationFilterOption().getFilterValues());
+      Filter<Building> filter = new CLFilter(filterOptions.getCampusLocationFilterOption().getFilterValues());
       buildings = filter.filter(buildings);
     }
     if (filterOptions.getRoomTypeFilterOption().isSelected()) {
       for (Building building : buildings) {
         buildBuildingRooms(building);
       }
-      Filter<Building, RoomType> filter = new BRTFilter();
-      filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
+      Filter<Building> filter = new BRTFilter(filterOptions.getRoomTypeFilterOption().getFilterValues());
       buildings = filter.filter(buildings);
     }
     if (filterOptions.getComponentTypeFilterOption().isSelected()) {
       for (Building building : buildings) {
         buildBuildingComponents(building);
       }
-      Filter<Building, ComponentType> filter = new BCTFilter();
-      filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
+      Filter<Building> filter = new BCTFilter(filterOptions.getComponentTypeFilterOption().getFilterValues());
       buildings = filter.filter(buildings);
     }
     return buildings;
@@ -84,16 +81,14 @@ public class BuildingManagementService {
   public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
     Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
     if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-      Filter<Room, RoomType> filter = new RRTFilter();
-      filter.setFilterValues(filterOptions.getRoomTypeFilterOption().getFilterValues());
+      Filter<Room> filter = new RRTFilter(filterOptions.getRoomTypeFilterOption().getFilterValues());
       rooms = filter.filter(rooms);
     }
     if (filterOptions.getComponentTypeFilterOption().isSelected()) {
       for (Room room : rooms) {
         buildRoomComponents(room);
       }
-      Filter<Room, ComponentType> filter = new RCTFilter();
-      filter.setFilterValues(filterOptions.getComponentTypeFilterOption().getFilterValues());
+      Filter<Room> filter = new RCTFilter(filterOptions.getComponentTypeFilterOption().getFilterValues());
       rooms = filter.filter(rooms);
     }
     return rooms;

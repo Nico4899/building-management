@@ -8,9 +8,8 @@ import java.util.Collection;
  * This interface describes a generic building management service filter.
  *
  * @param <T> the object type to filter a collection of
- * @param <S> the object type to filter for
  */
-public interface Filter<T, S> {
+public interface Filter<T> {
   /**
    * Filters a given collection by filter values.
    *
@@ -18,11 +17,4 @@ public interface Filter<T, S> {
    * @return filtered collection
    */
   Collection<T> filter(@NonNull Collection<T> collection);
-
-  /**
-   * Adds filter values to filter. If not used, filter values are all type constants.
-   *
-   * @param filterValues filter values to be filtered by
-   */
-  void setFilterValues(@NonNull Collection<S> filterValues);
 }
