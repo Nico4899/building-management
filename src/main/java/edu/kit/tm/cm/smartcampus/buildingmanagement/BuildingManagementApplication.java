@@ -24,7 +24,9 @@ public class BuildingManagementApplication {
   }
 
   @Bean
-  public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
-    return restTemplateBuilder.errorHandler(new RestClientErrorHandler()).build();
+  public RestTemplate getRestTemplate() {
+    RestTemplate restTemplate = new RestTemplate();
+    restTemplate.setErrorHandler(new RestClientErrorHandler());
+    return restTemplate;
   }
 }
