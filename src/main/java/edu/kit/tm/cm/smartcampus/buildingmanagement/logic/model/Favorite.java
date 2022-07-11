@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table
+@ToString
 public class Favorite {
 
   @Id

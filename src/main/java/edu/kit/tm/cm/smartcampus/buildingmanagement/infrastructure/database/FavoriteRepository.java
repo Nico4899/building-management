@@ -11,6 +11,6 @@ import java.util.Collection;
 /** This interface represents a favorite repository. */
 public interface FavoriteRepository extends JpaRepository<Favorite, String> {
 
-  @Query("SELECT '*' FROM Favorite WHERE owner = 'owner'")
+  @Query("SELECT fav FROM Favorite fav WHERE fav.owner = :#{#owner}")
   Collection<Favorite> findByOwner(@Param("owner") String owner);
 }
