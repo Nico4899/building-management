@@ -25,5 +25,5 @@ public class Room {
   private GeographicalLocation geographicalLocation;
   private RoomType roomType;
 
-  private Collection<Component> components = new ArrayList<>();
+  private final Collection<Component> components = new ArrayList<>();
 }

@@ -25,6 +25,6 @@ public class Building {
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
 
-  private Collection<Room> rooms = new ArrayList<>();
-  private Collection<Component> components = new ArrayList<>();
+  private final Collection<Room> rooms = new ArrayList<>();
+  private final Collection<Component> components = new ArrayList<>();
 }

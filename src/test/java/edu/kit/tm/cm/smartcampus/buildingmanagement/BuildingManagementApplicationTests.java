@@ -1,9 +1,12 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement;
 
-// @SpringBootTest
+import org.junit.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
 class BuildingManagementApplicationTests {
 
-  // @Test
+  @Test
   void contextLoads() {
     // assertEquals();
   }
