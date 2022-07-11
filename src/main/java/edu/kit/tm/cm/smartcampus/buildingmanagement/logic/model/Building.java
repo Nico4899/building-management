@@ -1,9 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,6 +22,15 @@ public class Building {
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
 
-  private final Collection<Room> rooms = new ArrayList<>();
-  private final Collection<Component> components = new ArrayList<>();
+  public Building(int numFloors, CampusLocation campusLocation, String buildingName, String buildingNumber, String identificationNumber, GeographicalLocation geographicalLocation) {
+    this.numFloors = numFloors;
+    this.campusLocation = campusLocation;
+    this.buildingName = buildingName;
+    this.buildingNumber = buildingNumber;
+    this.identificationNumber = identificationNumber;
+    this.geographicalLocation = geographicalLocation;
+  }
+
+  private Collection<Room> rooms = new ArrayList<>();
+  private Collection<Component> components = new ArrayList<>();
 }

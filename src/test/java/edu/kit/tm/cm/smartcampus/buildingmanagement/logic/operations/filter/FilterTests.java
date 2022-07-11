@@ -33,9 +33,7 @@ public class FilterTests {
 
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
-      return Stream.of(
-
-
+      return null;
     }
 
   }
@@ -56,7 +54,7 @@ public class FilterTests {
     testRooms.put("library", new Room(0, null, null, null, null, null, RoomType.LIBRARY));
     testRooms.put("cafeteria", new Room(0, null, null, null, null, null, RoomType.CAFETERIA));
 
-    // build buildings
+    // build buildings#
     testBuildings.put("eastCampusBuilding", new Building(0, CampusLocation.EAST_CAMPUS, null, null, null, null));
     testBuildings.put("westCampusBuilding", new Building(0, CampusLocation.WEST_CAMPUS, null, null, null, null));
     testBuildings.put("southCampusBuilding", new Building(0, CampusLocation.SOUTH_CAMPUS, null, null, null, null));

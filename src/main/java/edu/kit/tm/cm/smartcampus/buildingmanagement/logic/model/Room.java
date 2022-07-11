@@ -17,13 +17,23 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room {
-  private int floor;
-  private String roomName;
-  private String roomNumber;
-  private String identificationNumber;
-  private String parentIdentificationNumber;
-  private GeographicalLocation geographicalLocation;
-  private RoomType roomType;
+    private int floor;
+    private String roomName;
+    private String roomNumber;
+    private String identificationNumber;
+    private String parentIdentificationNumber;
+    private GeographicalLocation geographicalLocation;
+    private RoomType roomType;
 
-  private final Collection<Component> components = new ArrayList<>();
+    public Room(int floor, String roomName, String roomNumber, String identificationNumber, String parentIdentificationNumber, GeographicalLocation geographicalLocation, RoomType roomType) {
+        this.floor = floor;
+        this.roomName = roomName;
+        this.roomNumber = roomNumber;
+        this.identificationNumber = identificationNumber;
+        this.parentIdentificationNumber = parentIdentificationNumber;
+        this.geographicalLocation = geographicalLocation;
+        this.roomType = roomType;
+    }
+
+    private Collection<Component> components = new ArrayList<>();
 }
