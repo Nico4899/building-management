@@ -1,11 +1,16 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement;
 
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.RestClientErrorHandler;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * This class represents the building management application microservice application. It holds the
@@ -19,9 +24,7 @@ public class BuildingManagementApplication {
   }
 
   @Bean
-  public RestTemplate getRestTemplate() {
-    RestTemplate restTemplate = new RestTemplate();
-    restTemplate.setErrorHandler(new RestClientErrorHandler());
-    return restTemplate;
+  public RestTemplate getRestTemplate(RestTemplateBuilder restTemplateBuilder) {
+    return restTemplateBuilder.errorHandler(new RestClientErrorHandler()).build();
   }
 }

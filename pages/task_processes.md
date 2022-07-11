@@ -1,6 +1,6 @@
 # Task Processes
 
-In the following examples, are procedures for this microservice, they display its connection and coworking with domain microservices, frontend and their data exchange.
+In the following there are example procedures for this microservice, they display its connection and coworking with domain microservices and their data exchange.
 
 ## Application Microservice **`BuildingManagement`** 
 
