@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-public class FilterTests {
+class BuildingManagementFilterTests {
 
   public static final String ELEVATOR_COMPONENT = "elevatorComponent";
   public static final String STAIRS_COMPONENT = "stairsComponent";
@@ -59,11 +59,11 @@ public class FilterTests {
   private static Collection<Room> testRooms;
 
   @BeforeAll
-  public static void setUp() {
-    buildTestMappings();
+  static void setUp() {
+    buildTestCollections();
   }
 
-  private static void buildTestMappings() {
+  private static void buildTestCollections() {
 
     // build components
     testComponentsMap.put(
@@ -135,14 +135,14 @@ public class FilterTests {
 
   @ParameterizedTest
   @ArgumentsSource(BuildingFilterArgumentsProvider.class)
-  public void filterBuildingCollectionAndValuesResultTest(
+  void filterBuildingCollectionAndValuesResultTest(
       Collection<Building> expected, Filter<Building> filter, Collection<Building> collection) {
     Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
   }
 
   @ParameterizedTest
   @ArgumentsSource(RoomFilterArgumentsProvider.class)
-  public void filterRoomCollectionAndValuesResultTest(
+  void filterRoomCollectionAndValuesResultTest(
       Collection<Room> expected, Filter<Room> filter, Collection<Room> collection) {
     Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
   }
