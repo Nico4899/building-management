@@ -8,6 +8,7 @@ import io.grpc.Metadata;
 import io.grpc.Status;
 import io.grpc.protobuf.ProtoUtils;
 import io.grpc.stub.StreamObserver;
+import lombok.AllArgsConstructor;
 
 import java.util.function.Function;
 
@@ -19,18 +20,10 @@ import java.util.function.Function;
  * @param <S> request generic
  * @param <T> response generic
  */
+@AllArgsConstructor
 public class GrpcServerErrorHandler<S extends Message, T extends Message> implements StreamObserver<T> {
 
   private final StreamObserver<T> grpcResponseObserver;
-
-  /**
-   * Constructs a new grpc server error handler.
-   *
-   * @param grpcResponseObserver grpc response observer to be wrapped
-   */
-  public GrpcServerErrorHandler(StreamObserver<T> grpcResponseObserver) {
-    this.grpcResponseObserver = grpcResponseObserver;
-  }
 
   @Override
   public void onNext(T response) {
