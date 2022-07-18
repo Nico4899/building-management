@@ -1,7 +1,10 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -18,10 +21,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
-@Entity
+@Entity(name = "favorite")
 @Table
-@ToString
 public class Favorite {
 
   @Id
@@ -34,13 +35,11 @@ public class Favorite {
       parameters = {
         @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")
       })
+  @Column(name = "identification_number")
   private String identificationNumber;
 
   private String owner;
-  private String referenceIdentificationNumber;
 
-  public Favorite(String owner, String referenceIdentificationNumber) {
-    this.owner = owner;
-    this.referenceIdentificationNumber = referenceIdentificationNumber;
-  }
+  @Column(name = "reference_identification_number")
+  private String referenceIdentificationNumber;
 }
