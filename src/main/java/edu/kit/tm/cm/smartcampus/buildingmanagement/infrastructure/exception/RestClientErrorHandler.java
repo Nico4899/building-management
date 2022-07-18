@@ -14,8 +14,6 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
  */
 public class RestClientErrorHandler implements ResponseErrorHandler {
 
-  private static final int REQUESTED_DATA_DOESNT_EXIST = 404;
-
   @Override
   public boolean hasError(ClientHttpResponse response) throws IOException {
 
@@ -25,8 +23,12 @@ public class RestClientErrorHandler implements ResponseErrorHandler {
 
   @Override
   public void handleError(ClientHttpResponse response) throws IOException {
-    if (response.getRawStatusCode() == REQUESTED_DATA_DOESNT_EXIST) {
-      throw new ResourceNotFoundException();
+    switch (response.getStatusCode()) {
+      case NOT_FOUND -> throw new ResourceNotFoundException();
+      case BAD_REQUEST -> throw new InvalidArgumentsException(response.getStatusText());
+      case INTERNAL_SERVER_ERROR -> throw new InternalServerErrorException(response.getStatusText());
+      case UNAUTHORIZED -> throw new UnauthorizedAccessException(response.getStatusText());
+      default -> throw new IOException(response.getStatusText());
     }
   }
 }
