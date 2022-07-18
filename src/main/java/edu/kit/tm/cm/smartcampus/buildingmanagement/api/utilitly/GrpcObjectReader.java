@@ -5,11 +5,20 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
 
-public final class GrpcObjectReader {
+/** The type Grpc object reader. */
+@org.springframework.stereotype.Component
+public class GrpcObjectReader {
 
-  private GrpcObjectReader() {}
+  /** Instantiates a new Grpc object reader. */
+  public GrpcObjectReader() {}
 
-  public static Component read(GrpcComponent grpcComponent) {
+  /**
+   * Read component.
+   *
+   * @param grpcComponent the grpc component
+   * @return the component
+   */
+  public Component read(GrpcComponent grpcComponent) {
     return Component.builder()
         .componentDescription(grpcComponent.getComponentDescription())
         .componentType(read(grpcComponent.getComponentType()))
@@ -18,14 +27,26 @@ public final class GrpcObjectReader {
         .build();
   }
 
-  public static Favorite read(GrpcFavorite grpcFavorite) {
+  /**
+   * Read favorite.
+   *
+   * @param grpcFavorite the grpc favorite
+   * @return the favorite
+   */
+  public Favorite read(GrpcFavorite grpcFavorite) {
     return Favorite.builder()
         .referenceIdentificationNumber(grpcFavorite.getReferenceIdentificationNumber())
         .owner(grpcFavorite.getOwner())
         .build();
   }
 
-  public static Building read(GrpcBuilding grpcBuilding) {
+  /**
+   * Read building.
+   *
+   * @param grpcBuilding the grpc building
+   * @return the building
+   */
+  public Building read(GrpcBuilding grpcBuilding) {
     return Building.builder()
         .buildingName(grpcBuilding.getBuildingName())
         .buildingNumber(grpcBuilding.getBuildingNumber())
@@ -35,7 +56,13 @@ public final class GrpcObjectReader {
         .build();
   }
 
-  public static Room read(GrpcRoom grpcRoom) {
+  /**
+   * Read room.
+   *
+   * @param grpcRoom the grpc room
+   * @return the room
+   */
+  public Room read(GrpcRoom grpcRoom) {
     return Room.builder()
         .roomName(grpcRoom.getRoomName())
         .roomType(read(grpcRoom.getRoomType()))
@@ -46,26 +73,56 @@ public final class GrpcObjectReader {
         .build();
   }
 
-  public static RoomType read(GrpcRoomType grpcRoomType) {
+  /**
+   * Read room type.
+   *
+   * @param grpcRoomType the grpc room type
+   * @return the room type
+   */
+  public RoomType read(GrpcRoomType grpcRoomType) {
     return RoomType.forNumber(grpcRoomType.ordinal() + 1);
   }
 
-  public static CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
+  /**
+   * Read campus location.
+   *
+   * @param grpcCampusLocation the grpc campus location
+   * @return the campus location
+   */
+  public CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
     return CampusLocation.forNumber(grpcCampusLocation.ordinal() + 1);
   }
 
-  public static GeographicalLocation read(GrpcGeographicalLocation grpcGeographicalLocation) {
+  /**
+   * Read geographical location.
+   *
+   * @param grpcGeographicalLocation the grpc geographical location
+   * @return the geographical location
+   */
+  public GeographicalLocation read(GrpcGeographicalLocation grpcGeographicalLocation) {
     return GeographicalLocation.builder()
         .longitude(grpcGeographicalLocation.getLongitude())
         .latitude(grpcGeographicalLocation.getLatitude())
         .build();
   }
 
-  public static ComponentType read(GrpcComponentType grpcComponentType) {
+  /**
+   * Read component type.
+   *
+   * @param grpcComponentType the grpc component type
+   * @return the component type
+   */
+  public ComponentType read(GrpcComponentType grpcComponentType) {
     return ComponentType.forNumber(grpcComponentType.ordinal() + 1);
   }
 
-  public static FilterOptions read(GrpcFilterOptions grpcFilterOptions) {
+  /**
+   * Read filter options.
+   *
+   * @param grpcFilterOptions the grpc filter options
+   * @return the filter options
+   */
+  public FilterOptions read(GrpcFilterOptions grpcFilterOptions) {
     return FilterOptions.builder()
         .campusLocationFilterOption(read(grpcFilterOptions.getCampusLocationFilterMapping()))
         .roomTypeFilterOption(read(grpcFilterOptions.getRoomTypeFilterMapping()))
@@ -73,33 +130,45 @@ public final class GrpcObjectReader {
         .build();
   }
 
-  public static FilterOption<ComponentType> read(
-      ComponentTypeFilterMapping componentTypeFilterMapping) {
+  /**
+   * Read filter option.
+   *
+   * @param componentTypeFilterMapping the component type filter mapping
+   * @return the filter option
+   */
+  public FilterOption<ComponentType> read(ComponentTypeFilterMapping componentTypeFilterMapping) {
     return FilterOption.<ComponentType>builder()
         .selected(componentTypeFilterMapping.getSelected())
         .filterValues(
-            componentTypeFilterMapping.getComponentTypesList().stream()
-                .map(GrpcObjectReader::read)
-                .toList())
+            componentTypeFilterMapping.getComponentTypesList().stream().map(this::read).toList())
         .build();
   }
 
-  public static FilterOption<CampusLocation> read(
+  /**
+   * Read filter option.
+   *
+   * @param campusLocationFilterMapping the campus location filter mapping
+   * @return the filter option
+   */
+  public FilterOption<CampusLocation> read(
       CampusLocationFilterMapping campusLocationFilterMapping) {
     return FilterOption.<CampusLocation>builder()
         .selected(campusLocationFilterMapping.getSelected())
         .filterValues(
-            campusLocationFilterMapping.getCampusLocationsList().stream()
-                .map(GrpcObjectReader::read)
-                .toList())
+            campusLocationFilterMapping.getCampusLocationsList().stream().map(this::read).toList())
         .build();
   }
 
-  public static FilterOption<RoomType> read(RoomTypeFilterMapping roomTypeFilterMapping) {
+  /**
+   * Read filter option.
+   *
+   * @param roomTypeFilterMapping the room type filter mapping
+   * @return the filter option
+   */
+  public FilterOption<RoomType> read(RoomTypeFilterMapping roomTypeFilterMapping) {
     return FilterOption.<RoomType>builder()
         .selected(roomTypeFilterMapping.getSelected())
-        .filterValues(
-            roomTypeFilterMapping.getRoomTypesList().stream().map(GrpcObjectReader::read).toList())
+        .filterValues(roomTypeFilterMapping.getRoomTypesList().stream().map(this::read).toList())
         .build();
   }
 }

@@ -4,7 +4,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
  * This enum represents all component types.
  */
 public enum ComponentType {
-  UNKNOWN_COMPONENT_TYPE,
   ELEVATOR,
   STAIRS;
 
@@ -16,7 +15,6 @@ public enum ComponentType {
    */
   public static ComponentType forNumber(int value) {
     return switch (value) {
-      case 0 -> UNKNOWN_COMPONENT_TYPE;
       case 1 -> ELEVATOR;
       case 2 -> STAIRS;
       default -> null;

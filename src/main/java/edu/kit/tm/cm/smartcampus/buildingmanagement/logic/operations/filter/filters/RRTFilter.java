@@ -18,7 +18,7 @@ public class RRTFilter implements Filter<Room> {
   private Collection<RoomType> filterValues;
 
   @Override
-  public Collection<Room> filter(@NonNull Collection<Room> collection) {
+  public Collection<Room> filter(Collection<Room> collection) {
     return collection.stream().filter(room -> filterValues.contains(room.getRoomType())).toList();
   }
 }

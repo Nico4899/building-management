@@ -81,6 +81,12 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
   @Value("${notification.listComponentNotificationsUrl}")
   private String listComponentNotificationsUrl;
 
+  /**
+   * Constructs a new rest template building connector.
+   *
+   * @param restTemplate rest template
+   * @param baseUrl base url
+   */
   @Autowired
   public RestTemplateBuildingConnector(
       RestTemplate restTemplate, @Value("${building.baseUrl}") String baseUrl) {

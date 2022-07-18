@@ -16,10 +16,10 @@ import java.util.Collection;
 @AllArgsConstructor
 public class RCTFilter implements Filter<Room> {
 
-  Collection<ComponentType> filterValues;
+  private Collection<ComponentType> filterValues;
 
   @Override
-  public Collection<Room> filter(@NonNull Collection<Room> collection) {
+  public Collection<Room> filter(Collection<Room> collection) {
     Collection<Room> filtered = new ArrayList<>();
     collection.forEach(
         room ->

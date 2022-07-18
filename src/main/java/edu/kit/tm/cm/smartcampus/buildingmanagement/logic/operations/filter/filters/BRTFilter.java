@@ -19,7 +19,7 @@ public class BRTFilter implements Filter<Building> {
   private Collection<RoomType> filterValues;
 
   @Override
-  public Collection<Building> filter(@NonNull Collection<Building> collection) {
+  public Collection<Building> filter(Collection<Building> collection) {
     Collection<Building> filtered = new ArrayList<>();
     collection.forEach(
         building ->

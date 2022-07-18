@@ -4,7 +4,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
  * This enum represents the possible room types.
  */
 public enum RoomType {
-  UNKNOWN_ROOM_TYPE,
   CAFETERIA,
   RESTROOM,
   RESTROOM_HANDICAPPED,
@@ -22,7 +21,6 @@ public enum RoomType {
    */
   public static RoomType forNumber(int value) {
     return switch (value) {
-      case 0 -> UNKNOWN_ROOM_TYPE;
       case 1 -> RESTROOM;
       case 2 -> RESTROOM_HANDICAPPED;
       case 3 -> OFFICE;

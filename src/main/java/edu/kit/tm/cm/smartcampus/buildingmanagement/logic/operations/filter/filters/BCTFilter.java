@@ -20,7 +20,7 @@ public class BCTFilter implements Filter<Building> {
   private Collection<ComponentType> filterValues;
 
   @Override
-  public Collection<Building> filter(@NonNull Collection<Building> collection) {
+  public Collection<Building> filter(Collection<Building> collection) {
     Collection<Building> filtered = new ArrayList<>();
     collection.forEach(
         building ->

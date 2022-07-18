@@ -25,8 +25,8 @@ public class RestClientErrorHandler implements ResponseErrorHandler {
 
   @Override
   public void handleError(ClientHttpResponse response) throws IOException {
-      if (response.getRawStatusCode() == REQUESTED_DATA_DOESNT_EXIST) {
-        throw new ResourceNotFoundException();
-      }
+    if (response.getRawStatusCode() == REQUESTED_DATA_DOESNT_EXIST) {
+      throw new ResourceNotFoundException();
+    }
   }
 }

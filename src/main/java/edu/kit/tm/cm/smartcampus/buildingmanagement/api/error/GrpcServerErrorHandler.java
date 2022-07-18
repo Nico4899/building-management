@@ -21,10 +21,13 @@ import java.util.function.Function;
  */
 public class GrpcServerErrorHandler<S extends Message, T extends Message> implements StreamObserver<T> {
 
-  // TODO Error logs? util.Logger?
-
   private final StreamObserver<T> grpcResponseObserver;
 
+  /**
+   * Constructs a new grpc server error handler.
+   *
+   * @param grpcResponseObserver grpc response observer to be wrapped
+   */
   public GrpcServerErrorHandler(StreamObserver<T> grpcResponseObserver) {
     this.grpcResponseObserver = grpcResponseObserver;
   }

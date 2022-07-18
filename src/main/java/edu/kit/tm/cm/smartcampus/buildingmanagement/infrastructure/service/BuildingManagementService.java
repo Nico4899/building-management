@@ -356,18 +356,18 @@ public class BuildingManagementService {
   private void buildBuildingRooms(Building building) {
     Collection<Room> rooms =
         this.buildingConnector.listBuildingRooms(building.getIdentificationNumber());
-    building.setRooms(rooms);
+    building.getRooms().addAll(rooms);
   }
 
   private void buildBuildingComponents(Building building) {
     Collection<Component> components =
         this.buildingConnector.listBuildingComponents(building.getIdentificationNumber());
-    building.setComponents(components);
+    building.getComponents().addAll(components);
   }
 
   private void buildRoomComponents(Room room) {
     Collection<Component> components =
         this.buildingConnector.listRoomComponents(room.getIdentificationNumber());
-    room.setComponents(components);
+    room.getComponents().addAll(components);
   }
 }

@@ -18,7 +18,7 @@ public class CLFilter implements Filter<Building> {
   private Collection<CampusLocation> filterValues;
 
   @Override
-  public Collection<Building> filter(@NonNull Collection<Building> collection) {
+  public Collection<Building> filter(Collection<Building> collection) {
     return collection.stream()
         .filter(building -> filterValues.contains(building.getCampusLocation()))
         .toList();
