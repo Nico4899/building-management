@@ -1,6 +1,11 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 /** Exception thrown on invalid arguments. */
+@AllArgsConstructor
+@NoArgsConstructor
 public class InvalidArgumentsException extends RuntimeException {
 
   public static final String COLON = ": ";
@@ -11,14 +16,6 @@ public class InvalidArgumentsException extends RuntimeException {
       "Arguments are Invalid! Please check the following: %s";
   private String invalidArguments;
 
-  /**
-   * Constructs a new invalid arguments exception.
-   *
-   * @param message exception message
-   */
-  public InvalidArgumentsException(String message) {
-    super(message);
-  }
   /**
    * Constructs a new invalid arguments exception
    *
@@ -32,7 +29,7 @@ public class InvalidArgumentsException extends RuntimeException {
     this.appendWrongArguments(name, input, hint, hasHint);
   }
 
-  private void appendWrongArguments(String name, String input, String hint, boolean hasHint) {
+  public void appendWrongArguments(String name, String input, String hint, boolean hasHint) {
     if (invalidArguments.isBlank()) {
       if (hasHint) {
         invalidArguments = name + COLON + input + LEFT_PARENTHESIS + hint + RIGHT_PARENTHESIS;

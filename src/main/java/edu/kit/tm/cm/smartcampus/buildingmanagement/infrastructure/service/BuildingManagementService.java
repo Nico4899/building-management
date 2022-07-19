@@ -2,15 +2,17 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.InputValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * This class represents the building management application microservice manager. It holds and
@@ -19,29 +21,36 @@ import java.util.Collection;
 @Service
 public class BuildingManagementService {
 
+  public static final String IDENTIFICATION_NUMBER_NAME = "identification_number";
+  public static final String OWNER_NAME = "owner";
   private static final String BIN_PATTERN = "b-\\d+";
   private static final String RIN_PATTERN = "r-\\d+";
   private static final String CIN_PATTERN = "c-\\d+";
+  public static final String REFERENCE_PATTERN =
+      BIN_PATTERN + "|" + RIN_PATTERN + "|" + CIN_PATTERN;
   private static final String FIN_PATTERN = "f-\\d+";
-
   private static final String BIN_SQL_PATTERN = "b-%";
   private static final String RIN_SQL_PATTERN = "r-%";
   private static final String CIN_SQL_PATTERN = "c-%";
-
   private final BuildingConnector buildingConnector;
   private final FavoriteRepository favoriteRepository;
+  private final InputValidator inputValidator;
 
   /**
    * Constructs a building management manager.
    *
    * @param buildingConnector the building connector of the microservice (constructor injection)
    * @param favoriteRepository the favorite repository (constructor injection)
+   * @param inputValidator the input validator (constructor injection)
    */
   @Autowired
   public BuildingManagementService(
-      BuildingConnector buildingConnector, FavoriteRepository favoriteRepository) {
+      BuildingConnector buildingConnector,
+      FavoriteRepository favoriteRepository,
+      InputValidator inputValidator) {
     this.favoriteRepository = favoriteRepository;
     this.buildingConnector = buildingConnector;
+    this.inputValidator = inputValidator;
   }
 
   /**
@@ -259,15 +268,11 @@ public class BuildingManagementService {
    * @param favorite favorite object without identification number
    */
   public void createFavorite(Favorite favorite) {
-    if (!favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)
-        || !favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)
-        || !favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
-      throw new InvalidArgumentsException(
-          "reference_identification_number",
-          favorite.getReferenceIdentificationNumber(),
-          "should match: " + BIN_PATTERN + "or " + RIN_PATTERN + "or " + CIN_PATTERN,
-          true);
-    }
+    inputValidator.validateMatchesRegex(
+        Map.of(
+            IDENTIFICATION_NUMBER_NAME,
+            Pair.of(favorite.getReferenceIdentificationNumber(), REFERENCE_PATTERN)));
+    inputValidator.validateNotEmpty(Map.of(OWNER_NAME, favorite.getOwner()));
     this.favoriteRepository.save(favorite);
   }
 
@@ -334,10 +339,8 @@ public class BuildingManagementService {
    * @param identificationNumber identification number of the favorite to be removed
    */
   public void removeFavorite(String identificationNumber) {
-    if (!identificationNumber.matches(FIN_PATTERN)) {
-      throw new InvalidArgumentsException(
-          "identification_number", identificationNumber, "should match: " + FIN_PATTERN, true);
-    }
+    inputValidator.validateMatchesRegex(
+        Map.of(IDENTIFICATION_NUMBER_NAME, Pair.of(identificationNumber, FIN_PATTERN)));
     if (!this.favoriteRepository.existsById(identificationNumber)) {
       throw new ResourceNotFoundException();
     }
