@@ -152,12 +152,12 @@ class BuildingManagementFilterTests {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
       return Stream.of(
-          Arguments.of(testRooms, new RRTFilter(ALL_ROOM_TYPES), testRooms),
-          Arguments.of(List.of(), new RRTFilter(NO_ROOM_TYPES), testRooms),
+          Arguments.of(testRooms, new RoomTypeRoomFilter(ALL_ROOM_TYPES), testRooms),
+          Arguments.of(List.of(), new RoomTypeRoomFilter(NO_ROOM_TYPES), testRooms),
           Arguments.of(
               List.of(
                   testRoomsMap.get(OFFICE), testRoomsMap.get(LIBRARY), testRoomsMap.get(REST_ROOM)),
-              new RRTFilter(SOME_ROOM_TYPES),
+              new RoomTypeRoomFilter(SOME_ROOM_TYPES),
               testRooms),
           Arguments.of(
               List.of(
@@ -166,12 +166,12 @@ class BuildingManagementFilterTests {
                   testRoomsMap.get(REST_ROOM),
                   testRoomsMap.get(SPORTS),
                   testRoomsMap.get(LIBRARY)),
-              new RCTFilter(ALL_COMPONENT_TYPES),
+              new ComponentTypeRoomFilter(ALL_COMPONENT_TYPES),
               testRooms),
-          Arguments.of(List.of(), new RCTFilter(NO_COMPONENT_TYPES), testRooms),
+          Arguments.of(List.of(), new ComponentTypeRoomFilter(NO_COMPONENT_TYPES), testRooms),
           Arguments.of(
               List.of(testRoomsMap.get(LIBRARY), testRoomsMap.get(SPORTS)),
-              new RCTFilter(SOME_COMPONENT_TYPES),
+              new ComponentTypeRoomFilter(SOME_COMPONENT_TYPES),
               testRooms));
     }
   }
@@ -181,34 +181,37 @@ class BuildingManagementFilterTests {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
       return Stream.of(
-          Arguments.of(testBuildings, new BRTFilter(ALL_ROOM_TYPES), testBuildings),
-          Arguments.of(List.of(), new BRTFilter(NO_ROOM_TYPES), testBuildings),
+          Arguments.of(testBuildings, new RoomTypeBuildingFilter(ALL_ROOM_TYPES), testBuildings),
+          Arguments.of(List.of(), new RoomTypeBuildingFilter(NO_ROOM_TYPES), testBuildings),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(WEST_CAMPUS_BUILDING),
                   testBuildingsMap.get(NORTH_CAMPUS_BUILDING),
                   testBuildingsMap.get(SOUTH_CAMPUS_BUILDING)),
-              new BRTFilter(SOME_ROOM_TYPES),
+              new RoomTypeBuildingFilter(SOME_ROOM_TYPES),
               testBuildings),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(WEST_CAMPUS_BUILDING),
                   testBuildingsMap.get(SOUTH_CAMPUS_BUILDING)),
-              new BCTFilter(ALL_COMPONENT_TYPES),
+              new ComponentTypeBuildingFilter(ALL_COMPONENT_TYPES),
               testBuildings),
-          Arguments.of(List.of(), new BCTFilter(NO_COMPONENT_TYPES), testBuildings),
+          Arguments.of(
+              List.of(), new ComponentTypeBuildingFilter(NO_COMPONENT_TYPES), testBuildings),
           Arguments.of(
               List.of(testBuildingsMap.get(WEST_CAMPUS_BUILDING)),
-              new BCTFilter(SOME_COMPONENT_TYPES),
+              new ComponentTypeBuildingFilter(SOME_COMPONENT_TYPES),
               testBuildings),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(EAST_CAMPUS_BUILDING),
                   testBuildingsMap.get(NORTH_CAMPUS_BUILDING)),
-              new CLFilter(SOME_CAMPUS_LOCATIONS),
+              new CampusLocationBuildingFilter(SOME_CAMPUS_LOCATIONS),
               testBuildings),
-          Arguments.of(testBuildings, new CLFilter(ALL_CAMPUS_LOCATIONS), testBuildings),
-          Arguments.of(List.of(), new CLFilter(NO_CAMPUS_LOCATIONS), testBuildings));
+          Arguments.of(
+              testBuildings, new CampusLocationBuildingFilter(ALL_CAMPUS_LOCATIONS), testBuildings),
+          Arguments.of(
+              List.of(), new CampusLocationBuildingFilter(NO_CAMPUS_LOCATIONS), testBuildings));
     }
   }
 }

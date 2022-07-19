@@ -1,7 +1,5 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter;
 
-import lombok.NonNull;
-
 import java.util.Collection;
 
 /**
@@ -16,5 +14,5 @@ public interface Filter<T> {
    * @param collection collection to be filtered
    * @return filtered collection
    */
-  Collection<T> filter(@NonNull Collection<T> collection);
+  Collection<T> filter(Collection<T> collection);
 }

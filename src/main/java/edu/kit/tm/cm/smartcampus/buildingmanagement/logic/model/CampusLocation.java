@@ -3,7 +3,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 /**
  * This enum describes campus location.
  */
-public enum CampusLocation {
+public enum CampusLocation implements Comparable<CampusLocation>{
   NORTH_CAMPUS,
   EAST_CAMPUS,
   SOUTH_CAMPUS,

@@ -1,6 +1,9 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,7 +14,6 @@ import java.util.Collection;
  */
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class Room {

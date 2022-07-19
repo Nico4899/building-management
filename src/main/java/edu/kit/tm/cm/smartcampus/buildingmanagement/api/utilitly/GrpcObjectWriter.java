@@ -3,15 +3,14 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utilitly;
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
+import lombok.AllArgsConstructor;
 
 import java.util.Collection;
 
 /** The type grpc object writer. */
+@AllArgsConstructor
 @org.springframework.stereotype.Component
 public class GrpcObjectWriter {
-
-  /** Instantiates a new grpc object writer. */
-  public GrpcObjectWriter() {}
 
   /**
    * Write grpc component.

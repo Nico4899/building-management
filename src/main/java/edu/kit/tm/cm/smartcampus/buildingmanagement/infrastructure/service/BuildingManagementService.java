@@ -5,9 +5,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.Favo
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,53 +43,23 @@ public class BuildingManagementService {
   /**
    * Lists all buildings with filter applied.
    *
-   * @param filterOptions options for filter
+   * @param configuration options for filter
    * @return collection of all filtered buildings
    */
-  public Collection<Building> listBuildings(FilterOptions filterOptions) {
-    Collection<Building> buildings = buildingConnector.listBuildings();
-    if (filterOptions.getCampusLocationFilterOption().isSelected()) {
-      Filter<Building> filter = new CLFilter(filterOptions.getCampusLocationFilterOption().getFilterValues());
-      buildings = filter.filter(buildings);
-    }
-    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-      for (Building building : buildings) {
-        buildBuildingRooms(building);
-      }
-      Filter<Building> filter = new BRTFilter(filterOptions.getRoomTypeFilterOption().getFilterValues());
-      buildings = filter.filter(buildings);
-    }
-    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
-      for (Building building : buildings) {
-        buildBuildingComponents(building);
-      }
-      Filter<Building> filter = new BCTFilter(filterOptions.getComponentTypeFilterOption().getFilterValues());
-      buildings = filter.filter(buildings);
-    }
-    return buildings;
+  public Collection<Building> listBuildings(Configuration<Building> configuration) {
+    return configuration.apply(this.buildingConnector.listBuildings());
   }
 
   /**
    * Lists all building's rooms after filter is being applied.
    *
-   * @param filterOptions options for filter
+   * @param configuration options for filter
    * @param identificationNumber identification number of the building
    * @return collection of the building's rooms
    */
-  public Collection<Room> listRooms(FilterOptions filterOptions, String identificationNumber) {
-    Collection<Room> rooms = buildingConnector.listBuildingRooms(identificationNumber);
-    if (filterOptions.getRoomTypeFilterOption().isSelected()) {
-      Filter<Room> filter = new RRTFilter(filterOptions.getRoomTypeFilterOption().getFilterValues());
-      rooms = filter.filter(rooms);
-    }
-    if (filterOptions.getComponentTypeFilterOption().isSelected()) {
-      for (Room room : rooms) {
-        buildRoomComponents(room);
-      }
-      Filter<Room> filter = new RCTFilter(filterOptions.getComponentTypeFilterOption().getFilterValues());
-      rooms = filter.filter(rooms);
-    }
-    return rooms;
+  public Collection<Room> listRooms(
+      Configuration<Room> configuration, String identificationNumber) {
+    return configuration.apply(this.buildingConnector.listBuildingRooms(identificationNumber));
   }
 
   /**
@@ -100,8 +68,9 @@ public class BuildingManagementService {
    * @param identificationNumber of the parent building or room
    * @return collection of components
    */
-  public Collection<Component> listBuildingComponents(String identificationNumber) {
-    return buildingConnector.listBuildingComponents(identificationNumber);
+  public Collection<Component> listBuildingComponents(
+      Configuration<Component> configuration, String identificationNumber) {
+    return configuration.apply(this.buildingConnector.listBuildingComponents(identificationNumber));
   }
 
   /**
@@ -110,8 +79,9 @@ public class BuildingManagementService {
    * @param identificationNumber of the parent building or room
    * @return collection of components
    */
-  public Collection<Component> listRoomComponents(String identificationNumber) {
-    return buildingConnector.listRoomComponents(identificationNumber);
+  public Collection<Component> listRoomComponents(
+      Configuration<Component> configuration, String identificationNumber) {
+    return configuration.apply(this.buildingConnector.listRoomComponents(identificationNumber));
   }
 
   /**
@@ -120,8 +90,10 @@ public class BuildingManagementService {
    * @param identificationNumber of the parent building or room
    * @return collection of notifications
    */
-  public Collection<Notification> listBuildingNotifications(String identificationNumber) {
-    return buildingConnector.listBuildingNotifications(identificationNumber);
+  public Collection<Notification> listBuildingNotifications(
+      Configuration<Notification> configuration, String identificationNumber) {
+    return configuration.apply(
+        this.buildingConnector.listBuildingNotifications(identificationNumber));
   }
 
   /**
@@ -130,8 +102,9 @@ public class BuildingManagementService {
    * @param identificationNumber of the parent building or room
    * @return collection of notifications
    */
-  public Collection<Notification> listRoomNotifications(String identificationNumber) {
-    return buildingConnector.listRoomNotifications(identificationNumber);
+  public Collection<Notification> listRoomNotifications(
+      Configuration<Notification> configuration, String identificationNumber) {
+    return configuration.apply(this.buildingConnector.listRoomNotifications(identificationNumber));
   }
 
   /**
@@ -140,8 +113,10 @@ public class BuildingManagementService {
    * @param identificationNumber of the parent building or room
    * @return collection of notifications
    */
-  public Collection<Notification> listComponentNotifications(String identificationNumber) {
-    return buildingConnector.listComponentNotifications(identificationNumber);
+  public Collection<Notification> listComponentNotifications(
+      Configuration<Notification> configuration, String identificationNumber) {
+    return configuration.apply(
+        this.buildingConnector.listComponentNotifications(identificationNumber));
   }
 
   /**

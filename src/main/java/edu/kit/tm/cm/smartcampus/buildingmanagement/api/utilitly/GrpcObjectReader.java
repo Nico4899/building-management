@@ -2,15 +2,22 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utilitly;
 
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOption;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.options.FilterOptions;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.ListConfiguration;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.sorters.*;
+import lombok.AllArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /** The type Grpc object reader. */
+@AllArgsConstructor
 @org.springframework.stereotype.Component
 public class GrpcObjectReader {
-
-  /** Instantiates a new Grpc object reader. */
-  public GrpcObjectReader() {}
 
   /**
    * Read component.
@@ -117,58 +124,150 @@ public class GrpcObjectReader {
   }
 
   /**
-   * Read filter options.
+   * Read configuration.
    *
-   * @param grpcFilterOptions the grpc filter options
-   * @return the filter options
+   * @param listBuildingConfiguration the grpc configuration object
+   * @return model configuration
    */
-  public FilterOptions read(GrpcFilterOptions grpcFilterOptions) {
-    return FilterOptions.builder()
-        .campusLocationFilterOption(read(grpcFilterOptions.getCampusLocationFilterMapping()))
-        .roomTypeFilterOption(read(grpcFilterOptions.getRoomTypeFilterMapping()))
-        .componentTypeFilterOption(read(grpcFilterOptions.getComponentTypeFilterMapping()))
-        .build();
+  public Configuration<Building> read(ListBuildingConfiguration listBuildingConfiguration) {
+    Collection<Filter<Building>> filters = new ArrayList<>();
+    if (listBuildingConfiguration.getCampusLocationFilterMapping().getSelected()) {
+      filters.add(
+          new CampusLocationBuildingFilter(
+              listBuildingConfiguration
+                  .getCampusLocationFilterMapping()
+                  .getCampusLocationsList()
+                  .stream()
+                  .map(this::read)
+                  .toList()));
+    }
+    if (listBuildingConfiguration.getComponentTypeFilterMapping().getSelected()) {
+      filters.add(
+          new ComponentTypeBuildingFilter(
+              listBuildingConfiguration
+                  .getComponentTypeFilterMapping()
+                  .getComponentTypesList()
+                  .stream()
+                  .map(this::read)
+                  .toList()));
+    }
+    if (listBuildingConfiguration.getRoomTypeFilterMapping().getSelected()) {
+      filters.add(
+          new RoomTypeBuildingFilter(
+              listBuildingConfiguration.getRoomTypeFilterMapping().getRoomTypesList().stream()
+                  .map(this::read)
+                  .toList()));
+    }
+    return new ListConfiguration<>(readBuildingSorter(listBuildingConfiguration.getGrpcSortOption()), filters);
   }
 
   /**
-   * Read filter option.
+   * Read configuration.
    *
-   * @param componentTypeFilterMapping the component type filter mapping
-   * @return the filter option
+   * @param listRoomConfiguration the grpc configuration object
+   * @return model configuration
    */
-  public FilterOption<ComponentType> read(ComponentTypeFilterMapping componentTypeFilterMapping) {
-    return FilterOption.<ComponentType>builder()
-        .selected(componentTypeFilterMapping.getSelected())
-        .filterValues(
-            componentTypeFilterMapping.getComponentTypesList().stream().map(this::read).toList())
-        .build();
+  public Configuration<Room> read(ListRoomConfiguration listRoomConfiguration) {
+    Collection<Filter<Room>> filters = new ArrayList<>();
+    if (listRoomConfiguration.getRoomFloorFilterMapping().getSelected()) {
+      filters.add(
+        new FloorRoomFilter(listRoomConfiguration.getRoomFloorFilterMapping().getFloorsList()));
+    }
+    if (listRoomConfiguration.getComponentTypeFilterMapping().getSelected()) {
+      filters.add(
+        new ComponentTypeRoomFilter(
+          listRoomConfiguration
+            .getComponentTypeFilterMapping()
+            .getComponentTypesList()
+            .stream()
+            .map(this::read)
+            .toList()));
+    }
+    if (listRoomConfiguration.getRoomTypeFilterMapping().getSelected()) {
+      filters.add(
+        new RoomTypeRoomFilter(
+          listRoomConfiguration.getRoomTypeFilterMapping().getRoomTypesList().stream()
+            .map(this::read)
+            .toList()));
+    }
+    return new ListConfiguration<>(readRoomSorter(listRoomConfiguration.getGrpcSortOption()), filters);
   }
 
   /**
-   * Read filter option.
+   * Read configuration.
    *
-   * @param campusLocationFilterMapping the campus location filter mapping
-   * @return the filter option
+   * @param listComponentConfiguration the grpc configuration object
+   * @return model configuration
    */
-  public FilterOption<CampusLocation> read(
-      CampusLocationFilterMapping campusLocationFilterMapping) {
-    return FilterOption.<CampusLocation>builder()
-        .selected(campusLocationFilterMapping.getSelected())
-        .filterValues(
-            campusLocationFilterMapping.getCampusLocationsList().stream().map(this::read).toList())
-        .build();
+  public Configuration<Component> read(ListComponentConfiguration listComponentConfiguration) {
+    return new ListConfiguration<>(readComponentSorter(listComponentConfiguration.getGrpcSortOption()), List.of());
   }
 
   /**
-   * Read filter option.
+   * Read configuration.
    *
-   * @param roomTypeFilterMapping the room type filter mapping
-   * @return the filter option
+   * @param listNotificationConfiguration the grpc configuration object
+   * @return model configuration
    */
-  public FilterOption<RoomType> read(RoomTypeFilterMapping roomTypeFilterMapping) {
-    return FilterOption.<RoomType>builder()
-        .selected(roomTypeFilterMapping.getSelected())
-        .filterValues(roomTypeFilterMapping.getRoomTypesList().stream().map(this::read).toList())
-        .build();
+  public Configuration<Notification> read(
+      ListNotificationConfiguration listNotificationConfiguration) {
+    return new ListConfiguration<>(readNotificationSorter((listNotificationConfiguration.getGrpcSortOption())), List.of());
+  }
+
+  /**
+   * Read a grpc object and return a model object.
+   *
+   * @param grpcSortOption grpc problem sort option.
+   * @return model problem sorter object
+   */
+  public Sorter<Building> readBuildingSorter(GrpcSortOption grpcSortOption) {
+    return switch (grpcSortOption) {
+      case NAME_LEXICOGRAPHIC -> new LexicographicNameBuildingSorter();
+      case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberBuildingSorter();
+      case CAMPUS_LOCATION -> new CampusLocationBuildingSorter();
+      default -> new DefaultSorter<>();
+    };
+  }
+
+  /**
+   * Read a grpc object and return a model object.
+   *
+   * @param grpcSortOption grpc problem sort option.
+   * @return model problem sorter object
+   */
+  public Sorter<Room> readRoomSorter(GrpcSortOption grpcSortOption) {
+    return switch (grpcSortOption) {
+      case NAME_LEXICOGRAPHIC -> new LexicographicNameRoomSorter();
+      case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberRoomSorter();
+      case ROOM_TYPE -> new RoomTypeRoomSorter();
+      default -> new DefaultSorter<>();
+    };
+  }
+
+  /**
+   * Read a grpc object and return a model object.
+   *
+   * @param grpcSortOption grpc problem sort option.
+   * @return model problem sorter object
+   */
+  public Sorter<Component> readComponentSorter(GrpcSortOption grpcSortOption) {
+    return switch (grpcSortOption) {
+      case COMPONENT_TYPE -> new ComponentTypeComponentSorter();
+      default -> new DefaultSorter<>();
+    };
+  }
+
+  /**
+   * Read a grpc object and return a model object.
+   *
+   * @param grpcSortOption grpc problem sort option.
+   * @return model problem sorter object
+   */
+  public Sorter<Notification> readNotificationSorter(GrpcSortOption grpcSortOption) {
+    return switch (grpcSortOption) {
+      case ASCENDING_TIME_STAMP -> new AscendingTimeStampNotificationSorter();
+      case DESCENDING_TIME_STAMP -> new DescendingTimeStampNotificationSorter();
+      default -> new DefaultSorter<>();
+    };
   }
 }

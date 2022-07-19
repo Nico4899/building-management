@@ -1,24 +1,22 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.RoomType;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import lombok.AllArgsConstructor;
-import lombok.NonNull;
 
 import java.util.Collection;
 
 /**
  * This class represents an implementation of {@link Filter}, it filters a collection of {@link
- * Room} by {@link RoomType}. The short form "RRTFilter" stands for "RoomRoomTypeFilter".
+ * Room} by floor number.
  */
 @AllArgsConstructor
-public class RRTFilter implements Filter<Room> {
+public class FloorRoomFilter implements Filter<Room> {
 
-  private Collection<RoomType> filterValues;
+  private final Collection<Integer> floors;
 
   @Override
   public Collection<Room> filter(Collection<Room> collection) {
-    return collection.stream().filter(room -> filterValues.contains(room.getRoomType())).toList();
+    return collection.stream().filter(room -> this.floors.contains(room.getFloor())).toList();
   }
 }
