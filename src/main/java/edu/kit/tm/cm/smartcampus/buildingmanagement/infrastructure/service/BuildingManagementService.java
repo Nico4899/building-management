@@ -24,6 +24,10 @@ public class BuildingManagementService {
   private static final String CIN_PATTERN = "c-\\d+";
   private static final String FIN_PATTERN = "f-\\d+";
 
+  private static final String BIN_SQL_PATTERN = "b-%";
+  private static final String RIN_SQL_PATTERN = "r-%";
+  private static final String CIN_SQL_PATTERN = "c-%";
+
   private final BuildingConnector buildingConnector;
   private final FavoriteRepository favoriteRepository;
 
@@ -47,7 +51,12 @@ public class BuildingManagementService {
    * @return collection of all filtered buildings
    */
   public Collection<Building> listBuildings(Configuration<Building> configuration) {
-    return configuration.apply(this.buildingConnector.listBuildings());
+    Collection<Building> buildings = this.buildingConnector.listBuildings();
+    for (Building building : buildings) {
+      this.buildBuildingRooms(building);
+      this.buildBuildingComponents(building);
+    }
+    return configuration.apply(buildings);
   }
 
   /**
@@ -59,7 +68,11 @@ public class BuildingManagementService {
    */
   public Collection<Room> listRooms(
       Configuration<Room> configuration, String identificationNumber) {
-    return configuration.apply(this.buildingConnector.listBuildingRooms(identificationNumber));
+    Collection<Room> rooms = this.buildingConnector.listBuildingRooms(identificationNumber);
+    for (Room room : rooms) {
+      this.buildRoomComponents(room);
+    }
+    return configuration.apply(rooms);
   }
 
   /**
@@ -125,14 +138,13 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of components marked as favorite
    */
-  public Collection<Component> listComponentFavorites(String owner) {
+  public Collection<Component> listComponentFavorites(
+      Configuration<Component> configuration, String owner) {
     Collection<Component> components = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(CIN_PATTERN)) {
-        components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
-      }
+    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
+      components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
     }
-    return components;
+    return configuration.apply(components);
   }
 
   /**
@@ -141,14 +153,15 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of rooms marked as favorite
    */
-  public Collection<Room> listRoomFavorites(String owner) {
+  public Collection<Room> listRoomFavorites(Configuration<Room> configuration, String owner) {
     Collection<Room> rooms = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(RIN_PATTERN)) {
-        rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
-      }
+    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, RIN_SQL_PATTERN)) {
+      rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
     }
-    return rooms;
+    for (Room room : rooms) {
+      this.buildRoomComponents(room);
+    }
+    return configuration.apply(rooms);
   }
 
   /**
@@ -157,14 +170,17 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of buildings marked as favorite
    */
-  public Collection<Building> listBuildingFavorites(String owner) {
+  public Collection<Building> listBuildingFavorites(
+      Configuration<Building> configuration, String owner) {
     Collection<Building> buildings = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwner(owner)) {
-      if (favorite.getReferenceIdentificationNumber().matches(BIN_PATTERN)) {
-        buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
-      }
+    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, BIN_SQL_PATTERN)) {
+      buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
     }
-    return buildings;
+    for (Building building : buildings) {
+      this.buildBuildingRooms(building);
+      this.buildBuildingComponents(building);
+    }
+    return configuration.apply(buildings);
   }
 
   /**

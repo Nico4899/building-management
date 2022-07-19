@@ -10,6 +10,8 @@ import java.util.Collection;
 /** This interface represents a favorite repository. */
 public interface FavoriteRepository extends JpaRepository<Favorite, String> {
 
-  @Query("SELECT favorite FROM favorite favorite WHERE favorite.owner = :#{#owner}")
-  Collection<Favorite> findByOwner(@Param("owner") String owner);
+  @Query(
+      "SELECT favorite FROM favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE #{#regex})")
+  Collection<Favorite> findByOwnerAndRegex(
+      @Param("owner") String owner, @Param("regex") String regex);
 }
