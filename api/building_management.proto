@@ -11,317 +11,314 @@ import "google/protobuf/timestamp.proto";
 
 service BuildingManagement {
 
-    rpc GetBuilding(GetBuildingRequest) returns (GetBuildingResponse);
-    rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
-    rpc GetComponent(GetComponentRequest) returns (GetComponentResponse);
+  rpc GetBuilding(GetBuildingRequest) returns (GetBuildingResponse);
+  rpc GetRoom(GetRoomRequest) returns (GetRoomResponse);
+  rpc GetComponent(GetComponentRequest) returns (GetComponentResponse);
 
-    rpc ListBuildings(ListBuildingsRequest) returns (ListBuildingsResponse);
-    rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
-    rpc ListComponents(ListComponentsRequest) returns (ListComponentsResponse);
-    rpc ListNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListBuildings(ListBuildingsRequest) returns (ListBuildingsResponse);
+  rpc ListRooms(ListRoomsRequest) returns (ListRoomsResponse);
 
-    rpc ListBuildingFavorites(ListBuildingFavoritesRequest) returns (ListBuildingFavoritesResponse);
-    rpc ListRoomFavorites(ListRoomFavoritesRequest) returns (ListRoomFavoritesResponse);
-    rpc ListComponentFavorites(ListComponentFavoritesRequest) returns (ListComponentFavoritesResponse);
+  rpc ListBuildingComponents(ListComponentsRequest) returns (ListComponentsResponse);
+  rpc ListRoomComponents(ListComponentsRequest) returns (ListComponentsResponse);
 
-    rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
-    rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
-    rpc CreateComponent(CreateComponentRequest) returns (CreateComponentResponse);
-    rpc CreateFavorite(CreateFavoriteRequest) returns (CreateFavoriteResponse);
+  rpc ListBuildingNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListRoomNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
+  rpc ListComponentNotifications(ListNotificationsRequest) returns (ListNotificationsResponse);
 
-    rpc UpdateBuilding(UpdateBuildingRequest) returns (UpdateBuildingResponse);
-    rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse);
-    rpc UpdateComponent(UpdateComponentRequest) returns (UpdateComponentResponse);
+  rpc ListBuildingFavorites(ListBuildingFavoritesRequest) returns (ListBuildingFavoritesResponse);
+  rpc ListRoomFavorites(ListRoomFavoritesRequest) returns (ListRoomFavoritesResponse);
+  rpc ListComponentFavorites(ListComponentFavoritesRequest) returns (ListComponentFavoritesResponse);
 
-    rpc Remove(RemoveRequest) returns (RemoveResponse);
+  rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
+  rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
+  rpc CreateBuildingComponent(CreateComponentRequest) returns (CreateComponentResponse);
+  rpc CreateRoomComponent(CreateComponentRequest) returns (CreateComponentResponse);
+  rpc CreateFavorite(CreateFavoriteRequest) returns (CreateFavoriteResponse);
+
+  rpc UpdateBuilding(UpdateBuildingRequest) returns (UpdateBuildingResponse);
+  rpc UpdateRoom(UpdateRoomRequest) returns (UpdateRoomResponse);
+  rpc UpdateComponent(UpdateComponentRequest) returns (UpdateComponentResponse);
+
+  rpc RemoveBuilding(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveRoom(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveComponent(RemoveRequest) returns (RemoveResponse);
+  rpc RemoveFavorite(RemoveRequest) returns (RemoveResponse);
 
 }
 
 // request and response messages
 
 message GetBuildingRequest{
-    string identification_number = 1;
+  string identification_number = 1;
 }
 
 message GetBuildingResponse{
-    GrpcBuilding building = 1;
-    ResponseMessage response_message = 2;
+  GrpcBuilding building = 1;
 }
 
 message GetRoomRequest{
-    string identification_number = 1;
+  string identification_number = 1;
 }
 
 message GetRoomResponse{
-    GrpcRoom room = 1;
-    ResponseMessage response_message = 2;
+  GrpcRoom room = 1;
 }
 
 message GetComponentRequest{
-    string identification_number = 1;
+  string identification_number = 1;
 }
 
 message GetComponentResponse{
-    GrpcComponent component = 1;
-    ResponseMessage response_message = 2;
+  GrpcComponent component = 1;
 }
 
 message ListBuildingsRequest{
-    BuildingFilterOptions building_filter_options = 1;
+  ListBuildingConfiguration list_building_configuration = 1;
 }
 
 message ListBuildingsResponse{
-    GrpcBuildings buildings = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcBuilding buildings = 1;
 }
 
 message ListRoomsRequest{
-    RoomFilterOptions room_filter_options = 1;
-    string identification_number = 2;
+  ListRoomConfiguration list_room_configuration = 1;
+  string identification_number = 2;
 }
 
 message ListRoomsResponse{
-    GrpcRooms rooms = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcRoom rooms = 1;
 }
 
 message ListComponentsRequest{
-    string identification_number = 1;
+  ListComponentConfiguration list_component_configuration = 1;
+  string identification_number = 2;
 }
 
 message ListComponentsResponse{
-    GrpcComponents components = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcComponent components = 1;
 }
 
 message ListBuildingFavoritesRequest{
-    string owner = 1;
+  ListBuildingConfiguration list_building_configuration = 1;
+  string owner = 2;
 }
 
 message ListRoomFavoritesRequest{
-    string owner = 1;
+  ListRoomConfiguration list_room_configuration = 1;
+  string owner = 2;
 }
 
 message ListComponentFavoritesRequest{
-    string owner = 1;
+  ListComponentConfiguration list_component_configuration = 1;
+  string owner = 2;
 }
 
 message ListBuildingFavoritesResponse{
-    GrpcBuildings buildings = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcBuilding buildings = 1;
 }
 
 message ListRoomFavoritesResponse{
-    GrpcRooms rooms = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcRoom rooms = 1;
 }
 
 message ListComponentFavoritesResponse{
-    GrpcComponents components = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcComponent components = 1;
 }
 
 message ListNotificationsRequest{
-    string identification_number = 1;
+  ListNotificationConfiguration list_notification_configuration = 1;
+  string identification_number = 2;
 }
 
 message ListNotificationsResponse{
-    GrpcNotifications notifications = 1;
-    ResponseMessage response_message = 2;
+  repeated GrpcNotification notifications = 1;
 }
 
 message CreateBuildingRequest{
-    GrpcBuilding building = 1;
+  GrpcBuilding building = 1;
 }
 
 message CreateBuildingResponse{
-    GrpcBuilding building = 1;
-    ResponseMessage response_message = 2;
+  GrpcBuilding building = 1;
 }
 
 message CreateRoomRequest{
-    GrpcRoom room = 1;
+  GrpcRoom room = 1;
 }
 
 message CreateRoomResponse{
-    GrpcRoom room = 1;
-    ResponseMessage response_message = 2;
+  GrpcRoom room = 1;
 }
 
 message CreateComponentRequest{
-    GrpcComponent component = 1;
+  GrpcComponent component = 1;
 }
 
 message CreateComponentResponse{
-    GrpcComponent component = 1;
-    ResponseMessage response_message = 2;
+  GrpcComponent component = 1;
 }
 
 message CreateFavoriteRequest{
-    GrpcFavorite favorite = 1;
+  GrpcFavorite favorite = 1;
 }
 
 message CreateFavoriteResponse{
-    GrpcFavorite favorite = 1;
-    ResponseMessage response_message = 2;
+  GrpcFavorite favorite = 1;
 }
 
 message UpdateBuildingRequest{
-    GrpcBuilding building = 1;
+  GrpcBuilding building = 1;
 }
 
 message UpdateBuildingResponse{
-    GrpcBuilding building = 1;
-    ResponseMessage response_message = 2;
+  GrpcBuilding building = 1;
 }
 
 message UpdateRoomRequest{
-    GrpcRoom room = 1;
+  GrpcRoom room = 1;
 }
 
 message UpdateRoomResponse{
-    GrpcRoom room = 1;
-    ResponseMessage response_message = 2;
+  GrpcRoom room = 1;
 }
 
 message UpdateComponentRequest{
-    GrpcComponent component = 1;
+  GrpcComponent component = 1;
 }
 
 message UpdateComponentResponse{
-    GrpcComponent component = 1;
-    ResponseMessage response_message = 2;
+  GrpcComponent component = 1;
 }
 
 message RemoveRequest{
-    string identification_number = 1;
+  string identification_number = 1;
 }
 
 message RemoveResponse{
-    ResponseMessage response_message = 1;
-}
-
-// api response piece
-
-message ResponseMessage {
-    bool successful = 1;
-    string message = 2;
 }
 
 // single message constructions
 
 message GrpcNotification{
-    google.protobuf.Timestamp creation_time = 1;
-    string identification_number = 2;
-    string parent_identification_number = 3;
-    string notification_title = 4;
-    string notification_description = 5;
+  google.protobuf.Timestamp creation_time = 1;
+  string identification_number = 2;
+  string parent_identification_number = 3;
+  string notification_title = 4;
+  string notification_description = 5;
 }
 
 message GrpcRoom{
-    string room_name = 1;
-    string room_number = 2;
-    int32 floor = 3;
-    GrpcGeographicalLocation geographical_location = 4;
-    string identification_number = 5;
-    string parent_identification_number = 6;
-    GrpcRoomType room_type = 7;
+  string room_name = 1;
+  string room_number = 2;
+  int32 floor = 3;
+  GrpcGeographicalLocation geographical_location = 4;
+  string identification_number = 5;
+  string parent_identification_number = 6;
+  GrpcRoomType room_type = 7;
 }
 
 message GrpcBuilding{
-    string building_name = 1;
-    string building_number = 2;
-    int32 num_floors = 3;
-    GrpcGeographicalLocation geographical_location = 4;
-    GrpcCampusLocation campus_location = 5;
-    string identification_number = 6;
+  string building_name = 1;
+  string building_number = 2;
+  int32 num_floors = 3;
+  GrpcGeographicalLocation geographical_location = 4;
+  GrpcCampusLocation campus_location = 5;
+  string identification_number = 6;
 }
 
 enum GrpcCampusLocation{
-    UNKNOWN_CAMPUS_LOCATION = 0;
-    NORTH_CAMPUS = 1;
-    EAST_CAMPUS = 2;
-    WEST_CAMPUS = 3;
-    SOUTH_CAMPUS = 4;
+  UNKNOWN_CAMPUS_LOCATION = 0;
+  NORTH_CAMPUS = 1;
+  EAST_CAMPUS = 2;
+  WEST_CAMPUS = 3;
+  SOUTH_CAMPUS = 4;
 }
 
-message BuildingFilterOptions{
-    ComponentTypeFilterMapping component_type_filter_mapping = 1;
-    RoomTypeFilterMapping room_type_filter_mapping = 2;
-    CampusLocationFilterMapping campus_location_filter_mapping = 3;
+message ListBuildingConfiguration{
+  ComponentTypeFilterMapping component_type_filter_mapping = 1;
+  RoomTypeFilterMapping room_type_filter_mapping = 2;
+  CampusLocationFilterMapping campus_location_filter_mapping = 3;
+  GrpcSortOption grpc_sort_option = 4;
 }
 
-message RoomFilterOptions{
-    ComponentTypeFilterMapping component_type_filter_mapping = 1;
-    RoomTypeFilterMapping room_type_filter_mapping = 2;
+message ListRoomConfiguration{
+  ComponentTypeFilterMapping component_type_filter_mapping = 1;
+  RoomTypeFilterMapping room_type_filter_mapping = 2;
+  RoomFloorFilterMapping room_floor_filter_mapping = 3;
+  GrpcSortOption grpc_sort_option = 4;
+}
+
+message ListNotificationConfiguration{
+  GrpcSortOption grpc_sort_option = 1;
+}
+
+message ListComponentConfiguration{
+  GrpcSortOption grpc_sort_option = 1;
 }
 
 message CampusLocationFilterMapping{
-    bool selected = 1;
-    repeated GrpcCampusLocation campus_locations = 2;
+  bool selected = 1;
+  repeated GrpcCampusLocation campus_locations = 2;
 }
 
 message RoomTypeFilterMapping{
-    bool selected = 1;
-    repeated GrpcRoomType room_types = 2;
+  bool selected = 1;
+  repeated GrpcRoomType room_types = 2;
 }
 
 message ComponentTypeFilterMapping{
-    bool selected = 1;
-    repeated GrpcComponentType component_types = 2;
+  bool selected = 1;
+  repeated GrpcComponentType component_types = 2;
+}
+
+message RoomFloorFilterMapping{
+  bool selected = 1;
+  repeated int32 floors = 2;
 }
 
 message GrpcGeographicalLocation{
-    double latitude = 1;
-    double longitude = 2;
+  double latitude = 1;
+  double longitude = 2;
 }
 
 message GrpcFavorite{
-    string identification_number = 1;
-    string reference_identification_number = 2;
-    string owner = 3;
+  string reference_identification_number = 1;
+  string owner = 2;
 }
 
 enum GrpcRoomType{
-    UNKNOWN_ROOM_TYPE = 0;
-    RESTROOM = 1;
-    RESTROOM_HANDICAPPED = 2;
-    OFFICE = 3;
-    LIBRARY = 4;
-    SEMINAR_ROOM = 5;
-    LECTURE_ROOM = 6;
-    SPORTS = 7;
-    CAFETERIA = 8;
+  UNKNOWN_ROOM_TYPE = 0;
+  RESTROOM = 1;
+  RESTROOM_HANDICAPPED = 2;
+  OFFICE = 3;
+  LIBRARY = 4;
+  SEMINAR_ROOM = 5;
+  LECTURE_ROOM = 6;
+  SPORTS = 7;
+  CAFETERIA = 8;
 }
 
 message GrpcComponent{
-    string component_description = 1;
-    string identification_number = 2;
-    GrpcGeographicalLocation geographical_location = 3;
-    string parent_identification_number = 4;
-    GrpcComponentType component_type = 5;
+  string component_description = 1;
+  string identification_number = 2;
+  GrpcGeographicalLocation geographical_location = 3;
+  string parent_identification_number = 4;
+  GrpcComponentType component_type = 5;
 }
 
 enum GrpcComponentType{
-    UNKNOWN_COMPONENT_TYPE = 0;
-    ELEVATOR = 1;
-    STAIRS = 2;
+  UNKNOWN_COMPONENT_TYPE = 0;
+  ELEVATOR = 1;
+  STAIRS = 2;
 }
 
-// multi message constructions
-
-message GrpcBuildings{
-    repeated GrpcBuilding buildings = 1;
-}
-
-message GrpcRooms{
-    repeated GrpcRoom rooms = 1;
-}
-
-message GrpcComponents{
-    repeated GrpcComponent components = 1;
-}
-
-message GrpcNotifications{
-    repeated GrpcNotification notifications = 1;
+enum GrpcSortOption{
+  UNKNOWN_SORT_OPTION = 0;
+  DESCENDING_TIME_STAMP = 1;
+  ASCENDING_TIME_STAMP = 2;
+  NAME_LEXICOGRAPHIC = 3;
+  NUMBER_LEXICOGRAPHIC = 4;
+  CAMPUS_LOCATION = 5;
+  COMPONENT_TYPE = 6;
+  ROOM_TYPE = 7;
 }

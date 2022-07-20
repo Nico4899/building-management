@@ -14,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 public class RoomTypeRoomFilter implements Filter<Room> {
 
-  private Collection<RoomType> filterValues;
+  private final Collection<RoomType> filterValues;
 
   @Override
   public Collection<Room> filter(Collection<Room> collection) {
