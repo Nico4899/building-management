@@ -70,7 +70,7 @@ public class FilterTests {
     Component component1 = new Component();
     component1.setType(Component.Type.ELEVATOR);
     Component component2 = new Component();
-    component1.setType(Component.Type.STAIRS);
+    component2.setType(Component.Type.STAIRS);
 
     // build components
     testComponentsMap.put(ELEVATOR_COMPONENT, component1);
@@ -79,19 +79,19 @@ public class FilterTests {
     Room room1 = new Room();
     room1.setType(Room.Type.LECTURE_ROOM);
     Room room2 = new Room();
-    room1.setType(Room.Type.SEMINAR_ROOM);
+    room2.setType(Room.Type.SEMINAR_ROOM);
     Room room3 = new Room();
-    room1.setType(Room.Type.RESTROOM);
+    room3.setType(Room.Type.RESTROOM);
     Room room4 = new Room();
-    room1.setType(Room.Type.RESTROOM_HANDICAPPED);
+    room4.setType(Room.Type.RESTROOM_HANDICAPPED);
     Room room5 = new Room();
-    room1.setType(Room.Type.OFFICE);
+    room5.setType(Room.Type.OFFICE);
     Room room6 = new Room();
-    room1.setType(Room.Type.SPORTS);
+    room6.setType(Room.Type.SPORTS);
     Room room7 = new Room();
-    room1.setType(Room.Type.LIBRARY);
+    room7.setType(Room.Type.LIBRARY);
     Room room8 = new Room();
-    room1.setType(Room.Type.CAFETERIA);
+    room8.setType(Room.Type.CAFETERIA);
 
     // build rooms
     testRoomsMap.put(LECTURE_ROOM, room1);
@@ -112,11 +112,11 @@ public class FilterTests {
     Building building1 = new Building();
     building1.setCampusLocation(Building.CampusLocation.EAST_CAMPUS);
     Building building2 = new Building();
-    building1.setCampusLocation(Building.CampusLocation.WEST_CAMPUS);
+    building2.setCampusLocation(Building.CampusLocation.WEST_CAMPUS);
     Building building3 = new Building();
-    building1.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
+    building3.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
     Building building4 = new Building();
-    building1.setCampusLocation(Building.CampusLocation.NORTH_CAMPUS);
+    building4.setCampusLocation(Building.CampusLocation.NORTH_CAMPUS);
 
     // build buildings
     testBuildingsMap.put(EAST_CAMPUS_BUILDING, building1);
