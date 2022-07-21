@@ -8,17 +8,16 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * This class represents the building management application microservice manager. It holds and
+ * This class represents the building management application microservice service. It holds and
  * manages all the microservice logic.
  */
-@Service
+@org.springframework.stereotype.Component
 public class BuildingManagementService {
 
   public static final String IDENTIFICATION_NUMBER_NAME = "identification_number";
@@ -65,7 +64,7 @@ public class BuildingManagementService {
       this.buildBuildingRooms(building);
       this.buildBuildingComponents(building);
     }
-    return configuration.apply(buildings);
+    return configuration.run(buildings);
   }
 
   /**
@@ -81,7 +80,7 @@ public class BuildingManagementService {
     for (Room room : rooms) {
       this.buildRoomComponents(room);
     }
-    return configuration.apply(rooms);
+    return configuration.run(rooms);
   }
 
   /**
@@ -92,7 +91,7 @@ public class BuildingManagementService {
    */
   public Collection<Component> listBuildingComponents(
       Configuration<Component> configuration, String identificationNumber) {
-    return configuration.apply(this.buildingConnector.listBuildingComponents(identificationNumber));
+    return configuration.run(this.buildingConnector.listBuildingComponents(identificationNumber));
   }
 
   /**
@@ -103,7 +102,7 @@ public class BuildingManagementService {
    */
   public Collection<Component> listRoomComponents(
       Configuration<Component> configuration, String identificationNumber) {
-    return configuration.apply(this.buildingConnector.listRoomComponents(identificationNumber));
+    return configuration.run(this.buildingConnector.listRoomComponents(identificationNumber));
   }
 
   /**
@@ -114,7 +113,7 @@ public class BuildingManagementService {
    */
   public Collection<Notification> listBuildingNotifications(
       Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.apply(
+    return configuration.run(
         this.buildingConnector.listBuildingNotifications(identificationNumber));
   }
 
@@ -126,7 +125,7 @@ public class BuildingManagementService {
    */
   public Collection<Notification> listRoomNotifications(
       Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.apply(this.buildingConnector.listRoomNotifications(identificationNumber));
+    return configuration.run(this.buildingConnector.listRoomNotifications(identificationNumber));
   }
 
   /**
@@ -137,7 +136,7 @@ public class BuildingManagementService {
    */
   public Collection<Notification> listComponentNotifications(
       Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.apply(
+    return configuration.run(
         this.buildingConnector.listComponentNotifications(identificationNumber));
   }
 
@@ -153,7 +152,7 @@ public class BuildingManagementService {
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
       components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
     }
-    return configuration.apply(components);
+    return configuration.run(components);
   }
 
   /**
@@ -170,7 +169,7 @@ public class BuildingManagementService {
     for (Room room : rooms) {
       this.buildRoomComponents(room);
     }
-    return configuration.apply(rooms);
+    return configuration.run(rooms);
   }
 
   /**
@@ -189,7 +188,7 @@ public class BuildingManagementService {
       this.buildBuildingRooms(building);
       this.buildBuildingComponents(building);
     }
-    return configuration.apply(buildings);
+    return configuration.run(buildings);
   }
 
   /**

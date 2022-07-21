@@ -1,29 +1,66 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InternalServerErrorException;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This class describes a building with its attributes on KIT campus. It possesses a campus
- * location, name, number, number floors, identification number and a geographical location. It is
- * used as model object for building management logic.
+ * This class describes a building model object, it can hold a collection of {@link Room} and {@link
+ * Component}*, further it holds information about geographical location and campus location. This
+ * class provides {@link CampusLocation} to describe its location on KIT-Campus.
+ *
+ * @version 1.0
+ * @author Bastian Bacher
  */
-@Data
-@Builder
-@AllArgsConstructor
-@RequiredArgsConstructor
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Building {
   private final Collection<Room> rooms = new ArrayList<>();
   private final Collection<Component> components = new ArrayList<>();
+
   private int numFloors;
   private CampusLocation campusLocation;
+
   private String buildingName;
   private String buildingNumber;
+
   private String identificationNumber;
-  private GeographicalLocation geographicalLocation;
+
+  private double longitude;
+  private double latitude;
+
+  /**
+   * This nested enum contains various KIT-Campus locations.
+   *
+   * @version 1.0
+   * @author Bastian Bacher
+   */
+  public enum CampusLocation {
+    /** North campus location. */
+    NORTH_CAMPUS,
+    /** East campus location. */
+    EAST_CAMPUS,
+    /** South campus location. */
+    SOUTH_CAMPUS,
+    /** West campus location. */
+    WEST_CAMPUS;
+
+    /**
+     * This static method provides a {@link CampusLocation} for its ordinal.
+     *
+     * @param ordinal the ordinal number of the enum constant
+     * @return the campus location with the ordinal number
+     */
+    public static CampusLocation forOrdinal(int ordinal) {
+      if (ordinal > values().length || ordinal < 0)
+        throw new InternalServerErrorException("value with ordinal does not exist");
+      return values()[ordinal];
+    }
+  }
 }

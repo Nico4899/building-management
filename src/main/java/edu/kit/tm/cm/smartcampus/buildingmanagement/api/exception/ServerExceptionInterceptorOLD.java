@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.error;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.exception;
 
 import com.google.protobuf.Message;
 import com.google.rpc.ErrorInfo;
@@ -23,7 +23,7 @@ import java.util.function.Function;
  * @param <T> response generic
  */
 @AllArgsConstructor
-public class GrpcServerErrorHandler<S extends Message, T extends Message> implements StreamObserver<T> {
+public class ServerExceptionInterceptorOLD<S extends Message, T extends Message> implements StreamObserver<T> {
 
   private final StreamObserver<T> grpcResponseObserver;
 
@@ -75,7 +75,7 @@ public class GrpcServerErrorHandler<S extends Message, T extends Message> implem
 
   /**
    * This is the wrapper method to run a function and catch all exceptions thrown and send them to handling.
-   * If an error occurred, it calls the overridden {@link GrpcServerErrorHandler#onError(Throwable)} method.
+   * If an error occurred, it calls the overridden {@link ServerExceptionInterceptorOLD#onError(Throwable)} method.
    *
    * @param function function to be applied
    * @param request request from client

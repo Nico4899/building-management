@@ -1,6 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,22 +35,22 @@ public class FilterTests {
   public static final String SOUTH_CAMPUS_BUILDING = "southCampusBuilding";
   public static final String NORTH_CAMPUS_BUILDING = "northCampusBuilding";
 
-  private static final Collection<RoomType> ALL_ROOM_TYPES = List.of(RoomType.values());
-  private static final Collection<RoomType> SOME_ROOM_TYPES =
-      List.of(RoomType.OFFICE, RoomType.LIBRARY, RoomType.RESTROOM);
-  private static final Collection<RoomType> NO_ROOM_TYPES = List.of();
+  private static final Collection<Room.Type> ALL_ROOM_TYPES = List.of(Room.Type.values());
+  private static final Collection<Room.Type> SOME_ROOM_TYPES =
+      List.of(Room.Type.OFFICE, Room.Type.LIBRARY, Room.Type.RESTROOM);
+  private static final Collection<Room.Type> NO_ROOM_TYPES = List.of();
 
-  private static final Collection<ComponentType> ALL_COMPONENT_TYPES =
-      List.of(ComponentType.values());
-  private static final Collection<ComponentType> SOME_COMPONENT_TYPES =
-      List.of(ComponentType.STAIRS);
-  private static final Collection<ComponentType> NO_COMPONENT_TYPES = List.of();
+  private static final Collection<Component.Type> ALL_COMPONENT_TYPES =
+      List.of(Component.Type.values());
+  private static final Collection<Component.Type> SOME_COMPONENT_TYPES =
+      List.of(Component.Type.STAIRS);
+  private static final Collection<Component.Type> NO_COMPONENT_TYPES = List.of();
 
-  private static final Collection<CampusLocation> ALL_CAMPUS_LOCATIONS =
-      List.of(CampusLocation.values());
-  private static final Collection<CampusLocation> SOME_CAMPUS_LOCATIONS =
-      List.of(CampusLocation.EAST_CAMPUS, CampusLocation.NORTH_CAMPUS);
-  private static final Collection<CampusLocation> NO_CAMPUS_LOCATIONS = List.of();
+  private static final Collection<Building.CampusLocation> ALL_CAMPUS_LOCATIONS =
+      List.of(Building.CampusLocation.values());
+  private static final Collection<Building.CampusLocation> SOME_CAMPUS_LOCATIONS =
+      List.of(Building.CampusLocation.EAST_CAMPUS, Building.CampusLocation.NORTH_CAMPUS);
+  private static final Collection<Building.CampusLocation> NO_CAMPUS_LOCATIONS = List.of();
 
   private static final Map<String, Component> testComponentsMap = new HashMap<>();
   private static final Map<String, Room> testRoomsMap = new HashMap<>();
@@ -65,25 +67,41 @@ public class FilterTests {
 
   private static void buildTestMappings() {
 
+    Component component1 = new Component();
+    component1.setType(Component.Type.ELEVATOR);
+    Component component2 = new Component();
+    component1.setType(Component.Type.STAIRS);
+
     // build components
-    testComponentsMap.put(
-        ELEVATOR_COMPONENT, new Component(null, null, null, null, ComponentType.ELEVATOR));
-    testComponentsMap.put(
-        STAIRS_COMPONENT, new Component(null, null, null, null, ComponentType.STAIRS));
+    testComponentsMap.put(ELEVATOR_COMPONENT, component1);
+    testComponentsMap.put(STAIRS_COMPONENT, component2);
+
+    Room room1 = new Room();
+    room1.setType(Room.Type.LECTURE_ROOM);
+    Room room2 = new Room();
+    room1.setType(Room.Type.SEMINAR_ROOM);
+    Room room3 = new Room();
+    room1.setType(Room.Type.RESTROOM);
+    Room room4 = new Room();
+    room1.setType(Room.Type.RESTROOM_HANDICAPPED);
+    Room room5 = new Room();
+    room1.setType(Room.Type.OFFICE);
+    Room room6 = new Room();
+    room1.setType(Room.Type.SPORTS);
+    Room room7 = new Room();
+    room1.setType(Room.Type.LIBRARY);
+    Room room8 = new Room();
+    room1.setType(Room.Type.CAFETERIA);
 
     // build rooms
-    testRoomsMap.put(
-        LECTURE_ROOM, new Room(0, null, null, null, null, null, RoomType.LECTURE_ROOM));
-    testRoomsMap.put(
-        SEMINAR_ROOM, new Room(0, null, null, null, null, null, RoomType.SEMINAR_ROOM));
-    testRoomsMap.put(REST_ROOM, new Room(0, null, null, null, null, null, RoomType.RESTROOM));
-    testRoomsMap.put(
-        REST_ROOM_HANDICAPPED,
-        new Room(0, null, null, null, null, null, RoomType.RESTROOM_HANDICAPPED));
-    testRoomsMap.put(OFFICE, new Room(0, null, null, null, null, null, RoomType.OFFICE));
-    testRoomsMap.put(SPORTS, new Room(0, null, null, null, null, null, RoomType.SPORTS));
-    testRoomsMap.put(LIBRARY, new Room(0, null, null, null, null, null, RoomType.LIBRARY));
-    testRoomsMap.put(CAFETERIA, new Room(0, null, null, null, null, null, RoomType.CAFETERIA));
+    testRoomsMap.put(LECTURE_ROOM, room1);
+    testRoomsMap.put(SEMINAR_ROOM, room2);
+    testRoomsMap.put(REST_ROOM, room3);
+    testRoomsMap.put(REST_ROOM_HANDICAPPED, room4);
+    testRoomsMap.put(OFFICE, room5);
+    testRoomsMap.put(SPORTS, room6);
+    testRoomsMap.put(LIBRARY, room7);
+    testRoomsMap.put(CAFETERIA, room8);
 
     testRoomsMap.get(LECTURE_ROOM).getComponents().add(testComponentsMap.get(ELEVATOR_COMPONENT));
     testRoomsMap.get(SEMINAR_ROOM).getComponents().add(testComponentsMap.get(ELEVATOR_COMPONENT));
@@ -91,17 +109,20 @@ public class FilterTests {
     testRoomsMap.get(SPORTS).getComponents().add(testComponentsMap.get(STAIRS_COMPONENT));
     testRoomsMap.get(LIBRARY).getComponents().add(testComponentsMap.get(STAIRS_COMPONENT));
 
+    Building building1 = new Building();
+    building1.setCampusLocation(Building.CampusLocation.EAST_CAMPUS);
+    Building building2 = new Building();
+    building1.setCampusLocation(Building.CampusLocation.WEST_CAMPUS);
+    Building building3 = new Building();
+    building1.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
+    Building building4 = new Building();
+    building1.setCampusLocation(Building.CampusLocation.NORTH_CAMPUS);
+
     // build buildings
-    testBuildingsMap.put(
-        EAST_CAMPUS_BUILDING, new Building(0, CampusLocation.EAST_CAMPUS, null, null, null, null));
-    testBuildingsMap.put(
-        WEST_CAMPUS_BUILDING, new Building(0, CampusLocation.WEST_CAMPUS, null, null, null, null));
-    testBuildingsMap.put(
-        SOUTH_CAMPUS_BUILDING,
-        new Building(0, CampusLocation.SOUTH_CAMPUS, null, null, null, null));
-    testBuildingsMap.put(
-        NORTH_CAMPUS_BUILDING,
-        new Building(0, CampusLocation.NORTH_CAMPUS, null, null, null, null));
+    testBuildingsMap.put(EAST_CAMPUS_BUILDING, building1);
+    testBuildingsMap.put(WEST_CAMPUS_BUILDING, building2);
+    testBuildingsMap.put(SOUTH_CAMPUS_BUILDING, building3);
+    testBuildingsMap.put(NORTH_CAMPUS_BUILDING, building4);
 
     testBuildingsMap
         .get(EAST_CAMPUS_BUILDING)
@@ -135,14 +156,14 @@ public class FilterTests {
 
   @ParameterizedTest
   @ArgumentsSource(BuildingFilterArgumentsProvider.class)
-  public void filterBuildingCollectionAndValuesResultTest(
+  void filterBuildingCollectionAndValuesResultTest(
       Collection<Building> expected, Filter<Building> filter, Collection<Building> collection) {
     Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
   }
 
   @ParameterizedTest
   @ArgumentsSource(RoomFilterArgumentsProvider.class)
-  public void filterRoomCollectionAndValuesResultTest(
+  void filterRoomCollectionAndValuesResultTest(
       Collection<Room> expected, Filter<Room> filter, Collection<Room> collection) {
     Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
   }

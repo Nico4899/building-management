@@ -20,7 +20,7 @@ public class ListConfiguration<T> implements Configuration<T> {
   private final Collection<Filter<T>> filters;
 
   @Override
-  public Collection<T> apply(Collection<T> collection) {
+  public Collection<T> run(Collection<T> collection) {
     Collection<T> applied = new ArrayList<>(collection);
     for (Filter<T> filter : filters) {
       applied = filter.filter(applied);

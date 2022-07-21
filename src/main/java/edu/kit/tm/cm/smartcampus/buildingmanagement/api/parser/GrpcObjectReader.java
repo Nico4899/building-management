@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utilitly;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser;
 
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
@@ -8,14 +8,14 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filt
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.sorters.*;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 /** The type Grpc object reader. */
-@AllArgsConstructor
+@NoArgsConstructor
 @org.springframework.stereotype.Component
 public class GrpcObjectReader {
 
@@ -26,12 +26,14 @@ public class GrpcObjectReader {
    * @return the component
    */
   public Component read(GrpcComponent grpcComponent) {
-    return Component.builder()
-        .componentDescription(grpcComponent.getComponentDescription())
-        .componentType(read(grpcComponent.getComponentType()))
-        .geographicalLocation(read(grpcComponent.getGeographicalLocation()))
-        .parentIdentificationNumber(grpcComponent.getParentIdentificationNumber())
-        .build();
+    Component component = new Component();
+    component.setComponentDescription(grpcComponent.getComponentDescription());
+    component.setIdentificationNumber(grpcComponent.getIdentificationNumber());
+    component.setParentIdentificationNumber(grpcComponent.getParentIdentificationNumber());
+    component.setLatitude(grpcComponent.getLatitude());
+    component.setLongitude(grpcComponent.getLongitude());
+    component.setType(read(grpcComponent.getComponentType()));
+    return component;
   }
 
   /**
@@ -41,10 +43,10 @@ public class GrpcObjectReader {
    * @return the favorite
    */
   public Favorite read(GrpcFavorite grpcFavorite) {
-    return Favorite.builder()
-        .referenceIdentificationNumber(grpcFavorite.getReferenceIdentificationNumber())
-        .owner(grpcFavorite.getOwner())
-        .build();
+    Favorite favorite = new Favorite();
+    favorite.setOwner(grpcFavorite.getOwner());
+    favorite.setReferenceIdentificationNumber(grpcFavorite.getReferenceIdentificationNumber());
+    return favorite;
   }
 
   /**
@@ -54,13 +56,15 @@ public class GrpcObjectReader {
    * @return the building
    */
   public Building read(GrpcBuilding grpcBuilding) {
-    return Building.builder()
-        .buildingName(grpcBuilding.getBuildingName())
-        .buildingNumber(grpcBuilding.getBuildingNumber())
-        .geographicalLocation(read(grpcBuilding.getGeographicalLocation()))
-        .campusLocation(read(grpcBuilding.getCampusLocation()))
-        .numFloors(grpcBuilding.getNumFloors())
-        .build();
+    Building building = new Building();
+    building.setBuildingNumber(grpcBuilding.getBuildingNumber());
+    building.setBuildingName(grpcBuilding.getBuildingName());
+    building.setCampusLocation(read(grpcBuilding.getCampusLocation()));
+    building.setNumFloors(grpcBuilding.getNumFloors());
+    building.setIdentificationNumber(grpcBuilding.getIdentificationNumber());
+    building.setLongitude(grpcBuilding.getLongitude());
+    building.setLatitude(grpcBuilding.getLatitude());
+    return building;
   }
 
   /**
@@ -70,14 +74,16 @@ public class GrpcObjectReader {
    * @return the room
    */
   public Room read(GrpcRoom grpcRoom) {
-    return Room.builder()
-        .roomName(grpcRoom.getRoomName())
-        .roomType(read(grpcRoom.getRoomType()))
-        .roomNumber(grpcRoom.getRoomNumber())
-        .floor(grpcRoom.getFloor())
-        .parentIdentificationNumber(grpcRoom.getParentIdentificationNumber())
-        .geographicalLocation(read(grpcRoom.getGeographicalLocation()))
-        .build();
+    Room room = new Room();
+    room.setRoomNumber(grpcRoom.getRoomNumber());
+    room.setRoomName(grpcRoom.getRoomName());
+    room.setFloor(grpcRoom.getFloor());
+    room.setParentIdentificationNumber(grpcRoom.getParentIdentificationNumber());
+    room.setLatitude(grpcRoom.getLatitude());
+    room.setLongitude(grpcRoom.getLongitude());
+    room.setType(read(grpcRoom.getRoomType()));
+    room.setIdentificationNumber(grpcRoom.getIdentificationNumber());
+    return room;
   }
 
   /**
@@ -86,8 +92,8 @@ public class GrpcObjectReader {
    * @param grpcRoomType the grpc room type
    * @return the room type
    */
-  public RoomType read(GrpcRoomType grpcRoomType) {
-    return RoomType.forNumber(grpcRoomType.ordinal() + 1);
+  public Room.Type read(GrpcRoomType grpcRoomType) {
+    return Room.Type.forOrdinal(grpcRoomType.ordinal() + 1);
   }
 
   /**
@@ -96,21 +102,8 @@ public class GrpcObjectReader {
    * @param grpcCampusLocation the grpc campus location
    * @return the campus location
    */
-  public CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
-    return CampusLocation.forNumber(grpcCampusLocation.ordinal() + 1);
-  }
-
-  /**
-   * Read geographical location.
-   *
-   * @param grpcGeographicalLocation the grpc geographical location
-   * @return the geographical location
-   */
-  public GeographicalLocation read(GrpcGeographicalLocation grpcGeographicalLocation) {
-    return GeographicalLocation.builder()
-        .longitude(grpcGeographicalLocation.getLongitude())
-        .latitude(grpcGeographicalLocation.getLatitude())
-        .build();
+  public Building.CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
+    return Building.CampusLocation.forOrdinal(grpcCampusLocation.ordinal() + 1);
   }
 
   /**
@@ -119,8 +112,8 @@ public class GrpcObjectReader {
    * @param grpcComponentType the grpc component type
    * @return the component type
    */
-  public ComponentType read(GrpcComponentType grpcComponentType) {
-    return ComponentType.forNumber(grpcComponentType.ordinal() + 1);
+  public Component.Type read(GrpcComponentType grpcComponentType) {
+    return Component.Type.forOrdinal(grpcComponentType.ordinal() + 1);
   }
 
   /**
@@ -224,7 +217,6 @@ public class GrpcObjectReader {
     return switch (grpcSortOption) {
       case NAME_LEXICOGRAPHIC -> new LexicographicNameBuildingSorter();
       case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberBuildingSorter();
-      case CAMPUS_LOCATION -> new CampusLocationBuildingSorter();
       default -> new DefaultSorter<>();
     };
   }
@@ -239,7 +231,6 @@ public class GrpcObjectReader {
     return switch (grpcSortOption) {
       case NAME_LEXICOGRAPHIC -> new LexicographicNameRoomSorter();
       case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberRoomSorter();
-      case ROOM_TYPE -> new RoomTypeRoomSorter();
       default -> new DefaultSorter<>();
     };
   }
@@ -251,10 +242,7 @@ public class GrpcObjectReader {
    * @return model problem sorter object
    */
   public Sorter<Component> readComponentSorter(GrpcSortOption grpcSortOption) {
-    return switch (grpcSortOption) {
-      case COMPONENT_TYPE -> new ComponentTypeComponentSorter();
-      default -> new DefaultSorter<>();
-    };
+    return new DefaultSorter<>();
   }
 
   /**

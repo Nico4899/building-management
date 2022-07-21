@@ -14,5 +14,5 @@ public interface Configuration<T> {
    * @param collection the collection to be operated on
    * @return the operated collection
    */
-  Collection<T> apply(Collection<T> collection);
+  Collection<T> run(Collection<T> collection);
 }

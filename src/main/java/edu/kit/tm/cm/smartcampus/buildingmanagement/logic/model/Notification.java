@@ -1,19 +1,21 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.sql.Timestamp;
 
 /**
- * This class describes a notification unit.
+ * This class describes a notification model object.
+ *
+ * @version 1.0
+ * @author Bastian Bacher
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Setter
+@Getter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Notification {
   private String identificationNumber;
   private String notificationTitle;

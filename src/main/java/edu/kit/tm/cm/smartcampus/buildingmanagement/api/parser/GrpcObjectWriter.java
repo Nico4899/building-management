@@ -1,15 +1,18 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utilitly;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import lombok.AllArgsConstructor;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
+import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
 /** The type grpc object writer. */
-@AllArgsConstructor
 @org.springframework.stereotype.Component
+@NoArgsConstructor
 public class GrpcObjectWriter {
 
   /**
@@ -21,7 +24,8 @@ public class GrpcObjectWriter {
   public GrpcComponent write(Component component) {
     return GrpcComponent.newBuilder()
         .setComponentDescription(component.getComponentDescription())
-        .setGeographicalLocation(write(component.getGeographicalLocation()))
+        .setLatitude(component.getLatitude())
+        .setLongitude(component.getLongitude())
         .setParentIdentificationNumber(component.getParentIdentificationNumber())
         .setIdentificationNumber(component.getIdentificationNumber())
         .build();
@@ -36,11 +40,12 @@ public class GrpcObjectWriter {
   public GrpcRoom write(Room room) {
     return GrpcRoom.newBuilder()
         .setFloor(room.getFloor())
-        .setGeographicalLocation(write(room.getGeographicalLocation()))
+        .setLatitude(room.getLatitude())
+        .setLongitude(room.getLongitude())
         .setRoomName(room.getRoomName())
         .setRoomNumber(room.getRoomNumber())
         .setParentIdentificationNumber(room.getParentIdentificationNumber())
-        .setRoomType(write(room.getRoomType()))
+        .setRoomType(write(room.getType()))
         .setIdentificationNumber(room.getIdentificationNumber())
         .build();
   }
@@ -57,7 +62,8 @@ public class GrpcObjectWriter {
         .setBuildingNumber(building.getBuildingNumber())
         .setIdentificationNumber(building.getIdentificationNumber())
         .setCampusLocation(write(building.getCampusLocation()))
-        .setGeographicalLocation(write(building.getGeographicalLocation()))
+        .setLatitude(building.getLatitude())
+        .setLongitude(building.getLongitude())
         .setNumFloors(building.getNumFloors())
         .build();
   }
@@ -120,25 +126,12 @@ public class GrpcObjectWriter {
   }
 
   /**
-   * Write grpc geographical location.
-   *
-   * @param geographicalLocation the geographical location
-   * @return the grpc geographical location
-   */
-  public GrpcGeographicalLocation write(GeographicalLocation geographicalLocation) {
-    return GrpcGeographicalLocation.newBuilder()
-        .setLatitude(geographicalLocation.getLatitude())
-        .setLongitude(geographicalLocation.getLongitude())
-        .build();
-  }
-
-  /**
    * Write grpc campus location.
    *
    * @param campusLocation the campus location
    * @return the grpc campus location
    */
-  public GrpcCampusLocation write(CampusLocation campusLocation) {
+  public GrpcCampusLocation write(Building.CampusLocation campusLocation) {
     return GrpcCampusLocation.forNumber(campusLocation.ordinal() + 1);
   }
 
@@ -148,7 +141,7 @@ public class GrpcObjectWriter {
    * @param roomType the room type
    * @return the grpc room type
    */
-  public GrpcRoomType write(RoomType roomType) {
+  public GrpcRoomType write(Room.Type roomType) {
     return GrpcRoomType.forNumber(roomType.ordinal() + 1);
   }
 }
