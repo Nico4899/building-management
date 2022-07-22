@@ -119,7 +119,7 @@ public class RestTemplateTests {
     private RestTemplate restTemplate = mock(RestTemplate.class);
 
     @Autowired
-    private RestTemplateBuildingConnector connector = new RestTemplateBuildingConnector(restTemplate, baseUrl);
+    private BuildingConnector connector = new ClientBuildingConnector(restTemplate, baseUrl);
 
     private MockRestServiceServer server;
 

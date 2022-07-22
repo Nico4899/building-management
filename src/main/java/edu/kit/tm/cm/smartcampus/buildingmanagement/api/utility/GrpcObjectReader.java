@@ -93,7 +93,7 @@ public final class GrpcObjectReader {
    * @return the room type
    */
   public static Room.Type read(GrpcRoomType grpcRoomType) {
-    return Room.Type.forOrdinal(grpcRoomType.ordinal() + 1);
+    return Room.Type.forOrdinal(grpcRoomType.ordinal() - 1);
   }
 
   /**
@@ -103,7 +103,7 @@ public final class GrpcObjectReader {
    * @return the campus location
    */
   public static Building.CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
-    return Building.CampusLocation.forOrdinal(grpcCampusLocation.ordinal() + 1);
+    return Building.CampusLocation.forOrdinal(grpcCampusLocation.ordinal() - 1);
   }
 
   /**
@@ -113,7 +113,7 @@ public final class GrpcObjectReader {
    * @return the component type
    */
   public static Component.Type read(GrpcComponentType grpcComponentType) {
-    return Component.Type.forOrdinal(grpcComponentType.ordinal() + 1);
+    return Component.Type.forOrdinal(grpcComponentType.ordinal() - 1);
   }
 
   /**
