@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings;
 
 import java.util.Collection;
 
@@ -7,7 +7,7 @@ import java.util.Collection;
  *
  * @param <T> the type the collection contains
  */
-public interface Configuration<T> {
+public interface Settings<T> {
   /**
    * Apply configurations to collection.
    *

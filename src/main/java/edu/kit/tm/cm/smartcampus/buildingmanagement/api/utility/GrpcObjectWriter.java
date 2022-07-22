@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility;
 
 import com.google.protobuf.Timestamp;
 import edu.kit.tm.cm.proto.*;

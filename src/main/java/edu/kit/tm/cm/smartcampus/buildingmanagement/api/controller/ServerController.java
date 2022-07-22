@@ -1,12 +1,11 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.exception.ServerExceptionInterceptorOLD;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser.GrpcObjectReader;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser.GrpcObjectWriter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.GrpcObjectReader;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.GrpcObjectWriter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,7 @@ import java.util.Collection;
 
 /**
  * This class represents the gRPC controller from server side. It provides clients with the building
- * management application microservice api. In order to ensure the input and error control flow, a
- * custom wrapper for {@link StreamObserver} is used. {@link ServerExceptionInterceptorOLD} allows
- * the application to catch and handle all thrown exceptions and ensures to provide a client with
- * proper information.
+ * management application microservice api.
  */
 @GrpcService
 public class ServerController extends BuildingManagementGrpc.BuildingManagementImplBase {
@@ -146,8 +142,8 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
   public void listBuildings(
       ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
     ListBuildingConfiguration listBuildingConfiguration = request.getListBuildingConfiguration();
-    Configuration<Building> configuration = this.grpcObjectReader.read(listBuildingConfiguration);
-    Collection<Building> buildings = this.buildingManagementService.listBuildings(configuration);
+    Settings<Building> settings = this.grpcObjectReader.read(listBuildingConfiguration);
+    Collection<Building> buildings = this.buildingManagementService.listBuildings(settings);
     Collection<GrpcBuilding> grpcBuildings = this.grpcObjectWriter.writeBuildings(buildings);
     ListBuildingsResponse response =
         ListBuildingsResponse.newBuilder().addAllBuildings(grpcBuildings).build();
@@ -160,9 +156,9 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       ListRoomsRequest request, StreamObserver<ListRoomsResponse> responseObserver) {
     String identificationNumber = request.getIdentificationNumber();
     ListRoomConfiguration listRoomConfiguration = request.getListRoomConfiguration();
-    Configuration<Room> configuration = this.grpcObjectReader.read(listRoomConfiguration);
+    Settings<Room> settings = this.grpcObjectReader.read(listRoomConfiguration);
     Collection<Room> rooms =
-        this.buildingManagementService.listRooms(configuration, identificationNumber);
+        this.buildingManagementService.listRooms(settings, identificationNumber);
     Collection<GrpcRoom> grpcRooms = this.grpcObjectWriter.writeRooms(rooms);
     ListRoomsResponse response = ListRoomsResponse.newBuilder().addAllRooms(grpcRooms).build();
     responseObserver.onNext(response);
@@ -173,10 +169,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
   public void listBuildingComponents(
       ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
     ListComponentConfiguration listComponentConfiguration = request.getListComponentConfiguration();
-    Configuration<Component> configuration = this.grpcObjectReader.read(listComponentConfiguration);
+    Settings<Component> settings = this.grpcObjectReader.read(listComponentConfiguration);
     String identificationNumber = request.getIdentificationNumber();
     Collection<Component> components =
-        this.buildingManagementService.listBuildingComponents(configuration, identificationNumber);
+        this.buildingManagementService.listBuildingComponents(settings, identificationNumber);
     Collection<GrpcComponent> grpcComponents = this.grpcObjectWriter.writeComponents(components);
     ListComponentsResponse response =
         ListComponentsResponse.newBuilder().addAllComponents(grpcComponents).build();
@@ -188,10 +184,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
   public void listRoomComponents(
       ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
     ListComponentConfiguration listComponentConfiguration = request.getListComponentConfiguration();
-    Configuration<Component> configuration = this.grpcObjectReader.read(listComponentConfiguration);
+    Settings<Component> settings = this.grpcObjectReader.read(listComponentConfiguration);
     String identificationNumber = request.getIdentificationNumber();
     Collection<Component> components =
-        this.buildingManagementService.listRoomComponents(configuration, identificationNumber);
+        this.buildingManagementService.listRoomComponents(settings, identificationNumber);
     Collection<GrpcComponent> grpcComponents = this.grpcObjectWriter.writeComponents(components);
     ListComponentsResponse response =
         ListComponentsResponse.newBuilder().addAllComponents(grpcComponents).build();
@@ -205,12 +201,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       StreamObserver<ListNotificationsResponse> responseObserver) {
     ListNotificationConfiguration listNotificationConfiguration =
         request.getListNotificationConfiguration();
-    Configuration<Notification> configuration =
-        this.grpcObjectReader.read(listNotificationConfiguration);
+    Settings<Notification> settings = this.grpcObjectReader.read(listNotificationConfiguration);
     String identificationNumber = request.getIdentificationNumber();
     Collection<Notification> notifications =
-        this.buildingManagementService.listBuildingNotifications(
-            configuration, identificationNumber);
+        this.buildingManagementService.listBuildingNotifications(settings, identificationNumber);
     Collection<GrpcNotification> grpcNotifications =
         this.grpcObjectWriter.writeNotifications(notifications);
     ListNotificationsResponse response =
@@ -225,11 +219,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       StreamObserver<ListNotificationsResponse> responseObserver) {
     ListNotificationConfiguration listNotificationConfiguration =
         request.getListNotificationConfiguration();
-    Configuration<Notification> configuration =
-        this.grpcObjectReader.read(listNotificationConfiguration);
+    Settings<Notification> settings = this.grpcObjectReader.read(listNotificationConfiguration);
     String identificationNumber = request.getIdentificationNumber();
     Collection<Notification> notifications =
-        this.buildingManagementService.listRoomNotifications(configuration, identificationNumber);
+        this.buildingManagementService.listRoomNotifications(settings, identificationNumber);
     Collection<GrpcNotification> grpcNotifications =
         this.grpcObjectWriter.writeNotifications(notifications);
     ListNotificationsResponse response =
@@ -244,12 +237,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       StreamObserver<ListNotificationsResponse> responseObserver) {
     ListNotificationConfiguration listNotificationConfiguration =
         request.getListNotificationConfiguration();
-    Configuration<Notification> configuration =
-        this.grpcObjectReader.read(listNotificationConfiguration);
+    Settings<Notification> settings = this.grpcObjectReader.read(listNotificationConfiguration);
     String identificationNumber = request.getIdentificationNumber();
     Collection<Notification> notifications =
-        this.buildingManagementService.listComponentNotifications(
-            configuration, identificationNumber);
+        this.buildingManagementService.listComponentNotifications(settings, identificationNumber);
     Collection<GrpcNotification> grpcNotifications =
         this.grpcObjectWriter.writeNotifications(notifications);
     ListNotificationsResponse response =
@@ -263,10 +254,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       ListBuildingFavoritesRequest request,
       StreamObserver<ListBuildingFavoritesResponse> responseObserver) {
     ListBuildingConfiguration listBuildingConfiguration = request.getListBuildingConfiguration();
-    Configuration<Building> configuration = this.grpcObjectReader.read(listBuildingConfiguration);
+    Settings<Building> settings = this.grpcObjectReader.read(listBuildingConfiguration);
     String owner = request.getOwner();
     Collection<Building> buildings =
-        this.buildingManagementService.listBuildingFavorites(configuration, owner);
+        this.buildingManagementService.listBuildingFavorites(settings, owner);
     Collection<GrpcBuilding> grpcBuildings = this.grpcObjectWriter.writeBuildings(buildings);
     ListBuildingFavoritesResponse response =
         ListBuildingFavoritesResponse.newBuilder().addAllBuildings(grpcBuildings).build();
@@ -279,9 +270,9 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       ListRoomFavoritesRequest request,
       StreamObserver<ListRoomFavoritesResponse> responseObserver) {
     ListRoomConfiguration listRoomConfiguration = request.getListRoomConfiguration();
-    Configuration<Room> configuration = this.grpcObjectReader.read(listRoomConfiguration);
+    Settings<Room> settings = this.grpcObjectReader.read(listRoomConfiguration);
     String owner = request.getOwner();
-    Collection<Room> rooms = this.buildingManagementService.listRoomFavorites(configuration, owner);
+    Collection<Room> rooms = this.buildingManagementService.listRoomFavorites(settings, owner);
     Collection<GrpcRoom> grpcRooms = this.grpcObjectWriter.writeRooms(rooms);
     ListRoomFavoritesResponse response =
         ListRoomFavoritesResponse.newBuilder().addAllRooms(grpcRooms).build();
@@ -294,10 +285,10 @@ public class ServerController extends BuildingManagementGrpc.BuildingManagementI
       ListComponentFavoritesRequest request,
       StreamObserver<ListComponentFavoritesResponse> responseObserver) {
     ListComponentConfiguration listComponentConfiguration = request.getListComponentConfiguration();
-    Configuration<Component> configuration = this.grpcObjectReader.read(listComponentConfiguration);
+    Settings<Component> settings = this.grpcObjectReader.read(listComponentConfiguration);
     String owner = request.getOwner();
     Collection<Component> components =
-        this.buildingManagementService.listComponentFavorites(configuration, owner);
+        this.buildingManagementService.listComponentFavorites(settings, owner);
     Collection<GrpcComponent> grpcComponents = this.grpcObjectWriter.writeComponents(components);
     ListComponentFavoritesResponse response =
         ListComponentFavoritesResponse.newBuilder().addAllComponents(grpcComponents).build();

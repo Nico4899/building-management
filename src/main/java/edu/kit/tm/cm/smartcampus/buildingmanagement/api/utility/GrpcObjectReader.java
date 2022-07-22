@@ -1,9 +1,9 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility;
 
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.ListConfiguration;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.ListSettings;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
@@ -122,7 +122,7 @@ public class GrpcObjectReader {
    * @param listBuildingConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Configuration<Building> read(ListBuildingConfiguration listBuildingConfiguration) {
+  public Settings<Building> read(ListBuildingConfiguration listBuildingConfiguration) {
     Collection<Filter<Building>> filters = new ArrayList<>();
     if (listBuildingConfiguration.getCampusLocationFilterMapping().getSelected()) {
       filters.add(
@@ -151,7 +151,7 @@ public class GrpcObjectReader {
                   .map(this::read)
                   .toList()));
     }
-    return new ListConfiguration<>(readBuildingSorter(listBuildingConfiguration.getGrpcSortOption()), filters);
+    return new ListSettings<>(readBuildingSorter(listBuildingConfiguration.getGrpcSortOption()), filters);
   }
 
   /**
@@ -160,7 +160,7 @@ public class GrpcObjectReader {
    * @param listRoomConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Configuration<Room> read(ListRoomConfiguration listRoomConfiguration) {
+  public Settings<Room> read(ListRoomConfiguration listRoomConfiguration) {
     Collection<Filter<Room>> filters = new ArrayList<>();
     if (listRoomConfiguration.getRoomFloorFilterMapping().getSelected()) {
       filters.add(
@@ -183,7 +183,7 @@ public class GrpcObjectReader {
             .map(this::read)
             .toList()));
     }
-    return new ListConfiguration<>(readRoomSorter(listRoomConfiguration.getGrpcSortOption()), filters);
+    return new ListSettings<>(readRoomSorter(listRoomConfiguration.getGrpcSortOption()), filters);
   }
 
   /**
@@ -192,8 +192,8 @@ public class GrpcObjectReader {
    * @param listComponentConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Configuration<Component> read(ListComponentConfiguration listComponentConfiguration) {
-    return new ListConfiguration<>(readComponentSorter(listComponentConfiguration.getGrpcSortOption()), List.of());
+  public Settings<Component> read(ListComponentConfiguration listComponentConfiguration) {
+    return new ListSettings<>(readComponentSorter(listComponentConfiguration.getGrpcSortOption()), List.of());
   }
 
   /**
@@ -202,9 +202,9 @@ public class GrpcObjectReader {
    * @param listNotificationConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Configuration<Notification> read(
+  public Settings<Notification> read(
       ListNotificationConfiguration listNotificationConfiguration) {
-    return new ListConfiguration<>(readNotificationSorter((listNotificationConfiguration.getGrpcSortOption())), List.of());
+    return new ListSettings<>(readNotificationSorter((listNotificationConfiguration.getGrpcSortOption())), List.of());
   }
 
   /**

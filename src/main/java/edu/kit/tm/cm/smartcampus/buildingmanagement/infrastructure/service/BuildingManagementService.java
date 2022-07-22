@@ -5,7 +5,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.Favo
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.InputValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration.Configuration;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 
@@ -55,32 +55,32 @@ public class BuildingManagementService {
   /**
    * Lists all buildings with filter applied.
    *
-   * @param configuration options for filter
+   * @param settings options for filter
    * @return collection of all filtered buildings
    */
-  public Collection<Building> listBuildings(Configuration<Building> configuration) {
+  public Collection<Building> listBuildings(Settings<Building> settings) {
     Collection<Building> buildings = this.buildingConnector.listBuildings();
     for (Building building : buildings) {
       this.buildBuildingRooms(building);
       this.buildBuildingComponents(building);
     }
-    return configuration.run(buildings);
+    return settings.run(buildings);
   }
 
   /**
    * Lists all building's rooms after filter is being applied.
    *
-   * @param configuration options for filter
+   * @param settings options for filter
    * @param identificationNumber identification number of the building
    * @return collection of the building's rooms
    */
   public Collection<Room> listRooms(
-      Configuration<Room> configuration, String identificationNumber) {
+    Settings<Room> settings, String identificationNumber) {
     Collection<Room> rooms = this.buildingConnector.listBuildingRooms(identificationNumber);
     for (Room room : rooms) {
       this.buildRoomComponents(room);
     }
-    return configuration.run(rooms);
+    return settings.run(rooms);
   }
 
   /**
@@ -90,8 +90,8 @@ public class BuildingManagementService {
    * @return collection of components
    */
   public Collection<Component> listBuildingComponents(
-      Configuration<Component> configuration, String identificationNumber) {
-    return configuration.run(this.buildingConnector.listBuildingComponents(identificationNumber));
+    Settings<Component> settings, String identificationNumber) {
+    return settings.run(this.buildingConnector.listBuildingComponents(identificationNumber));
   }
 
   /**
@@ -101,8 +101,8 @@ public class BuildingManagementService {
    * @return collection of components
    */
   public Collection<Component> listRoomComponents(
-      Configuration<Component> configuration, String identificationNumber) {
-    return configuration.run(this.buildingConnector.listRoomComponents(identificationNumber));
+    Settings<Component> settings, String identificationNumber) {
+    return settings.run(this.buildingConnector.listRoomComponents(identificationNumber));
   }
 
   /**
@@ -112,8 +112,8 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listBuildingNotifications(
-      Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.run(
+    Settings<Notification> settings, String identificationNumber) {
+    return settings.run(
         this.buildingConnector.listBuildingNotifications(identificationNumber));
   }
 
@@ -124,8 +124,8 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listRoomNotifications(
-      Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.run(this.buildingConnector.listRoomNotifications(identificationNumber));
+    Settings<Notification> settings, String identificationNumber) {
+    return settings.run(this.buildingConnector.listRoomNotifications(identificationNumber));
   }
 
   /**
@@ -135,8 +135,8 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listComponentNotifications(
-      Configuration<Notification> configuration, String identificationNumber) {
-    return configuration.run(
+    Settings<Notification> settings, String identificationNumber) {
+    return settings.run(
         this.buildingConnector.listComponentNotifications(identificationNumber));
   }
 
@@ -147,12 +147,12 @@ public class BuildingManagementService {
    * @return collection of components marked as favorite
    */
   public Collection<Component> listComponentFavorites(
-      Configuration<Component> configuration, String owner) {
+    Settings<Component> settings, String owner) {
     Collection<Component> components = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
       components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
     }
-    return configuration.run(components);
+    return settings.run(components);
   }
 
   /**
@@ -161,7 +161,7 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of rooms marked as favorite
    */
-  public Collection<Room> listRoomFavorites(Configuration<Room> configuration, String owner) {
+  public Collection<Room> listRoomFavorites(Settings<Room> settings, String owner) {
     Collection<Room> rooms = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, RIN_SQL_PATTERN)) {
       rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
@@ -169,7 +169,7 @@ public class BuildingManagementService {
     for (Room room : rooms) {
       this.buildRoomComponents(room);
     }
-    return configuration.run(rooms);
+    return settings.run(rooms);
   }
 
   /**
@@ -179,7 +179,7 @@ public class BuildingManagementService {
    * @return collection of buildings marked as favorite
    */
   public Collection<Building> listBuildingFavorites(
-      Configuration<Building> configuration, String owner) {
+    Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, BIN_SQL_PATTERN)) {
       buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
@@ -188,7 +188,7 @@ public class BuildingManagementService {
       this.buildBuildingRooms(building);
       this.buildBuildingComponents(building);
     }
-    return configuration.run(buildings);
+    return settings.run(buildings);
   }
 
   /**

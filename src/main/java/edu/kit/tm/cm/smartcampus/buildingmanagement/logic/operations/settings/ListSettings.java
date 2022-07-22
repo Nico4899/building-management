@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.configuration;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
@@ -8,14 +8,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * This class represents a list request configuration, implemented from {@link Configuration}. It is
+ * This class represents a list request configuration, implemented from {@link Settings}. It is
  * being parsed from a provided grpc object and can apply {@link Filter} and {@link Sorter} selected
  * in the settings to a given collection.
  *
  * @param <T> the type of the collection to be operated on
  */
 @AllArgsConstructor
-public class ListConfiguration<T> implements Configuration<T> {
+public class ListSettings<T> implements Settings<T> {
   private final Sorter<T> sorter;
   private final Collection<Filter<T>> filters;
 

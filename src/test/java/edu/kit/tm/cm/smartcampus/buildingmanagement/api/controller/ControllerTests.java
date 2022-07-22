@@ -1,8 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser.GrpcObjectReader;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser.GrpcObjectWriter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.GrpcObjectReader;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.GrpcObjectWriter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
