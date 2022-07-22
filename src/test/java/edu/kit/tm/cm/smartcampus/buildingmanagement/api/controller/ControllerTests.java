@@ -253,4 +253,115 @@ public class ControllerTests {
         assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
         assertNull(responseObserver.getError());
     }
+
+    @Test
+    public void testUpdateBuilding() throws Exception {
+        Building building = new Building();
+        building.setBuildingName("");
+        building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
+        building.setBuildingNumber("");
+        building.setLongitude(2.2);
+        building.setLatitude(2.2);
+        building.setIdentificationNumber("b-1");
+        building.setNumFloors(0);
+        when(reader.read(grpcBuilding)).thenReturn(building);
+        when(service.updateBuilding(building)).thenReturn(building);
+        UpdateBuildingRequest request = UpdateBuildingRequest.newBuilder()
+                .setBuilding(grpcBuilding)
+                .build();
+        StreamRecorder<UpdateBuildingResponse> responseObserver = StreamRecorder.create();
+        controller.updateBuilding(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+        List<UpdateBuildingResponse> results = responseObserver.getValues();
+        assertEquals(1, results.size());
+        UpdateBuildingResponse response = results.get(0);
+        assertEquals(request.getBuilding().getIdentificationNumber(), response.getBuilding().getIdentificationNumber());
+    }
+
+    @Test
+    public void testUpdateRoom() throws Exception {
+        Room room = new Room();
+        room.setRoomName("");
+        room.setType(Room.Type.LECTURE_ROOM);
+        room.setIdentificationNumber("r-1");
+        room.setLatitude(2.2);
+        room.setLongitude(2.2);
+        room.setFloor(0);
+        room.setRoomNumber("");
+        room.setParentIdentificationNumber("");
+        when(service.updateRoom(room)).thenReturn(room);
+        when(reader.read(grpcRoom)).thenReturn(room);
+        UpdateRoomRequest request = UpdateRoomRequest.newBuilder()
+                .setRoom(grpcRoom)
+                .build();
+        StreamRecorder<UpdateRoomResponse> responseObserver = StreamRecorder.create();
+        controller.updateRoom(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+        List<UpdateRoomResponse> results = responseObserver.getValues();
+        assertEquals(1, results.size());
+        UpdateRoomResponse response = results.get(0);
+        assertEquals(request.getRoom().getIdentificationNumber(), response.getRoom().getIdentificationNumber());
+    }
+
+    @Test
+    public void testUpdateComponent() throws Exception{
+        Component component = new Component();
+        component.setComponentDescription("");
+        component.setType(Component.Type.STAIRS);
+        component.setLatitude(2.2);
+        component.setLongitude(2.2);
+        component.setIdentificationNumber("c-1");
+        component.setParentIdentificationNumber("");
+        when(service.updateComponent(component)).thenReturn(component);
+        when(reader.read(grpcComponent)).thenReturn(component);
+        UpdateComponentRequest request = UpdateComponentRequest.newBuilder()
+                .setComponent(grpcComponent)
+                .build();
+        StreamRecorder<UpdateComponentResponse> responseObserver = StreamRecorder.create();
+        controller.updateComponent(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+        List<UpdateComponentResponse> results = responseObserver.getValues();
+        assertEquals(1, results.size());
+        UpdateComponentResponse response = results.get(0);
+        assertEquals(request.getComponent().getIdentificationNumber(), response.getComponent().getIdentificationNumber());
+    }
+
+    @Test
+    public void testRemoveBuilding() throws Exception {
+        RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("b-1").build();
+        StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
+        controller.removeBuilding(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+    }
+
+    @Test
+    public void testRemoveRoom() throws Exception {
+        RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("r-1").build();
+        StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
+        controller.removeRoom(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+    }
+
+    @Test
+    public void testRemoveComponent() throws Exception {
+        RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("c-1").build();
+        StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
+        controller.removeComponent(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+    }
+
+    @Test
+    public void testRemoveFavorite() throws Exception {
+        RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("f-1").build();
+        StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
+        controller.removeFavorite(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+    }
 }
