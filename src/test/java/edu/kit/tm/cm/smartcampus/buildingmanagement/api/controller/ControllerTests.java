@@ -6,6 +6,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.api.parser.GrpcObjectWriter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import io.grpc.internal.testing.StreamRecorder;
 import org.junit.Test;
@@ -56,6 +57,11 @@ public class ControllerTests {
             .setLongitude(2.2)
             .setIdentificationNumber("c-1")
             .setParentIdentificationNumber("")
+            .build();
+
+    GrpcFavorite grpcFavorite = GrpcFavorite.newBuilder()
+            .setOwner("me")
+            .setReferenceIdentificationNumber("")
             .build();
 
     @BeforeAll
@@ -186,7 +192,7 @@ public class ControllerTests {
     }
 
     @Test
-    public void testCreateComponent() throws Exception {
+    public void testCreateBuildingComponent() throws Exception {
         Component component = new Component();
         component.setComponentDescription("");
         component.setType(Component.Type.STAIRS);
@@ -207,5 +213,44 @@ public class ControllerTests {
         assertEquals(1, results.size());
         CreateComponentResponse response = results.get(0);
         assertEquals(request.getComponent().getIdentificationNumber(), response.getComponent().getIdentificationNumber());
+    }
+
+    @Test
+    public void testCreateRoomComponent() throws Exception {
+        Component component = new Component();
+        component.setComponentDescription("");
+        component.setType(Component.Type.STAIRS);
+        component.setLatitude(2.2);
+        component.setLongitude(2.2);
+        component.setIdentificationNumber("c-1");
+        component.setParentIdentificationNumber("");
+        when(service.createRoomComponent(component)).thenReturn(component);
+        when(reader.read(grpcComponent)).thenReturn(component);
+        CreateComponentRequest request = CreateComponentRequest.newBuilder()
+                .setComponent(grpcComponent)
+                .build();
+        StreamRecorder<CreateComponentResponse> responseObserver = StreamRecorder.create();
+        controller.createRoomComponent(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
+        List<CreateComponentResponse> results = responseObserver.getValues();
+        assertEquals(1, results.size());
+        CreateComponentResponse response = results.get(0);
+        assertEquals(request.getComponent().getIdentificationNumber(), response.getComponent().getIdentificationNumber());
+    }
+
+    @Test
+    public void testCreateFavorite() throws Exception {
+        Favorite favorite = new Favorite();
+        favorite.setOwner("me");
+        favorite.setReferenceIdentificationNumber("");
+        when(reader.read(grpcFavorite)).thenReturn(favorite);
+        CreateFavoriteRequest request = CreateFavoriteRequest.newBuilder()
+                .setFavorite(grpcFavorite)
+                .build();
+        StreamRecorder<CreateFavoriteResponse> responseObserver = StreamRecorder.create();
+        controller.createFavorite(request, responseObserver);
+        assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
+        assertNull(responseObserver.getError());
     }
 }
