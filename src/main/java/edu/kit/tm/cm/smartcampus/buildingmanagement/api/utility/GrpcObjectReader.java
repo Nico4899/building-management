@@ -8,6 +8,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filt
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.sorters.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -15,9 +16,8 @@ import java.util.Collection;
 import java.util.List;
 
 /** The type Grpc object reader. */
-@NoArgsConstructor
-@org.springframework.stereotype.Component
-public class GrpcObjectReader {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class GrpcObjectReader {
 
   /**
    * Read component.
@@ -25,7 +25,7 @@ public class GrpcObjectReader {
    * @param grpcComponent the grpc component
    * @return the component
    */
-  public Component read(GrpcComponent grpcComponent) {
+  public static Component read(GrpcComponent grpcComponent) {
     Component component = new Component();
     component.setComponentDescription(grpcComponent.getComponentDescription());
     component.setIdentificationNumber(grpcComponent.getIdentificationNumber());
@@ -42,7 +42,7 @@ public class GrpcObjectReader {
    * @param grpcFavorite the grpc favorite
    * @return the favorite
    */
-  public Favorite read(GrpcFavorite grpcFavorite) {
+  public static Favorite read(GrpcFavorite grpcFavorite) {
     Favorite favorite = new Favorite();
     favorite.setOwner(grpcFavorite.getOwner());
     favorite.setReferenceIdentificationNumber(grpcFavorite.getReferenceIdentificationNumber());
@@ -55,7 +55,7 @@ public class GrpcObjectReader {
    * @param grpcBuilding the grpc building
    * @return the building
    */
-  public Building read(GrpcBuilding grpcBuilding) {
+  public static Building read(GrpcBuilding grpcBuilding) {
     Building building = new Building();
     building.setBuildingNumber(grpcBuilding.getBuildingNumber());
     building.setBuildingName(grpcBuilding.getBuildingName());
@@ -73,7 +73,7 @@ public class GrpcObjectReader {
    * @param grpcRoom the grpc room
    * @return the room
    */
-  public Room read(GrpcRoom grpcRoom) {
+  public static Room read(GrpcRoom grpcRoom) {
     Room room = new Room();
     room.setRoomNumber(grpcRoom.getRoomNumber());
     room.setRoomName(grpcRoom.getRoomName());
@@ -92,7 +92,7 @@ public class GrpcObjectReader {
    * @param grpcRoomType the grpc room type
    * @return the room type
    */
-  public Room.Type read(GrpcRoomType grpcRoomType) {
+  public static Room.Type read(GrpcRoomType grpcRoomType) {
     return Room.Type.forOrdinal(grpcRoomType.ordinal() + 1);
   }
 
@@ -102,7 +102,7 @@ public class GrpcObjectReader {
    * @param grpcCampusLocation the grpc campus location
    * @return the campus location
    */
-  public Building.CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
+  public static Building.CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
     return Building.CampusLocation.forOrdinal(grpcCampusLocation.ordinal() + 1);
   }
 
@@ -112,7 +112,7 @@ public class GrpcObjectReader {
    * @param grpcComponentType the grpc component type
    * @return the component type
    */
-  public Component.Type read(GrpcComponentType grpcComponentType) {
+  public static Component.Type read(GrpcComponentType grpcComponentType) {
     return Component.Type.forOrdinal(grpcComponentType.ordinal() + 1);
   }
 
@@ -122,7 +122,7 @@ public class GrpcObjectReader {
    * @param listBuildingConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Settings<Building> read(ListBuildingConfiguration listBuildingConfiguration) {
+  public static Settings<Building> read(ListBuildingConfiguration listBuildingConfiguration) {
     Collection<Filter<Building>> filters = new ArrayList<>();
     if (listBuildingConfiguration.getCampusLocationFilterMapping().getSelected()) {
       filters.add(
@@ -131,7 +131,7 @@ public class GrpcObjectReader {
                   .getCampusLocationFilterMapping()
                   .getCampusLocationsList()
                   .stream()
-                  .map(this::read)
+                  .map(GrpcObjectReader::read)
                   .toList()));
     }
     if (listBuildingConfiguration.getComponentTypeFilterMapping().getSelected()) {
@@ -141,14 +141,14 @@ public class GrpcObjectReader {
                   .getComponentTypeFilterMapping()
                   .getComponentTypesList()
                   .stream()
-                  .map(this::read)
+                  .map(GrpcObjectReader::read)
                   .toList()));
     }
     if (listBuildingConfiguration.getRoomTypeFilterMapping().getSelected()) {
       filters.add(
           new RoomTypeBuildingFilter(
               listBuildingConfiguration.getRoomTypeFilterMapping().getRoomTypesList().stream()
-                  .map(this::read)
+                  .map(GrpcObjectReader::read)
                   .toList()));
     }
     return new ListSettings<>(readBuildingSorter(listBuildingConfiguration.getGrpcSortOption()), filters);
@@ -160,7 +160,7 @@ public class GrpcObjectReader {
    * @param listRoomConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Settings<Room> read(ListRoomConfiguration listRoomConfiguration) {
+  public static Settings<Room> read(ListRoomConfiguration listRoomConfiguration) {
     Collection<Filter<Room>> filters = new ArrayList<>();
     if (listRoomConfiguration.getRoomFloorFilterMapping().getSelected()) {
       filters.add(
@@ -173,14 +173,14 @@ public class GrpcObjectReader {
             .getComponentTypeFilterMapping()
             .getComponentTypesList()
             .stream()
-            .map(this::read)
+            .map(GrpcObjectReader::read)
             .toList()));
     }
     if (listRoomConfiguration.getRoomTypeFilterMapping().getSelected()) {
       filters.add(
         new RoomTypeRoomFilter(
           listRoomConfiguration.getRoomTypeFilterMapping().getRoomTypesList().stream()
-            .map(this::read)
+            .map(GrpcObjectReader::read)
             .toList()));
     }
     return new ListSettings<>(readRoomSorter(listRoomConfiguration.getGrpcSortOption()), filters);
@@ -192,7 +192,7 @@ public class GrpcObjectReader {
    * @param listComponentConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Settings<Component> read(ListComponentConfiguration listComponentConfiguration) {
+  public static Settings<Component> read(ListComponentConfiguration listComponentConfiguration) {
     return new ListSettings<>(readComponentSorter(listComponentConfiguration.getGrpcSortOption()), List.of());
   }
 
@@ -202,7 +202,7 @@ public class GrpcObjectReader {
    * @param listNotificationConfiguration the grpc configuration object
    * @return model configuration
    */
-  public Settings<Notification> read(
+  public static Settings<Notification> read(
       ListNotificationConfiguration listNotificationConfiguration) {
     return new ListSettings<>(readNotificationSorter((listNotificationConfiguration.getGrpcSortOption())), List.of());
   }
@@ -213,7 +213,7 @@ public class GrpcObjectReader {
    * @param grpcSortOption grpc problem sort option.
    * @return model problem sorter object
    */
-  public Sorter<Building> readBuildingSorter(GrpcSortOption grpcSortOption) {
+  public static Sorter<Building> readBuildingSorter(GrpcSortOption grpcSortOption) {
     return switch (grpcSortOption) {
       case NAME_LEXICOGRAPHIC -> new LexicographicNameBuildingSorter();
       case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberBuildingSorter();
@@ -227,7 +227,7 @@ public class GrpcObjectReader {
    * @param grpcSortOption grpc problem sort option.
    * @return model problem sorter object
    */
-  public Sorter<Room> readRoomSorter(GrpcSortOption grpcSortOption) {
+  public static Sorter<Room> readRoomSorter(GrpcSortOption grpcSortOption) {
     return switch (grpcSortOption) {
       case NAME_LEXICOGRAPHIC -> new LexicographicNameRoomSorter();
       case NUMBER_LEXICOGRAPHIC -> new LexicographicNumberRoomSorter();
@@ -241,7 +241,7 @@ public class GrpcObjectReader {
    * @param grpcSortOption grpc problem sort option.
    * @return model problem sorter object
    */
-  public Sorter<Component> readComponentSorter(GrpcSortOption grpcSortOption) {
+  public static Sorter<Component> readComponentSorter(GrpcSortOption grpcSortOption) {
     return new DefaultSorter<>();
   }
 
@@ -251,7 +251,7 @@ public class GrpcObjectReader {
    * @param grpcSortOption grpc problem sort option.
    * @return model problem sorter object
    */
-  public Sorter<Notification> readNotificationSorter(GrpcSortOption grpcSortOption) {
+  public static Sorter<Notification> readNotificationSorter(GrpcSortOption grpcSortOption) {
     return switch (grpcSortOption) {
       case ASCENDING_TIME_STAMP -> new AscendingTimeStampNotificationSorter();
       case DESCENDING_TIME_STAMP -> new DescendingTimeStampNotificationSorter();

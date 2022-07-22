@@ -6,14 +6,14 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Collection;
 
 /** The type grpc object writer. */
-@org.springframework.stereotype.Component
-@NoArgsConstructor
-public class GrpcObjectWriter {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class GrpcObjectWriter {
 
   /**
    * Write grpc component.
@@ -21,7 +21,7 @@ public class GrpcObjectWriter {
    * @param component the component
    * @return the grpc component
    */
-  public GrpcComponent write(Component component) {
+  public static GrpcComponent write(Component component) {
     return GrpcComponent.newBuilder()
         .setComponentDescription(component.getComponentDescription())
         .setLatitude(component.getLatitude())
@@ -37,7 +37,7 @@ public class GrpcObjectWriter {
    * @param room the room
    * @return the grpc room
    */
-  public GrpcRoom write(Room room) {
+  public static GrpcRoom write(Room room) {
     return GrpcRoom.newBuilder()
         .setFloor(room.getFloor())
         .setLatitude(room.getLatitude())
@@ -56,7 +56,7 @@ public class GrpcObjectWriter {
    * @param building the building
    * @return the grpc building
    */
-  public GrpcBuilding write(Building building) {
+  public static GrpcBuilding write(Building building) {
     return GrpcBuilding.newBuilder()
         .setBuildingName(building.getBuildingName())
         .setBuildingNumber(building.getBuildingNumber())
@@ -74,7 +74,7 @@ public class GrpcObjectWriter {
    * @param notification the notification
    * @return the grpc notification
    */
-  public GrpcNotification write(Notification notification) {
+  public static GrpcNotification write(Notification notification) {
     return GrpcNotification.newBuilder()
         .setNotificationTitle(notification.getNotificationTitle())
         .setNotificationDescription(notification.getNotificationDescription())
@@ -91,8 +91,8 @@ public class GrpcObjectWriter {
    * @param buildings the buildings
    * @return the collection
    */
-  public Collection<GrpcBuilding> writeBuildings(Collection<Building> buildings) {
-    return buildings.stream().map(this::write).toList();
+  public static Collection<GrpcBuilding> writeBuildings(Collection<Building> buildings) {
+    return buildings.stream().map(GrpcObjectWriter::write).toList();
   }
 
   /**
@@ -101,8 +101,8 @@ public class GrpcObjectWriter {
    * @param components the components
    * @return the collection
    */
-  public Collection<GrpcComponent> writeComponents(Collection<Component> components) {
-    return components.stream().map(this::write).toList();
+  public static Collection<GrpcComponent> writeComponents(Collection<Component> components) {
+    return components.stream().map(GrpcObjectWriter::write).toList();
   }
 
   /**
@@ -111,8 +111,8 @@ public class GrpcObjectWriter {
    * @param rooms the rooms
    * @return the collection
    */
-  public Collection<GrpcRoom> writeRooms(Collection<Room> rooms) {
-    return rooms.stream().map(this::write).toList();
+  public static Collection<GrpcRoom> writeRooms(Collection<Room> rooms) {
+    return rooms.stream().map(GrpcObjectWriter::write).toList();
   }
 
   /**
@@ -121,8 +121,8 @@ public class GrpcObjectWriter {
    * @param notifications the notifications
    * @return the collection
    */
-  public Collection<GrpcNotification> writeNotifications(Collection<Notification> notifications) {
-    return notifications.stream().map(this::write).toList();
+  public static Collection<GrpcNotification> writeNotifications(Collection<Notification> notifications) {
+    return notifications.stream().map(GrpcObjectWriter::write).toList();
   }
 
   /**
@@ -131,7 +131,7 @@ public class GrpcObjectWriter {
    * @param campusLocation the campus location
    * @return the grpc campus location
    */
-  public GrpcCampusLocation write(Building.CampusLocation campusLocation) {
+  public static GrpcCampusLocation write(Building.CampusLocation campusLocation) {
     return GrpcCampusLocation.forNumber(campusLocation.ordinal() + 1);
   }
 
@@ -141,7 +141,7 @@ public class GrpcObjectWriter {
    * @param roomType the room type
    * @return the grpc room type
    */
-  public GrpcRoomType write(Room.Type roomType) {
+  public static GrpcRoomType write(Room.Type roomType) {
     return GrpcRoomType.forNumber(roomType.ordinal() + 1);
   }
 }

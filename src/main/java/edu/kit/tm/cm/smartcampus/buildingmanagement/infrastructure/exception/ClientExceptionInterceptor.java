@@ -12,7 +12,7 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
  * This class represents a custom REST error handler. It throws custom exceptions on error codes in
  * building management context.
  */
-public class RestClientErrorHandler implements ResponseErrorHandler {
+public class ClientExceptionInterceptor implements ResponseErrorHandler {
 
   @Override
   public boolean hasError(ClientHttpResponse response) throws IOException {

@@ -43,7 +43,7 @@ public class Component {
      * @return the type with the ordinal number
      */
     public static Type forOrdinal(int ordinal) {
-      if (ordinal > values().length || ordinal < 0)
+      if (ordinal >= values().length || ordinal < 0)
         throw new InternalServerErrorException("value with ordinal does not exist");
       return values()[ordinal];
     }

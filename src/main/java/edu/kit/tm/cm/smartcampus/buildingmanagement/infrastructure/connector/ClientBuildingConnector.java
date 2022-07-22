@@ -16,7 +16,7 @@ import java.util.Collections;
 
 /** Implementation of {@link BuildingConnector}. */
 @Service
-public class RestTemplateBuildingConnector implements BuildingConnector {
+public class ClientBuildingConnector implements BuildingConnector {
 
   private final String baseUrl;
   private final RestTemplate restTemplate;
@@ -88,7 +88,7 @@ public class RestTemplateBuildingConnector implements BuildingConnector {
    * @param baseUrl base url
    */
   @Autowired
-  public RestTemplateBuildingConnector(
+  public ClientBuildingConnector(
       RestTemplate restTemplate, @Value("${building.baseUrl}") String baseUrl) {
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
