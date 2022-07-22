@@ -31,13 +31,13 @@ public class ControllerTests {
 
     GrpcBuilding grpcBuilding = GrpcBuilding.newBuilder()
             .setCampusLocation(GrpcCampusLocation.SOUTH_CAMPUS)
-            .setBuildingName("")
-            .setBuildingNumber("")
-            .setLongitude(2.2)
-            .setLatitude(2.2)
-            .setIdentificationNumber("b-1")
-            .setNumFloors(0)
-            .build();
+                .setBuildingName("")
+                .setBuildingNumber("")
+                .setLongitude(2.2)
+                .setLatitude(2.2)
+                .setIdentificationNumber("b-1")
+                .setNumFloors(0)
+                .build();
 
     GrpcRoom grpcRoom = GrpcRoom.newBuilder()
             .setRoomName("")
@@ -64,8 +64,12 @@ public class ControllerTests {
             .setReferenceIdentificationNumber("")
             .build();
 
+    /*
+    TODO: tests failen wenn Objekte in BeforeAll/BeforeEach
+     */
     @BeforeAll
     public void setup() {
+
     }
 
     @Test

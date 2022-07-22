@@ -8,14 +8,15 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
 
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ServiceTests {
+
 
    private BuildingConnector connector = mock(BuildingConnector.class);
 
@@ -25,124 +26,17 @@ public class ServiceTests {
 
     private BuildingManagementService service = new BuildingManagementService(connector, repository, validator);
 
-   private ArrayList<Building> buildings = new ArrayList<>();
+    private static Building building;
 
-   @Test
-   public void testGetBuilding() {
-       Building building = new Building();
-       building.setBuildingName("Audimax");
-       building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
-       building.setBuildingNumber("22.22");
-       building.setLongitude(2.2);
-       building.setLatitude(2.2);
-       building.setIdentificationNumber("b-1");
-       building.setNumFloors(1);
-       when(connector.getBuilding("b-1")).thenReturn(building);
-       Building responseBuilding = service.getBuilding("b-1");
-       assertEquals(responseBuilding, building);
-   }
+    private static Room room;
 
-   @Test
-    public void testGetRoom() {
-       Room room = new Room();
-       room.setRoomName("");
-       room.setType(Room.Type.LECTURE_ROOM);
-       room.setIdentificationNumber("r-1");
-       room.setLatitude(2.2);
-       room.setLongitude(2.2);
-       room.setFloor(0);
-       room.setRoomNumber("");
-       room.setParentIdentificationNumber("");
-       when(connector.getRoom("r-1")).thenReturn(room);
-       Room responseRoom = service.getRoom("r-1");
-       assertEquals(responseRoom, room);
-   }
+    private static Component component;
 
-   @Test
-    public void testGetComponent() {
-       Component component = new Component();
-       component.setComponentDescription("");
-       component.setType(Component.Type.STAIRS);
-       component.setLatitude(2.2);
-       component.setLongitude(2.2);
-       component.setIdentificationNumber("c-1");
-       component.setParentIdentificationNumber("");
-       when(connector.getComponent("c-1")).thenReturn(component);
-       Component responseComponent = service.getComponent("c-1");
-       assertEquals(responseComponent, component);
-   }
+    private static Favorite favorite;
 
-   @Test
-    public void testCreateBuilding() {
-       Building building = new Building();
-       building.setBuildingName("Audimax");
-       building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
-       building.setBuildingNumber("22.22");
-       building.setLongitude(2.2);
-       building.setLatitude(2.2);
-       building.setIdentificationNumber("b-1");
-       building.setNumFloors(1);
-       when(connector.createBuilding(building)).thenReturn(building);
-       Building responseBuilding = service.createBuilding(building);
-       assertEquals(responseBuilding, building);
-   }
-
-   @Test
-    public void testCreateRoom() {
-       Room room = new Room();
-       room.setRoomName("");
-       room.setType(Room.Type.LECTURE_ROOM);
-       room.setIdentificationNumber("r-1");
-       room.setLatitude(2.2);
-       room.setLongitude(2.2);
-       room.setFloor(0);
-       room.setRoomNumber("");
-       room.setParentIdentificationNumber("");
-       when(connector.createBuildingRoom(room)).thenReturn(room);
-       Room responseRoom = service.createRoom(room);
-       assertEquals(responseRoom, room);
-   }
-
-   @Test
-    public void testCreateBuildingComponent() {
-       Component component = new Component();
-       component.setComponentDescription("");
-       component.setType(Component.Type.STAIRS);
-       component.setLatitude(2.2);
-       component.setLongitude(2.2);
-       component.setIdentificationNumber("c-1");
-       component.setParentIdentificationNumber("");
-       when(connector.createBuildingComponent(component)).thenReturn(component);
-       Component responseComponent = service.createBuildingComponent(component);
-       assertEquals(responseComponent, component);
-   }
-
-   @Test
-    public void testCreateRoomComponent() {
-       Component component = new Component();
-       component.setComponentDescription("");
-       component.setType(Component.Type.STAIRS);
-       component.setLatitude(2.2);
-       component.setLongitude(2.2);
-       component.setIdentificationNumber("c-1");
-       component.setParentIdentificationNumber("");
-       when(connector.createRoomComponent(component)).thenReturn(component);
-       Component responseComponent = service.createRoomComponent(component);
-       assertEquals(responseComponent, component);
-   }
-
-   @Test
-    public void testCreateFavorite() {
-       Favorite favorite = new Favorite();
-       favorite.setOwner("me");
-       favorite.setIdentificationNumber("f-1");
-       favorite.setReferenceIdentificationNumber("b-1");
-       assertDoesNotThrow(() -> service.createFavorite(favorite));
-   }
-
-   @Test
-   public void testUpdateBuilding() {
-      Building building = new Building();
+   @BeforeAll
+   static void setup() {
+      building = new Building();
       building.setBuildingName("Audimax");
       building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
       building.setBuildingNumber("22.22");
@@ -150,14 +44,8 @@ public class ServiceTests {
       building.setLatitude(2.2);
       building.setIdentificationNumber("b-1");
       building.setNumFloors(1);
-      when(connector.updateBuilding(building)).thenReturn(building);
-      Building responseBuilding = service.updateBuilding(building);
-      assertEquals(responseBuilding, building);
-   }
 
-   @Test
-   public void testUpdateRoom() {
-      Room room = new Room();
+      room = new Room();
       room.setRoomName("");
       room.setType(Room.Type.LECTURE_ROOM);
       room.setIdentificationNumber("r-1");
@@ -166,6 +54,88 @@ public class ServiceTests {
       room.setFloor(0);
       room.setRoomNumber("");
       room.setParentIdentificationNumber("");
+
+      component = new Component();
+      component.setComponentDescription("");
+      component.setType(Component.Type.STAIRS);
+      component.setLatitude(2.2);
+      component.setLongitude(2.2);
+      component.setIdentificationNumber("c-1");
+      component.setParentIdentificationNumber("");
+
+      favorite = new Favorite();
+      favorite.setOwner("me");
+      favorite.setIdentificationNumber("f-1");
+      favorite.setReferenceIdentificationNumber("b-1");
+   }
+
+   @Test
+   public void testGetBuilding() {
+       when(connector.getBuilding("b-1")).thenReturn(building);
+       Building responseBuilding = service.getBuilding("b-1");
+       assertEquals(responseBuilding, building);
+   }
+
+   @Test
+    public void testGetRoom() {
+       when(connector.getRoom("r-1")).thenReturn(room);
+       Room responseRoom = service.getRoom("r-1");
+       assertEquals(responseRoom, room);
+   }
+
+   @Test
+    public void testGetComponent() {
+       when(connector.getComponent("c-1")).thenReturn(component);
+       Component responseComponent = service.getComponent("c-1");
+       assertEquals(responseComponent, component);
+   }
+
+   @Test
+    public void testCreateBuilding() {
+       when(connector.createBuilding(building)).thenReturn(building);
+       Building responseBuilding = service.createBuilding(building);
+       assertEquals(responseBuilding, building);
+   }
+
+   @Test
+    public void testCreateRoom() {
+       when(connector.createBuildingRoom(room)).thenReturn(room);
+       Room responseRoom = service.createRoom(room);
+       assertEquals(responseRoom, room);
+   }
+
+   @Test
+    public void testCreateBuildingComponent() {
+       when(connector.createBuildingComponent(component)).thenReturn(component);
+       Component responseComponent = service.createBuildingComponent(component);
+       assertEquals(responseComponent, component);
+   }
+
+   @Test
+    public void testCreateRoomComponent() {
+       when(connector.createRoomComponent(component)).thenReturn(component);
+       Component responseComponent = service.createRoomComponent(component);
+       assertEquals(responseComponent, component);
+   }
+
+   @Test
+    public void testCreateFavorite() {
+      Favorite favorite = new Favorite();
+      favorite.setOwner("me");
+      favorite.setIdentificationNumber("f-1");
+      favorite.setReferenceIdentificationNumber("b-1");
+       assertDoesNotThrow(() -> service.createFavorite(favorite));
+   }
+
+   @Test
+   public void testUpdateBuilding() {
+      when(connector.updateBuilding(building)).thenReturn(building);
+      Building responseBuilding = service.updateBuilding(building);
+      assertEquals(responseBuilding, building);
+   }
+
+   @Test
+   public void testUpdateRoom() {
       when(connector.updateRoom(room)).thenReturn(room);
       Room responseRoom = service.updateRoom(room);
       assertEquals(responseRoom, room);
@@ -173,13 +143,6 @@ public class ServiceTests {
 
    @Test
    public void testUpdateComponent() {
-      Component component = new Component();
-      component.setComponentDescription("");
-      component.setType(Component.Type.STAIRS);
-      component.setLatitude(2.2);
-      component.setLongitude(2.2);
-      component.setIdentificationNumber("c-1");
-      component.setParentIdentificationNumber("");
       when(connector.updateComponent(component)).thenReturn(component);
       Component responseComponent = service.updateComponent(component);
       assertEquals(responseComponent, component);
