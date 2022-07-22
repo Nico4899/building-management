@@ -128,7 +128,6 @@ public class ClientBuildingConnector implements BuildingConnector {
 
     responseEntity =
         restTemplate.getForEntity(baseUrl + getBuildingUrl, Building.class, identificationNumber);
-
     return responseEntity.getBody();
   }
 
