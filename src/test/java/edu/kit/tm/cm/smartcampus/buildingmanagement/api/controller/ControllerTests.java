@@ -1,7 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.GrpcObjectReader;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InternalServerErrorException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
@@ -12,12 +11,10 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import io.grpc.internal.testing.StreamRecorder;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.ArgumentsProvider;
@@ -27,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -103,6 +101,7 @@ public class ControllerTests {
     testRoom.setLongitude(2.2);
     testRoom.setFloor(0);
     testRoom.setRoomNumber("");
+    testRoom.setParentIdentificationNumber("b-1");
 
     testComponent = new Component();
     testComponent.setComponentDescription("");
@@ -110,34 +109,27 @@ public class ControllerTests {
     testComponent.setLatitude(2.2);
     testComponent.setLongitude(2.2);
     testComponent.setIdentificationNumber("c-1");
-    testComponent.setParentIdentificationNumber("");
+    testComponent.setParentIdentificationNumber("b-1");
 
     testFavorite = new Favorite();
+    testFavorite.setIdentificationNumber("f-1");
     testFavorite.setOwner("me");
     testFavorite.setReferenceIdentificationNumber("");
 
-    when(service.updateComponent(testComponent)).thenReturn(testComponent);
-    when(GrpcObjectReader.read(grpcTestComponent)).thenReturn(testComponent);
-    when(service.getBuilding("b-1")).thenReturn(testBuilding);
-    when(service.getRoom("r-1")).thenReturn(testRoom);
-    when(service.getComponent("c-1")).thenReturn(testComponent);
-    when(service.updateRoom(testRoom)).thenReturn(testRoom);
-    when(GrpcObjectReader.read(grpcTestRoom)).thenReturn(testRoom);
-    when(GrpcObjectReader.read(grpcTestBuilding)).thenReturn(testBuilding);
-    when(service.updateBuilding(testBuilding)).thenReturn(testBuilding);
-    when(GrpcObjectReader.read(grpcTestFavorite)).thenReturn(testFavorite);
-    when(service.createRoomComponent(testComponent)).thenReturn(testComponent);
-    when(GrpcObjectReader.read(grpcTestComponent)).thenReturn(testComponent);
-    when(service.createBuildingComponent(testComponent)).thenReturn(testComponent);
-    when(GrpcObjectReader.read(grpcTestComponent)).thenReturn(testComponent);
-    when(service.createRoom(testRoom)).thenReturn(testRoom);
-    when(GrpcObjectReader.read(grpcTestBuilding)).thenReturn(testBuilding);
-    when(service.createBuilding(testBuilding)).thenReturn(testBuilding);
-    when(GrpcObjectReader.read(grpcTestRoom)).thenReturn(testRoom);
+    when(service.updateComponent(any())).thenReturn(testComponent);
+    when(service.getBuilding(any())).thenReturn(testBuilding);
+    when(service.getRoom(any())).thenReturn(testRoom);
+    when(service.getComponent(any())).thenReturn(testComponent);
+    when(service.updateRoom(any())).thenReturn(testRoom);
+    when(service.updateBuilding(any())).thenReturn(testBuilding);
+    when(service.createRoomComponent(any())).thenReturn(testComponent);
+    when(service.createBuildingComponent(any())).thenReturn(testComponent);
+    when(service.createRoom(any())).thenReturn(testRoom);
+    when(service.createBuilding(any())).thenReturn(testBuilding);
   }
 
   @Test
-  public void testGetBuilding() throws Exception {
+  void testGetBuilding() throws Exception {
     GetBuildingRequest request =
         GetBuildingRequest.newBuilder().setIdentificationNumber("b-1").build();
     StreamRecorder<GetBuildingResponse> responseObserver = StreamRecorder.create();
@@ -153,7 +145,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testGetRoom() throws Exception {
+  void testGetRoom() throws Exception {
     testRoom.setParentIdentificationNumber("");
     GetRoomRequest request = GetRoomRequest.newBuilder().setIdentificationNumber("r-1").build();
     StreamRecorder<GetRoomResponse> responseObserver = StreamRecorder.create();
@@ -168,7 +160,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testGetComponent() throws Exception {
+  void testGetComponent() throws Exception {
     GetComponentRequest request =
         GetComponentRequest.newBuilder().setIdentificationNumber("c-1").build();
     StreamRecorder<GetComponentResponse> responseObserver = StreamRecorder.create();
@@ -184,7 +176,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testCreateBuilding() throws Exception {
+  void testCreateBuilding() throws Exception {
     CreateBuildingRequest request =
         CreateBuildingRequest.newBuilder().setBuilding(grpcTestBuilding).build();
     StreamRecorder<CreateBuildingResponse> responseObserver = StreamRecorder.create();
@@ -200,7 +192,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testCreateRoom() throws Exception {
+  void testCreateRoom() throws Exception {
     CreateRoomRequest request = CreateRoomRequest.newBuilder().setRoom(grpcTestRoom).build();
     StreamRecorder<CreateRoomResponse> responseObserver = StreamRecorder.create();
     controller.createRoom(request, responseObserver);
@@ -214,7 +206,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testCreateBuildingComponent() throws Exception {
+  void testCreateBuildingComponent() throws Exception {
     CreateComponentRequest request =
         CreateComponentRequest.newBuilder().setComponent(grpcTestComponent).build();
     StreamRecorder<CreateComponentResponse> responseObserver = StreamRecorder.create();
@@ -230,7 +222,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testCreateRoomComponent() throws Exception {
+  void testCreateRoomComponent() throws Exception {
     CreateComponentRequest request =
         CreateComponentRequest.newBuilder().setComponent(grpcTestComponent).build();
     StreamRecorder<CreateComponentResponse> responseObserver = StreamRecorder.create();
@@ -246,7 +238,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testCreateFavorite() throws Exception {
+  void testCreateFavorite() throws Exception {
     CreateFavoriteRequest request =
         CreateFavoriteRequest.newBuilder().setFavorite(grpcTestFavorite).build();
     StreamRecorder<CreateFavoriteResponse> responseObserver = StreamRecorder.create();
@@ -256,7 +248,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testUpdateBuilding() throws Exception {
+  void testUpdateBuilding() throws Exception {
     UpdateBuildingRequest request =
         UpdateBuildingRequest.newBuilder().setBuilding(grpcTestBuilding).build();
     StreamRecorder<UpdateBuildingResponse> responseObserver = StreamRecorder.create();
@@ -272,7 +264,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testUpdateRoom() throws Exception {
+  void testUpdateRoom() throws Exception {
     UpdateRoomRequest request = UpdateRoomRequest.newBuilder().setRoom(grpcTestRoom).build();
     StreamRecorder<UpdateRoomResponse> responseObserver = StreamRecorder.create();
     controller.updateRoom(request, responseObserver);
@@ -286,7 +278,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testUpdateComponent() throws Exception {
+  void testUpdateComponent() throws Exception {
     UpdateComponentRequest request =
         UpdateComponentRequest.newBuilder().setComponent(grpcTestComponent).build();
     StreamRecorder<UpdateComponentResponse> responseObserver = StreamRecorder.create();
@@ -302,7 +294,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testRemoveBuilding() throws Exception {
+  void testRemoveBuilding() throws Exception {
     RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("b-1").build();
     StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
     controller.removeBuilding(request, responseObserver);
@@ -311,7 +303,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testRemoveRoom() throws Exception {
+  void testRemoveRoom() throws Exception {
     RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("r-1").build();
     StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
     controller.removeRoom(request, responseObserver);
@@ -320,7 +312,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testRemoveComponent() throws Exception {
+  void testRemoveComponent() throws Exception {
     RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("c-1").build();
     StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
     controller.removeComponent(request, responseObserver);
@@ -329,7 +321,7 @@ public class ControllerTests {
   }
 
   @Test
-  public void testRemoveFavorite() throws Exception {
+  void testRemoveFavorite() throws Exception {
     RemoveRequest request = RemoveRequest.newBuilder().setIdentificationNumber("f-1").build();
     StreamRecorder<RemoveResponse> responseObserver = StreamRecorder.create();
     controller.removeFavorite(request, responseObserver);
