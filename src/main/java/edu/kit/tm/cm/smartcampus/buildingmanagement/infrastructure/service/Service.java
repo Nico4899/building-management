@@ -2,54 +2,44 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.InputValidator;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.FavoriteValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 /**
  * This class represents the building management application microservice service. It holds and
  * manages all the microservice logic.
  */
 @org.springframework.stereotype.Component
-public class BuildingManagementService {
+public class Service {
 
-  public static final String IDENTIFICATION_NUMBER_NAME = "identification_number";
-  public static final String OWNER_NAME = "owner";
-  private static final String BIN_PATTERN = "b-\\d+";
-  private static final String RIN_PATTERN = "r-\\d+";
-  private static final String CIN_PATTERN = "c-\\d+";
-  public static final String REFERENCE_PATTERN =
-      BIN_PATTERN + "|" + RIN_PATTERN + "|" + CIN_PATTERN;
-  private static final String FIN_PATTERN = "f-\\d+";
   private static final String BIN_SQL_PATTERN = "b-%";
   private static final String RIN_SQL_PATTERN = "r-%";
   private static final String CIN_SQL_PATTERN = "c-%";
+
   private final BuildingConnector buildingConnector;
   private final FavoriteRepository favoriteRepository;
-  private final InputValidator inputValidator;
+  private final FavoriteValidator favoriteValidator;
 
   /**
    * Constructs a building management manager.
    *
    * @param buildingConnector the building connector of the microservice (constructor injection)
    * @param favoriteRepository the favorite repository (constructor injection)
-   * @param inputValidator the input validator (constructor injection)
+   * @param favoriteValidator the input validator (constructor injection)
    */
   @Autowired
-  public BuildingManagementService(
+  public Service(
       BuildingConnector buildingConnector,
       FavoriteRepository favoriteRepository,
-      InputValidator inputValidator) {
+      FavoriteValidator favoriteValidator) {
     this.favoriteRepository = favoriteRepository;
     this.buildingConnector = buildingConnector;
-    this.inputValidator = inputValidator;
+    this.favoriteValidator = favoriteValidator;
   }
 
   /**
@@ -74,8 +64,7 @@ public class BuildingManagementService {
    * @param identificationNumber identification number of the building
    * @return collection of the building's rooms
    */
-  public Collection<Room> listRooms(
-    Settings<Room> settings, String identificationNumber) {
+  public Collection<Room> listRooms(Settings<Room> settings, String identificationNumber) {
     Collection<Room> rooms = this.buildingConnector.listBuildingRooms(identificationNumber);
     for (Room room : rooms) {
       this.buildRoomComponents(room);
@@ -90,7 +79,7 @@ public class BuildingManagementService {
    * @return collection of components
    */
   public Collection<Component> listBuildingComponents(
-    Settings<Component> settings, String identificationNumber) {
+      Settings<Component> settings, String identificationNumber) {
     return settings.run(this.buildingConnector.listBuildingComponents(identificationNumber));
   }
 
@@ -101,7 +90,7 @@ public class BuildingManagementService {
    * @return collection of components
    */
   public Collection<Component> listRoomComponents(
-    Settings<Component> settings, String identificationNumber) {
+      Settings<Component> settings, String identificationNumber) {
     return settings.run(this.buildingConnector.listRoomComponents(identificationNumber));
   }
 
@@ -112,9 +101,8 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listBuildingNotifications(
-    Settings<Notification> settings, String identificationNumber) {
-    return settings.run(
-        this.buildingConnector.listBuildingNotifications(identificationNumber));
+      Settings<Notification> settings, String identificationNumber) {
+    return settings.run(this.buildingConnector.listBuildingNotifications(identificationNumber));
   }
 
   /**
@@ -124,7 +112,7 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listRoomNotifications(
-    Settings<Notification> settings, String identificationNumber) {
+      Settings<Notification> settings, String identificationNumber) {
     return settings.run(this.buildingConnector.listRoomNotifications(identificationNumber));
   }
 
@@ -135,9 +123,8 @@ public class BuildingManagementService {
    * @return collection of notifications
    */
   public Collection<Notification> listComponentNotifications(
-    Settings<Notification> settings, String identificationNumber) {
-    return settings.run(
-        this.buildingConnector.listComponentNotifications(identificationNumber));
+      Settings<Notification> settings, String identificationNumber) {
+    return settings.run(this.buildingConnector.listComponentNotifications(identificationNumber));
   }
 
   /**
@@ -146,8 +133,7 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of components marked as favorite
    */
-  public Collection<Component> listComponentFavorites(
-    Settings<Component> settings, String owner) {
+  public Collection<Component> listComponentFavorites(Settings<Component> settings, String owner) {
     Collection<Component> components = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
       components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
@@ -178,8 +164,7 @@ public class BuildingManagementService {
    * @param owner owner of the favorites list
    * @return collection of buildings marked as favorite
    */
-  public Collection<Building> listBuildingFavorites(
-    Settings<Building> settings, String owner) {
+  public Collection<Building> listBuildingFavorites(Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, BIN_SQL_PATTERN)) {
       buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
@@ -267,11 +252,7 @@ public class BuildingManagementService {
    * @param favorite favorite object without identification number
    */
   public void createFavorite(Favorite favorite) {
-    inputValidator.validateMatchesRegex(
-        Map.of(
-            IDENTIFICATION_NUMBER_NAME,
-            Pair.of(favorite.getReferenceIdentificationNumber(), REFERENCE_PATTERN)));
-    inputValidator.validateNotEmpty(Map.of(OWNER_NAME, favorite.getOwner()));
+    this.favoriteValidator.validateCreate(favorite);
     this.favoriteRepository.save(favorite);
   }
 
@@ -338,11 +319,7 @@ public class BuildingManagementService {
    * @param identificationNumber identification number of the favorite to be removed
    */
   public void removeFavorite(String identificationNumber) {
-    inputValidator.validateMatchesRegex(
-        Map.of(IDENTIFICATION_NUMBER_NAME, Pair.of(identificationNumber, FIN_PATTERN)));
-    if (!this.favoriteRepository.existsById(identificationNumber)) {
-      throw new ResourceNotFoundException();
-    }
+    this.favoriteValidator.validate(identificationNumber);
     this.favoriteRepository.deleteById(identificationNumber);
   }
 

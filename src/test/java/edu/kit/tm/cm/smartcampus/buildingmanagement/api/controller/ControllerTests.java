@@ -1,27 +1,17 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 import edu.kit.tm.cm.proto.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InternalServerErrorException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InvalidArgumentsException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.ResourceNotFoundException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.UnauthorizedAccessException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.BuildingManagementService;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.Service;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import io.grpc.internal.testing.StreamRecorder;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.ArgumentsProvider;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -30,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 public class ControllerTests {
 
-  private static final BuildingManagementService service = mock(BuildingManagementService.class);
+  private static final Service service = mock(Service.class);
   private static final ServerController controller = new ServerController(service);
   private static GrpcBuilding grpcTestBuilding;
   private static GrpcRoom grpcTestRoom;
@@ -327,29 +317,5 @@ public class ControllerTests {
     controller.removeFavorite(request, responseObserver);
     assertTrue(responseObserver.awaitCompletion(5, TimeUnit.SECONDS));
     assertNull(responseObserver.getError());
-  }
-
-  @Disabled
-  // @ParameterizedTest
-  // @ArgumentsSource(ExceptionArgumentProvider.class)
-  public void whenExceptionThrown_thenInterceptorReturnsErrorResponse() {
-    when(service.getBuilding("b-1")).thenThrow(InvalidArgumentsException.class);
-    GetBuildingRequest request =
-        GetBuildingRequest.newBuilder().setIdentificationNumber("b-1").build();
-    StreamRecorder<GetBuildingResponse> responseObserver = StreamRecorder.create();
-    controller.getBuilding(request, responseObserver);
-    Assertions.assertNotNull(responseObserver.getError());
-  }
-
-  private static class ExceptionArgumentProvider implements ArgumentsProvider {
-
-    @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
-      return Stream.of(
-          Arguments.of(InternalServerErrorException.class),
-          Arguments.of(InvalidArgumentsException.class),
-          Arguments.of(ResourceNotFoundException.class),
-          Arguments.of(UnauthorizedAccessException.class));
-    }
   }
 }

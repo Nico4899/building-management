@@ -2,7 +2,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.InputValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
@@ -10,21 +9,20 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ServiceTests {
 
+  private final BuildingConnector connector = mock(BuildingConnector.class);
 
-   private BuildingConnector connector = mock(BuildingConnector.class);
+  private final FavoriteRepository repository = mock(FavoriteRepository.class);
 
-   private FavoriteRepository repository = mock(FavoriteRepository.class);
+  private final InputValidator validator = mock(InputValidator.class);
 
-   private InputValidator validator = mock(InputValidator.class);
-
-    private BuildingManagementService service = new BuildingManagementService(connector, repository, validator);
+  private final Service service = new Service(connector, repository, validator);
 
     private static Building building;
 

@@ -58,8 +58,7 @@ public class Building {
      * @return the campus location with the ordinal number
      */
     public static CampusLocation forOrdinal(int ordinal) {
-      if (ordinal >= values().length || ordinal < 0)
-        throw new InternalServerErrorException("value with ordinal does not exist");
+      if (ordinal >= values().length || ordinal < 0) throw new InternalServerErrorException();
       return values()[ordinal];
     }
   }
