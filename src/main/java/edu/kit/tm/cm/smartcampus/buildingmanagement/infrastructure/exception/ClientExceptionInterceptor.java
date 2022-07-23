@@ -25,9 +25,8 @@ public class ClientExceptionInterceptor implements ResponseErrorHandler {
   public void handleError(ClientHttpResponse response) throws IOException {
     switch (response.getStatusCode()) {
       case NOT_FOUND -> throw new ResourceNotFoundException();
-      case BAD_REQUEST -> throw new InvalidArgumentsException(response.getStatusText());
-      case INTERNAL_SERVER_ERROR -> throw new InternalServerErrorException(response.getStatusText());
-      case UNAUTHORIZED -> throw new UnauthorizedAccessException(response.getStatusText());
+      case BAD_REQUEST -> throw new InvalidArgumentsException();
+      case INTERNAL_SERVER_ERROR -> throw new InternalServerErrorException();
       default -> throw new IOException(response.getStatusText());
     }
   }

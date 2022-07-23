@@ -5,151 +5,123 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.*;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.client.ExpectedCount;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.client.match.MockRestRequestMatchers;
 import org.springframework.test.web.client.response.MockRestResponseCreators;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcResultHandlersDsl;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import static org.mockito.Mockito.mock;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import javax.print.attribute.standard.Media;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 public class RestTemplateTests {
 
-    @Value("${building.baseUrl}")
-    private String baseUrl;
+  private final ObjectMapper mapper = new ObjectMapper();
 
-    @Value("${building.listBuildingsUrl}")
-    private String listBuildingsUrl;
+  @Value("${building.baseUrl}")
+  private String baseUrl;
 
-    @Value("${building.createBuildingUrl}")
-    private String createBuildingUrl;
+  @Value("${building.listBuildingsUrl}")
+  private String listBuildingsUrl;
 
-    @Value("${building.getBuildingUrl}")
-    private String getBuildingUrl;
+  @Value("${building.createBuildingUrl}")
+  private String createBuildingUrl;
 
-    @Value("${building.updateBuildingUrl}")
-    private String updateBuildingUrl;
+  @Value("${building.getBuildingUrl}")
+  private String getBuildingUrl;
 
-    @Value("${building.removeBuildingUrl}")
-    private String removeBuildingUrl;
+  @Value("${building.updateBuildingUrl}")
+  private String updateBuildingUrl;
 
-    @Value("${room.listBuildingRoomsUrl}")
-    private String listBuildingRoomsUrl;
+  @Value("${building.removeBuildingUrl}")
+  private String removeBuildingUrl;
 
-    @Value("${room.createBuildingRoomUrl}")
-    private String createBuildingRoomUrl;
+  @Value("${room.listBuildingRoomsUrl}")
+  private String listBuildingRoomsUrl;
 
-    @Value("${room.getRoomUrl}")
-    private String getRoomUrl;
+  @Value("${room.createBuildingRoomUrl}")
+  private String createBuildingRoomUrl;
 
-    @Value("${room.updateRoomUrl}")
-    private String updateRoomUrl;
+  @Value("${room.getRoomUrl}")
+  private String getRoomUrl;
 
-    @Value("${room.removeRoomUrl}")
-    private String removeRoomUrl;
+  @Value("${room.updateRoomUrl}")
+  private String updateRoomUrl;
 
-    @Value("${component.listBuildingComponentsUrl}")
-    private String listBuildingComponentsUrl;
+  @Value("${room.removeRoomUrl}")
+  private String removeRoomUrl;
 
-    @Value("${component.createBuildingComponentUrl}")
-    private String createBuildingComponentUrl;
+  @Value("${component.listBuildingComponentsUrl}")
+  private String listBuildingComponentsUrl;
 
-    @Value("${component.listRoomComponentsUrl}")
-    private String listRoomComponentsUrl;
+  @Value("${component.createBuildingComponentUrl}")
+  private String createBuildingComponentUrl;
 
-    @Value("${component.createRoomComponentUrl}")
-    private String createRoomComponentUrl;
+  @Value("${component.listRoomComponentsUrl}")
+  private String listRoomComponentsUrl;
 
-    @Value("${component.getComponentUrl}")
-    private String getComponentUrl;
+  @Value("${component.createRoomComponentUrl}")
+  private String createRoomComponentUrl;
 
-    @Value("${component.updateComponentUrl}")
-    private String updateComponentUrl;
+  @Value("${component.getComponentUrl}")
+  private String getComponentUrl;
 
-    @Value("${component.removeComponentUrl}")
-    private String removeComponentUrl;
+  @Value("${component.updateComponentUrl}")
+  private String updateComponentUrl;
 
-    @Value("${notification.listBuildingNotificationsUrl}")
-    private String listBuildingNotificationsUrl;
+  @Value("${component.removeComponentUrl}")
+  private String removeComponentUrl;
 
-    @Value("${notification.listRoomNotificationsUrl}")
-    private String listRoomNotificationsUrl;
+  @Value("${notification.listBuildingNotificationsUrl}")
+  private String listBuildingNotificationsUrl;
 
-    @Value("${notification.listComponentNotificationsUrl}")
-    private String listComponentNotificationsUrl;
+  @Value("${notification.listRoomNotificationsUrl}")
+  private String listRoomNotificationsUrl;
 
-    @Autowired
-    private RestTemplate restTemplate = mock(RestTemplate.class);
+  @Value("${notification.listComponentNotificationsUrl}")
+  private String listComponentNotificationsUrl;
 
-    @Autowired
-    private BuildingConnector connector = new ClientBuildingConnector(restTemplate, baseUrl);
+  @Autowired private RestTemplate restTemplate = mock(RestTemplate.class);
 
-    private MockRestServiceServer server;
+  @Autowired
+  private BuildingConnector connector = new ClientBuildingConnector(restTemplate, baseUrl);
 
-    private ObjectMapper mapper = new ObjectMapper();
+  private MockRestServiceServer server;
 
-    @BeforeEach
-    public void setup() {
-        server = MockRestServiceServer.createServer(restTemplate);
-    }
-    @Test
-    public void testGetBuilding() throws Exception {
-        server = MockRestServiceServer.createServer(restTemplate);
-        Building building = new Building();
-        building.setBuildingName("");
-        building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
-        building.setBuildingNumber("");
-        building.setLongitude(2.2);
-        building.setLatitude(2.2);
-        building.setIdentificationNumber("b-1");
-        building.setNumFloors(0);
+  @BeforeEach
+  public void setup() {
+    server = MockRestServiceServer.createServer(restTemplate);
+  }
 
-        server.expect(ExpectedCount.once(),
-                MockRestRequestMatchers.requestTo(baseUrl + "/buildings/b-1"))
-                .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
-                .andRespond(MockRestResponseCreators.withStatus(HttpStatus.OK)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(mapper.writeValueAsString(building)));
+  @Test
+  public void testGetBuilding() throws Exception {
+    server = MockRestServiceServer.createServer(restTemplate);
+    Building building = new Building();
+    building.setBuildingName("");
+    building.setCampusLocation(Building.CampusLocation.SOUTH_CAMPUS);
+    building.setBuildingNumber("");
+    building.setLongitude(2.2);
+    building.setLatitude(2.2);
+    building.setIdentificationNumber("b-1");
+    building.setNumFloors(0);
 
-        Building responseBuilding = connector.getBuilding("b-1");
-        server.verify();
-        assertEquals(building, responseBuilding);
-    }
+    server
+        .expect(ExpectedCount.once(), MockRestRequestMatchers.requestTo(baseUrl + "/buildings/b-1"))
+        .andExpect(MockRestRequestMatchers.method(HttpMethod.GET))
+        .andRespond(
+            MockRestResponseCreators.withStatus(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(mapper.writeValueAsString(building)));
+
+    Building responseBuilding = connector.getBuilding("b-1");
+    server.verify();
+    assertEquals(building, responseBuilding);
+  }
 }

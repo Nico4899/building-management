@@ -6,17 +6,24 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * This class represents the building management application microservice application. It holds the
- * main class and runs the spring application.
- */
+/** The main entry point of the Application. */
 @SpringBootApplication
-public class BuildingManagementApplication {
+public class Application {
 
+  /**
+   * The entry point of application.
+   *
+   * @param args the input arguments
+   */
   public static void main(String[] args) {
-    SpringApplication.run(BuildingManagementApplication.class, args);
+    SpringApplication.run(Application.class, args);
   }
 
+  /**
+   * The {@link RestTemplate} {@link Bean} used for the connectors
+   *
+   * @return the rest template
+   */
   @Bean
   public RestTemplate getRestTemplate() {
     RestTemplate restTemplate = new RestTemplate();

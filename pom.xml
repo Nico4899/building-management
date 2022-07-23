@@ -201,7 +201,7 @@
                     <configuration>
                         <archive>
                             <manifest>
-                                <mainClass>edu.kit.tm.cm.smartcampus.buildingmanagement.BuildingManagementApplication
+                                <mainClass>edu.kit.tm.cm.smartcampus.buildingmanagement.Application
                                 </mainClass>
                             </manifest>
                         </archive>
