@@ -121,7 +121,8 @@ public final class GrpcObjectWriter {
    * @param notifications the notifications
    * @return the collection
    */
-  public static Collection<GrpcNotification> writeNotifications(Collection<Notification> notifications) {
+  public static Collection<GrpcNotification> writeNotifications(
+      Collection<Notification> notifications) {
     return notifications.stream().map(GrpcObjectWriter::write).toList();
   }
 
@@ -132,7 +133,7 @@ public final class GrpcObjectWriter {
    * @return the grpc campus location
    */
   public static GrpcCampusLocation write(Building.CampusLocation campusLocation) {
-    return GrpcCampusLocation.forNumber(campusLocation.ordinal() + 1);
+    return Enum.valueOf(GrpcCampusLocation.class, campusLocation.name());
   }
 
   /**
@@ -142,6 +143,6 @@ public final class GrpcObjectWriter {
    * @return the grpc room type
    */
   public static GrpcRoomType write(Room.Type roomType) {
-    return GrpcRoomType.forNumber(roomType.ordinal() + 1);
+    return Enum.valueOf(GrpcRoomType.class, roomType.name());
   }
 }

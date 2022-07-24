@@ -1,6 +1,5 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InternalServerErrorException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,17 +48,6 @@ public class Building {
     /** South campus location. */
     SOUTH_CAMPUS,
     /** West campus location. */
-    WEST_CAMPUS;
-
-    /**
-     * This static method provides a {@link CampusLocation} for its ordinal.
-     *
-     * @param ordinal the ordinal number of the enum constant
-     * @return the campus location with the ordinal number
-     */
-    public static CampusLocation forOrdinal(int ordinal) {
-      if (ordinal >= values().length || ordinal < 0) throw new InternalServerErrorException();
-      return values()[ordinal];
-    }
+    WEST_CAMPUS
   }
 }

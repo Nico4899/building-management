@@ -1,6 +1,5 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.exception.InternalServerErrorException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,17 +50,6 @@ public class Room {
     /** Lecture room type. */
     LECTURE_ROOM,
     /** Sports type. */
-    SPORTS;
-
-    /**
-     * This static method provides a {@link Type} for its ordinal.
-     *
-     * @param ordinal the ordinal number of the enum constant
-     * @return the type with the ordinal number
-     */
-    public static Type forOrdinal(int ordinal) {
-      if (ordinal >= values().length || ordinal < 0) throw new InternalServerErrorException();
-      return values()[ordinal];
-    }
+    SPORTS
   }
 }

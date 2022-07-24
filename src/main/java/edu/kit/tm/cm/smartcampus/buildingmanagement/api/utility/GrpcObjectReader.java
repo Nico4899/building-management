@@ -2,10 +2,10 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility;
 
 import edu.kit.tm.cm.proto.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.ListSettings;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.ListSettings;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.sorters.*;
 import lombok.AccessLevel;
@@ -93,7 +93,7 @@ public final class GrpcObjectReader {
    * @return the room type
    */
   public static Room.Type read(GrpcRoomType grpcRoomType) {
-    return Room.Type.forOrdinal(grpcRoomType.ordinal() - 1);
+    return Enum.valueOf(Room.Type.class, grpcRoomType.name());
   }
 
   /**
@@ -103,7 +103,7 @@ public final class GrpcObjectReader {
    * @return the campus location
    */
   public static Building.CampusLocation read(GrpcCampusLocation grpcCampusLocation) {
-    return Building.CampusLocation.forOrdinal(grpcCampusLocation.ordinal() - 1);
+    return Enum.valueOf(Building.CampusLocation.class, grpcCampusLocation.name());
   }
 
   /**
@@ -113,7 +113,7 @@ public final class GrpcObjectReader {
    * @return the component type
    */
   public static Component.Type read(GrpcComponentType grpcComponentType) {
-    return Component.Type.forOrdinal(grpcComponentType.ordinal() - 1);
+    return Enum.valueOf(Component.Type.class, grpcComponentType.name());
   }
 
   /**
