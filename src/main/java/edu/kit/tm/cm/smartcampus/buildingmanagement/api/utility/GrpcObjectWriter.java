@@ -64,7 +64,8 @@ public final class GrpcObjectWriter {
         .setCampusLocation(write(building.getCampusLocation()))
         .setLatitude(building.getLatitude())
         .setLongitude(building.getLongitude())
-        .setNumFloors(building.getNumFloors())
+        .setLowestFloor(building.getLowestFloor())
+        .setHighestFloor(building.getHighestFloor())
         .build();
   }
 

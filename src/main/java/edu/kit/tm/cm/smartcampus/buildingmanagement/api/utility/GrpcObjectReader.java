@@ -60,7 +60,8 @@ public final class GrpcObjectReader {
     building.setBuildingNumber(grpcBuilding.getBuildingNumber());
     building.setBuildingName(grpcBuilding.getBuildingName());
     building.setCampusLocation(read(grpcBuilding.getCampusLocation()));
-    building.setNumFloors(grpcBuilding.getNumFloors());
+    building.setHighestFloor(grpcBuilding.getHighestFloor());
+    building.setLowestFloor(grpcBuilding.getLowestFloor());
     building.setIdentificationNumber(grpcBuilding.getIdentificationNumber());
     building.setLongitude(grpcBuilding.getLongitude());
     building.setLatitude(grpcBuilding.getLatitude());

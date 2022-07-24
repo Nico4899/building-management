@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * This class describes a building model object, it can hold a collection of {@link Room} and {@link
- * Component}*, further it holds information about geographical location and campus location. This
+ * Component}, further it holds information about geographical location and campus location. This
  * class provides {@link CampusLocation} to describe its location on KIT-Campus.
  *
  * @version 1.0
@@ -23,7 +23,8 @@ public class Building {
   private final Collection<Room> rooms = new ArrayList<>();
   private final Collection<Component> components = new ArrayList<>();
 
-  private int numFloors;
+  private int lowestFloor;
+  private int highestFloor;
   private CampusLocation campusLocation;
 
   private String buildingName;
