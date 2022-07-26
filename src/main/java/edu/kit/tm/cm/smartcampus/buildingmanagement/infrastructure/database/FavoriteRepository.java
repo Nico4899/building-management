@@ -13,7 +13,7 @@ import java.util.Collection;
 public interface FavoriteRepository extends JpaRepository<Favorite, String> {
 
   @Query(
-      "SELECT favorite FROM favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE #{#regex})")
+      "SELECT favorite FROM favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE :#{#regex})")
   Collection<Favorite> findByOwnerAndRegex(
       @Param("owner") String owner, @Param("regex") String regex);
 }

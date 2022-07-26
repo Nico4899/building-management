@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>edu.kit.tm.cm.smartcampus</groupId>
-    <artifactId>ProblemManagement</artifactId>
+    <artifactId>BuildingManagement</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>ProblemManagement</name>
-    <description>ProblemManagement</description>
+    <name>BuildingManagement</name>
+    <description>BuildingManagement</description>
     <properties>
         <java.version>18</java.version>
         <protobuf.version>3.19.1</protobuf.version>
