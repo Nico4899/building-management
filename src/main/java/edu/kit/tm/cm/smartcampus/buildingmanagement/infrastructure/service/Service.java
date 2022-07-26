@@ -252,7 +252,7 @@ public class Service {
    * @param favorite favorite object without identification number
    */
   public void createFavorite(Favorite favorite) {
-    // this.favoriteValidator.validateCreate(favorite);
+    this.favoriteValidator.validateCreate(favorite);
     this.favoriteRepository.save(favorite);
   }
 
