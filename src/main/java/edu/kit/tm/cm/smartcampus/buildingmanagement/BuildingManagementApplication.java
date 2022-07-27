@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 /** The main entry point of the Application. */
 @SpringBootApplication
-public class Application {
+public class BuildingManagementApplication {
 
   /**
    * The entry point of application.
@@ -16,7 +16,7 @@ public class Application {
    * @param args the input arguments
    */
   public static void main(String[] args) {
-    SpringApplication.run(Application.class, args);
+    SpringApplication.run(BuildingManagementApplication.class, args);
   }
 
   /**

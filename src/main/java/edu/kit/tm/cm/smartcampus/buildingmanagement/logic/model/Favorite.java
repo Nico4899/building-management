@@ -21,6 +21,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity(name = "favorite")
+@Table
 public class Favorite {
 
   @Id

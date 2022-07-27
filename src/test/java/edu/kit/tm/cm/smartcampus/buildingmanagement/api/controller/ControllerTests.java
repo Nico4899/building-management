@@ -58,7 +58,8 @@ public class ControllerTests {
             .setLongitude(2.2)
             .setLatitude(2.2)
             .setIdentificationNumber("b-1")
-            .setNumFloors(0)
+                .setHighestFloor(2)
+                .setLowestFloor(1)
             .build();
 
     grpcTestComponent =
@@ -81,7 +82,8 @@ public class ControllerTests {
     testBuilding.setLongitude(2.2);
     testBuilding.setLatitude(2.2);
     testBuilding.setIdentificationNumber("b-1");
-    testBuilding.setNumFloors(0);
+    testBuilding.setHighestFloor(2);
+    testBuilding.setLowestFloor(1);
 
     testRoom = new Room();
     testRoom.setRoomName("");
