@@ -1,5 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector;
 
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.dto.BuildingRequest;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.dto.ComponentRequest;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.utility.dto.RoomRequest;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
@@ -17,6 +20,12 @@ import java.util.Collections;
 /** Implementation of {@link BuildingConnector}. */
 @Service
 public class ClientBuildingConnector implements BuildingConnector {
+
+  private final BuildingRequest buildingRequest;
+
+  private final RoomRequest roomRequest;
+
+  private final ComponentRequest componentRequest;
 
   private final String baseUrl;
   private final RestTemplate restTemplate;
@@ -84,12 +93,20 @@ public class ClientBuildingConnector implements BuildingConnector {
   /**
    * Constructs a new rest template building connector.
    *
-   * @param restTemplate rest template
-   * @param baseUrl base url
+   * @param buildingRequest
+   * @param roomRequest
+   * @param componentRequest
+   * @param notificationRequest
+   * @param restTemplate        rest template
+   * @param baseUrl             base url
    */
+
   @Autowired
   public ClientBuildingConnector(
-      RestTemplate restTemplate, @Value("${building.baseUrl}") String baseUrl) {
+          BuildingRequest buildingRequest, RoomRequest roomRequest, ComponentRequest componentRequest, RestTemplate restTemplate, @Value("${building.baseUrl}") String baseUrl) {
+    this.buildingRequest = buildingRequest;
+    this.roomRequest = roomRequest;
+    this.componentRequest = componentRequest;
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
   }
@@ -114,12 +131,13 @@ public class ClientBuildingConnector implements BuildingConnector {
 
   @Override
   public Building createBuilding(Building building) {
-    ResponseEntity<Building> responseEntity;
+    ResponseEntity<BuildingRequest> responseEntity;
+    BuildingRequest request = buildingRequest.buildingToBuildingRequest(building);
 
     responseEntity =
-        restTemplate.postForEntity(baseUrl + createBuildingUrl, building, Building.class);
+        restTemplate.postForEntity(baseUrl + createBuildingUrl, request, BuildingRequest.class);
 
-    return responseEntity.getBody();
+    return buildingRequest.buildingRequestToBuilding(responseEntity.getBody());
   }
 
   @Override
@@ -135,7 +153,8 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Building updateBuilding(Building building) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<Building> entity = new HttpEntity<>(building, headers);
+    BuildingRequest request = buildingRequest.buildingToBuildingRequest(building);
+    HttpEntity<BuildingRequest> entity = new HttpEntity<>(request, headers);
 
     restTemplate.exchange(
         baseUrl + updateBuildingUrl,
@@ -172,11 +191,15 @@ public class ClientBuildingConnector implements BuildingConnector {
 
   @Override
   public Room createBuildingRoom(Room room) {
-    ResponseEntity<Room> responseEntity;
+    ResponseEntity<RoomRequest> responseEntity;
 
-    responseEntity = restTemplate.postForEntity(baseUrl + createBuildingRoomUrl, room, Room.class);
+    RoomRequest request = roomRequest.roomToRoomRequest(room);
 
-    return responseEntity.getBody();
+    responseEntity = restTemplate.postForEntity(baseUrl + createBuildingRoomUrl, request, RoomRequest.class);
+
+    Room response = roomRequest.roomRequestToRoom(responseEntity.getBody());
+
+    return response;
   }
 
   @Override
@@ -193,7 +216,8 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Room updateRoom(Room room) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<Room> entity = new HttpEntity<>(room, headers);
+    RoomRequest request = roomRequest.roomToRoomRequest(room);
+    HttpEntity<RoomRequest> entity = new HttpEntity<>(request, headers);
 
     restTemplate.exchange(
         baseUrl + updateRoomUrl,
@@ -246,23 +270,29 @@ public class ClientBuildingConnector implements BuildingConnector {
 
   @Override
   public Component createBuildingComponent(Component component) {
-    ResponseEntity<Component> responseEntity;
+    ResponseEntity<ComponentRequest> responseEntity;
+
+    ComponentRequest request = componentRequest.componentToComponentRequest(component);
 
     responseEntity =
         restTemplate.postForEntity(
-            baseUrl + createBuildingComponentUrl, component, Component.class);
+            baseUrl + createBuildingComponentUrl, request, ComponentRequest.class);
 
-    return responseEntity.getBody();
+    Component response = componentRequest.componentRequestToComponent(responseEntity.getBody());
+
+    return response;
   }
 
   @Override
   public Component createRoomComponent(Component component) {
-    ResponseEntity<Component> responseEntity;
+    ResponseEntity<ComponentRequest> responseEntity;
+
+    ComponentRequest request = componentRequest.componentToComponentRequest(component);
 
     responseEntity =
-        restTemplate.postForEntity(baseUrl + createRoomComponentUrl, component, Component.class);
+        restTemplate.postForEntity(baseUrl + createRoomComponentUrl, request, ComponentRequest.class);
 
-    return responseEntity.getBody();
+    return componentRequest.componentRequestToComponent(responseEntity.getBody());
   }
 
   @Override
@@ -279,7 +309,8 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Component updateComponent(Component component) {
     HttpHeaders headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    HttpEntity<Component> entity = new HttpEntity<>(component, headers);
+    ComponentRequest request = componentRequest.componentToComponentRequest(component);
+    HttpEntity<ComponentRequest> entity = new HttpEntity<>(request, headers);
 
     restTemplate.exchange(
         baseUrl + updateComponentUrl,
