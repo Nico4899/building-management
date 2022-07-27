@@ -110,7 +110,7 @@ public class RestTemplateTests {
     building.setLongitude(2.2);
     building.setLatitude(2.2);
     building.setIdentificationNumber("b-1");
-    building.setNumFloors(0);
+    //building.setNumFloors(0);
 
     server
         .expect(ExpectedCount.once(), MockRestRequestMatchers.requestTo(baseUrl + "/buildings/b-1"))
