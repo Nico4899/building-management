@@ -36,11 +36,11 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Value("${building.removeBuildingUrl}")
   private String removeBuildingUrl;
 
-  @Value("${room.listBuildingRoomsUrl}")
-  private String listBuildingRoomsUrl;
+  @Value("${room.listRoomsUrl}")
+  private String listRoomsUrl;
 
-  @Value("${room.createBuildingRoomUrl}")
-  private String createBuildingRoomUrl;
+  @Value("${room.createRoomUrl}")
+  private String createRoomUrl;
 
   @Value("${room.getRoomUrl}")
   private String getRoomUrl;
@@ -51,17 +51,11 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Value("${room.removeRoomUrl}")
   private String removeRoomUrl;
 
-  @Value("${component.listBuildingComponentsUrl}")
-  private String listBuildingComponentsUrl;
+  @Value("${component.listComponentsUrl}")
+  private String listComponentsUrl;
 
-  @Value("${component.createBuildingComponentUrl}")
-  private String createBuildingComponentUrl;
-
-  @Value("${component.listRoomComponentsUrl}")
-  private String listRoomComponentsUrl;
-
-  @Value("${component.createRoomComponentUrl}")
-  private String createRoomComponentUrl;
+  @Value("${component.createComponentUrl}")
+  private String createComponentUrl;
 
   @Value("${component.getComponentUrl}")
   private String getComponentUrl;
@@ -72,14 +66,8 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Value("${component.removeComponentUrl}")
   private String removeComponentUrl;
 
-  @Value("${notification.listBuildingNotificationsUrl}")
-  private String listBuildingNotificationsUrl;
-
-  @Value("${notification.listRoomNotificationsUrl}")
-  private String listRoomNotificationsUrl;
-
-  @Value("${notification.listComponentNotificationsUrl}")
-  private String listComponentNotificationsUrl;
+  @Value("${notification.listNotificationsUrl}")
+  private String listNotificationsUrl;
 
   /**
    * Constructs a new rest template building connector.
@@ -122,7 +110,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Building updateBuilding(ClientUpdateBuildingRequest clientUpdateBuildingRequest) {
     return restTemplate
-        .postForEntity(baseUrl + createBuildingRoomUrl, clientUpdateBuildingRequest, Building.class)
+        .postForEntity(baseUrl + updateBuildingUrl, clientUpdateBuildingRequest, Building.class)
         .getBody();
   }
 
@@ -135,7 +123,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Collection<Room> listRooms(String identificationNumber) {
     return restTemplate
         .exchange(
-            baseUrl + listBuildingRoomsUrl,
+            baseUrl + listRoomsUrl,
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<Collection<Room>>() {},
@@ -146,7 +134,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Room createRoom(ClientCreateRoomRequest clientCreateRoomRequest) {
     return restTemplate
-        .postForEntity(baseUrl + createBuildingRoomUrl, clientCreateRoomRequest, Room.class)
+        .postForEntity(baseUrl + createRoomUrl, clientCreateRoomRequest, Room.class)
         .getBody();
   }
 
@@ -173,7 +161,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Collection<Component> listComponents(String identificationNumber) {
     return restTemplate
         .exchange(
-            baseUrl + listBuildingComponentsUrl,
+            baseUrl + listComponentsUrl,
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<Collection<Component>>() {},
@@ -184,8 +172,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Component createComponent(ClientCreateComponentRequest clientCreateComponentRequest) {
     return restTemplate
-        .postForEntity(
-            baseUrl + createBuildingComponentUrl, clientCreateComponentRequest, Component.class)
+        .postForEntity(baseUrl + createComponentUrl, clientCreateComponentRequest, Component.class)
         .getBody();
   }
 
@@ -212,7 +199,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   public Collection<Notification> listNotifications(String identificationNumber) {
     return restTemplate
         .exchange(
-            baseUrl + listBuildingNotificationsUrl,
+            baseUrl + listNotificationsUrl,
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<Collection<Notification>>() {},
