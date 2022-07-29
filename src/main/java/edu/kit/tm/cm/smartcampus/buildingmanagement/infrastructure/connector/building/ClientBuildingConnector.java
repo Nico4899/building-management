@@ -132,7 +132,7 @@ public class ClientBuildingConnector implements BuildingConnector {
   }
 
   @Override
-  public Collection<Room> listBuildingRooms(String identificationNumber) {
+  public Collection<Room> listRooms(String identificationNumber) {
     return restTemplate
         .exchange(
             baseUrl + listBuildingRoomsUrl,
@@ -170,22 +170,10 @@ public class ClientBuildingConnector implements BuildingConnector {
   }
 
   @Override
-  public Collection<Component> listBuildingComponents(String identificationNumber) {
+  public Collection<Component> listComponents(String identificationNumber) {
     return restTemplate
         .exchange(
             baseUrl + listBuildingComponentsUrl,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<Collection<Component>>() {},
-            identificationNumber)
-        .getBody();
-  }
-
-  @Override
-  public Collection<Component> listRoomComponents(String identificationNumber) {
-    return restTemplate
-        .exchange(
-            baseUrl + listRoomComponentsUrl,
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<Collection<Component>>() {},
@@ -221,34 +209,10 @@ public class ClientBuildingConnector implements BuildingConnector {
   }
 
   @Override
-  public Collection<Notification> listBuildingNotifications(String identificationNumber) {
+  public Collection<Notification> listNotifications(String identificationNumber) {
     return restTemplate
         .exchange(
             baseUrl + listBuildingNotificationsUrl,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<Collection<Notification>>() {},
-            identificationNumber)
-        .getBody();
-  }
-
-  @Override
-  public Collection<Notification> listRoomNotifications(String identificationNumber) {
-    return restTemplate
-        .exchange(
-            baseUrl + listRoomNotificationsUrl,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<Collection<Notification>>() {},
-            identificationNumber)
-        .getBody();
-  }
-
-  @Override
-  public Collection<Notification> listComponentNotifications(String identificationNumber) {
-    return restTemplate
-        .exchange(
-            baseUrl + listComponentNotificationsUrl,
             HttpMethod.GET,
             null,
             new ParameterizedTypeReference<Collection<Notification>>() {},

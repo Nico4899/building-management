@@ -59,7 +59,7 @@ public interface BuildingConnector {
    * @param identificationNumber the identification number
    * @return the collection
    */
-  Collection<Room> listBuildingRooms(String identificationNumber);
+  Collection<Room> listRooms(String identificationNumber);
 
   /**
    * Create building room.
@@ -98,15 +98,7 @@ public interface BuildingConnector {
    * @param identificationNumber the identification number
    * @return the collection
    */
-  Collection<Component> listBuildingComponents(String identificationNumber);
-
-  /**
-   * List room components collection.
-   *
-   * @param identificationNumber the identification number
-   * @return the collection
-   */
-  Collection<Component> listRoomComponents(String identificationNumber);
+  Collection<Component> listComponents(String identificationNumber);
 
   /**
    * Create building component component.
@@ -145,21 +137,5 @@ public interface BuildingConnector {
    * @param identificationNumber the identification number
    * @return the collection
    */
-  Collection<Notification> listBuildingNotifications(String identificationNumber);
-
-  /**
-   * List room notifications collection.
-   *
-   * @param identificationNumber the identification number
-   * @return the collection
-   */
-  Collection<Notification> listRoomNotifications(String identificationNumber);
-
-  /**
-   * List component notifications collection.
-   *
-   * @param identificationNumber the identification number
-   * @return the collection
-   */
-  Collection<Notification> listComponentNotifications(String identificationNumber);
+  Collection<Notification> listNotifications(String identificationNumber);
 }

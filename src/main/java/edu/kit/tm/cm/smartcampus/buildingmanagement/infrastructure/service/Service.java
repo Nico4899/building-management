@@ -5,7 +5,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.Favo
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.validator.FavoriteValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.utility.Utils;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.utility.DataTransferUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -66,21 +66,11 @@ public class Service {
    * @return collection of the building's rooms
    */
   public Collection<Room> listRooms(Settings<Room> settings, String identificationNumber) {
-    Collection<Room> rooms = this.buildingConnector.listBuildingRooms(identificationNumber);
+    Collection<Room> rooms = this.buildingConnector.listRooms(identificationNumber);
     for (Room room : rooms) {
       this.buildRoomComponents(room);
     }
     return settings.apply(rooms);
-  }
-
-  /**
-   * Lists all building's components.
-   *
-   * @param identificationNumber of the parent building or room
-   * @return collection of components
-   */
-  public Collection<Component> listBuildingComponents(String identificationNumber) {
-    return this.buildingConnector.listBuildingComponents(identificationNumber);
   }
 
   /**
@@ -89,8 +79,8 @@ public class Service {
    * @param identificationNumber of the parent building or room
    * @return collection of components
    */
-  public Collection<Component> listRoomComponents(String identificationNumber) {
-    return this.buildingConnector.listRoomComponents(identificationNumber);
+  public Collection<Component> listComponents(String identificationNumber) {
+    return this.buildingConnector.listComponents(identificationNumber);
   }
 
   /**
@@ -99,31 +89,9 @@ public class Service {
    * @param identificationNumber of the parent building or room
    * @return collection of notifications
    */
-  public Collection<Notification> listBuildingNotifications(
+  public Collection<Notification> listNotifications(
       Settings<Notification> settings, String identificationNumber) {
-    return settings.apply(this.buildingConnector.listBuildingNotifications(identificationNumber));
-  }
-
-  /**
-   * Lists all room's notifications.
-   *
-   * @param identificationNumber of the parent building or room
-   * @return collection of notifications
-   */
-  public Collection<Notification> listRoomNotifications(
-      Settings<Notification> settings, String identificationNumber) {
-    return settings.apply(this.buildingConnector.listRoomNotifications(identificationNumber));
-  }
-
-  /**
-   * Lists all component's notifications.
-   *
-   * @param identificationNumber of the parent building or room
-   * @return collection of notifications
-   */
-  public Collection<Notification> listComponentNotifications(
-      Settings<Notification> settings, String identificationNumber) {
-    return settings.apply(this.buildingConnector.listComponentNotifications(identificationNumber));
+    return settings.apply(this.buildingConnector.listNotifications(identificationNumber));
   }
 
   /**
@@ -132,7 +100,7 @@ public class Service {
    * @param owner owner of the favorites list
    * @return collection of components marked as favorite
    */
-  public Collection<Component> listComponentFavorites(String owner) {
+  public Collection<Component> listFavoriteComponents(String owner) {
     Collection<Component> components = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
       components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
@@ -146,7 +114,7 @@ public class Service {
    * @param owner owner of the favorites list
    * @return collection of rooms marked as favorite
    */
-  public Collection<Room> listRoomFavorites(Settings<Room> settings, String owner) {
+  public Collection<Room> listFavoriteRooms(Settings<Room> settings, String owner) {
     Collection<Room> rooms = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, RIN_SQL_PATTERN)) {
       rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
@@ -163,7 +131,7 @@ public class Service {
    * @param owner owner of the favorites list
    * @return collection of buildings marked as favorite
    */
-  public Collection<Building> listBuildingFavorites(Settings<Building> settings, String owner) {
+  public Collection<Building> listFavoriteBuildings(Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
     for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, BIN_SQL_PATTERN)) {
       buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
@@ -213,7 +181,7 @@ public class Service {
    */
   public Building createBuilding(Building building) {
     return this.buildingConnector.createBuilding(
-        Utils.ClientRequestWriter.writeClientCreateBuildingRequest(building));
+        DataTransferUtils.ClientRequestWriter.writeClientCreateBuildingRequest(building));
   }
 
   /**
@@ -224,7 +192,7 @@ public class Service {
    */
   public Room createRoom(Room room) {
     return this.buildingConnector.createRoom(
-        Utils.ClientRequestWriter.writeClientCreateRoomRequest(room));
+        DataTransferUtils.ClientRequestWriter.writeClientCreateRoomRequest(room));
   }
 
   /**
@@ -235,7 +203,7 @@ public class Service {
    */
   public Component createComponent(Component component) {
     return this.buildingConnector.createComponent(
-        Utils.ClientRequestWriter.writeClientCreateComponentRequest(component));
+        DataTransferUtils.ClientRequestWriter.writeClientCreateComponentRequest(component));
   }
 
   /**
@@ -256,7 +224,7 @@ public class Service {
    */
   public Building updateBuilding(Building building) {
     return this.buildingConnector.updateBuilding(
-        Utils.ClientRequestWriter.writeClientUpdateBuildingRequest(building));
+        DataTransferUtils.ClientRequestWriter.writeClientUpdateBuildingRequest(building));
   }
 
   /**
@@ -267,7 +235,7 @@ public class Service {
    */
   public Room updateRoom(Room room) {
     return this.buildingConnector.updateRoom(
-        Utils.ClientRequestWriter.writeClientUpdateRoomRequest(room));
+        DataTransferUtils.ClientRequestWriter.writeClientUpdateRoomRequest(room));
   }
 
   /**
@@ -278,7 +246,7 @@ public class Service {
    */
   public Component updateComponent(Component component) {
     return this.buildingConnector.updateComponent(
-        Utils.ClientRequestWriter.writeClientUpdateComponentRequest(component));
+        DataTransferUtils.ClientRequestWriter.writeClientUpdateComponentRequest(component));
   }
 
   /**
@@ -319,20 +287,19 @@ public class Service {
   }
 
   private void buildBuildingRooms(Building building) {
-    Collection<Room> rooms =
-        this.buildingConnector.listBuildingRooms(building.getIdentificationNumber());
+    Collection<Room> rooms = this.buildingConnector.listRooms(building.getIdentificationNumber());
     building.getRooms().addAll(rooms);
   }
 
   private void buildBuildingComponents(Building building) {
     Collection<Component> components =
-        this.buildingConnector.listBuildingComponents(building.getIdentificationNumber());
+        this.buildingConnector.listComponents(building.getIdentificationNumber());
     building.getComponents().addAll(components);
   }
 
   private void buildRoomComponents(Room room) {
     Collection<Component> components =
-        this.buildingConnector.listRoomComponents(room.getIdentificationNumber());
+        this.buildingConnector.listComponents(room.getIdentificationNumber());
     room.getComponents().addAll(components);
   }
 }
