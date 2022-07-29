@@ -1,9 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,22 +15,21 @@ import java.util.Collection;
  */
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Building {
   private final Collection<Room> rooms = new ArrayList<>();
   private final Collection<Component> components = new ArrayList<>();
 
-  private int lowestFloor;
-  private int highestFloor;
+  private Floors floors;
   private CampusLocation campusLocation;
 
-  private String buildingName;
-  private String buildingNumber;
+  private String name;
+  private String number;
 
   private String identificationNumber;
 
-  private double longitude;
-  private double latitude;
+  private GeographicalLocation geographicalLocation;
 
   /**
    * This nested enum contains various KIT-Campus locations.

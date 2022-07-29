@@ -2,10 +2,12 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
 /**
  * This class represents a list request configuration, implemented from {@link Settings}. It is
@@ -14,16 +16,17 @@ import java.util.Collection;
  *
  * @param <T> the type of the collection to be operated on
  */
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class ListSettings<T> implements Settings<T> {
-  private final Sorter<T> sorter;
-  private final Collection<Filter<T>> filters;
+  private Sorter<T> sorter;
+  private Map<Filter<T>, Collection<?>> filters;
 
   @Override
-  public Collection<T> run(Collection<T> collection) {
+  public Collection<T> apply(Collection<T> collection) {
     Collection<T> applied = new ArrayList<>(collection);
-    for (Filter<T> filter : filters) {
-      applied = filter.filter(applied);
+    for (Map.Entry<Filter<T>, Collection<?>> entry : filters.entrySet()) {
+      applied = entry.getKey().filter(applied, entry.getValue());
     }
     applied = sorter.sort(applied);
     return applied;

@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Notification {
   private String identificationNumber;
-  private String notificationTitle;
-  private String notificationDescription;
+  private String title;
+  private String description;
   private Timestamp creationTime;
   private String parentIdentificationNumber;
 }

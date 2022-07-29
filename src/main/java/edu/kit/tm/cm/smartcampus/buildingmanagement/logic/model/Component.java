@@ -16,10 +16,9 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Component {
-  private String componentDescription;
+  private String description;
   private String identificationNumber;
-  private double latitude;
-  private double longitude;
+  private GeographicalLocation geographicalLocation;
   private String parentIdentificationNumber;
   private Type type;
 

@@ -53,7 +53,15 @@ message GetBuildingRequest{
 }
 
 message GetBuildingResponse{
-  GrpcBuilding building = 1;
+  GrpcBuilding grpc_building = 1;
+}
+
+message ListBuildingsRequest{
+  GrpcListSettings grpc_list_settings = 1;
+}
+
+message ListBuildingsResponse{
+  repeated GrpcBuilding buildings = 1;
 }
 
 message GetRoomRequest{
@@ -72,16 +80,8 @@ message GetComponentResponse{
   GrpcComponent component = 1;
 }
 
-message ListBuildingsRequest{
-  ListBuildingConfiguration list_building_configuration = 1;
-}
-
-message ListBuildingsResponse{
-  repeated GrpcBuilding buildings = 1;
-}
-
 message ListRoomsRequest{
-  ListRoomConfiguration list_room_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string identification_number = 2;
 }
 
@@ -90,7 +90,7 @@ message ListRoomsResponse{
 }
 
 message ListComponentsRequest{
-  ListComponentConfiguration list_component_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string identification_number = 2;
 }
 
@@ -99,17 +99,17 @@ message ListComponentsResponse{
 }
 
 message ListBuildingFavoritesRequest{
-  ListBuildingConfiguration list_building_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string owner = 2;
 }
 
 message ListRoomFavoritesRequest{
-  ListRoomConfiguration list_room_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string owner = 2;
 }
 
 message ListComponentFavoritesRequest{
-  ListComponentConfiguration list_component_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string owner = 2;
 }
 
@@ -126,7 +126,7 @@ message ListComponentFavoritesResponse{
 }
 
 message ListNotificationsRequest{
-  ListNotificationConfiguration list_notification_configuration = 1;
+  GrpcListSettings grpc_list_settings = 1;
   string identification_number = 2;
 }
 
@@ -211,22 +211,19 @@ message GrpcRoom{
   string room_name = 1;
   string room_number = 2;
   int32 floor = 3;
-  double latitude = 4;
-  string identification_number = 5;
-  string parent_identification_number = 6;
-  GrpcRoomType room_type = 7;
-  double longitude = 8;
+  string identification_number = 4;
+  string parent_identification_number = 5;
+  GrpcRoomType room_type = 6;
+  GrpcGeographicalLocation grpc_geographical_location = 7;
 }
 
 message GrpcBuilding{
   string building_name = 1;
   string building_number = 2;
-  double latitude = 3;
-  GrpcCampusLocation campus_location = 4;
-  string identification_number = 5;
-  double longitude = 6;
-  int32 highest_floor = 7;
-  int32 lowest_floor = 8;
+  GrpcCampusLocation campus_location = 3;
+  string identification_number = 4;
+  GrpcGeographicalLocation grpc_geographical_location = 5;
+  GrpcFloors grpc_floors = 6;
 }
 
 enum GrpcCampusLocation{
@@ -237,51 +234,19 @@ enum GrpcCampusLocation{
   SOUTH_CAMPUS = 4;
 }
 
-message ListBuildingConfiguration{
-  ComponentTypeFilterMapping component_type_filter_mapping = 1;
-  RoomTypeFilterMapping room_type_filter_mapping = 2;
-  CampusLocationFilterMapping campus_location_filter_mapping = 3;
-  GrpcSortOption grpc_sort_option = 4;
-}
-
-message ListRoomConfiguration{
-  ComponentTypeFilterMapping component_type_filter_mapping = 1;
-  RoomTypeFilterMapping room_type_filter_mapping = 2;
-  RoomFloorFilterMapping room_floor_filter_mapping = 3;
-  GrpcSortOption grpc_sort_option = 4;
-}
-
-message ListNotificationConfiguration{
-  GrpcSortOption grpc_sort_option = 1;
-}
-
-message ListComponentConfiguration{
-  GrpcSortOption grpc_sort_option = 1;
-}
-
-message CampusLocationFilterMapping{
-  bool selected = 1;
-  repeated GrpcCampusLocation campus_locations = 2;
-}
-
-message RoomTypeFilterMapping{
-  bool selected = 1;
-  repeated GrpcRoomType room_types = 2;
-}
-
-message ComponentTypeFilterMapping{
-  bool selected = 1;
-  repeated GrpcComponentType component_types = 2;
-}
-
-message RoomFloorFilterMapping{
-  bool selected = 1;
-  repeated int32 floors = 2;
+message GrpcListSettings {
+  Values values = 1;
+  Selection selection = 2;
 }
 
 message GrpcGeographicalLocation{
   double latitude = 1;
   double longitude = 2;
+}
+
+message GrpcFloors{
+  int32 lowest_floor = 1;
+  int32 highest_floor = 2;
 }
 
 message GrpcFavorite{
@@ -304,10 +269,9 @@ enum GrpcRoomType{
 message GrpcComponent{
   string component_description = 1;
   string identification_number = 2;
-  double longitude = 3;
-  string parent_identification_number = 4;
-  GrpcComponentType component_type = 5;
-  double latitude = 6;
+  string parent_identification_number = 3;
+  GrpcComponentType component_type = 4;
+  GrpcGeographicalLocation grpc_geographical_location = 5;
 }
 
 enum GrpcComponentType{
@@ -318,8 +282,24 @@ enum GrpcComponentType{
 
 enum GrpcSortOption{
   UNKNOWN_SORT_OPTION = 0;
-  DESCENDING_TIME_STAMP = 1;
-  ASCENDING_TIME_STAMP = 2;
-  NAME_LEXICOGRAPHIC = 3;
-  NUMBER_LEXICOGRAPHIC = 4;
+  DESCENDING_TIME_STAMP_SORTER = 1;
+  ASCENDING_TIME_STAMP_SORTER = 2;
+  LEXICOGRAPHIC_NAME_SORTER = 3;
+  LEXICOGRAPHIC_NUMBER_SORTER = 4;
+  DEFAULT_SORTER = 5;
+}
+
+message Selection{
+  bool campus_location_filter_selected = 1;
+  bool room_type_filter_selected = 2;
+  bool component_type_filter_selected = 3;
+  bool floor_filter_selected = 4;
+  GrpcSortOption grpc_sort_option = 5;
+}
+
+message Values{
+  repeated GrpcComponentType grpc_component_types = 1;
+  repeated GrpcRoomType grpc_room_types = 2;
+  repeated GrpcCampusLocation grpc_campus_locations = 3;
+  repeated int32 floors = 4;
 }

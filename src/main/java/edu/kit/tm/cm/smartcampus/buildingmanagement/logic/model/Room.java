@@ -20,12 +20,11 @@ public class Room {
   private final Collection<Component> components = new ArrayList<>();
 
   private int floor;
-  private String roomName;
-  private String roomNumber;
+  private String name;
+  private String number;
   private String identificationNumber;
   private String parentIdentificationNumber;
-  private double latitude;
-  private double longitude;
+  private GeographicalLocation geographicalLocation;
   private Type type;
 
   /**

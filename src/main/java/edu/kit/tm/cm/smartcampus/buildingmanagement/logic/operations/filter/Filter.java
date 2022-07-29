@@ -12,7 +12,8 @@ public interface Filter<T> {
    * Filters a given collection by filter values.
    *
    * @param collection collection to be filtered
+   * @param values filter values to filter for
    * @return filtered collection
    */
-  Collection<T> filter(Collection<T> collection);
+  Collection<T> filter(Collection<T> collection, Collection<?> values);
 }

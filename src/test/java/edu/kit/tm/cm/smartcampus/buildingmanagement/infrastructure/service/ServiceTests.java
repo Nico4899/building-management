@@ -1,22 +1,8 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.BuildingConnector;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.validator.FavoriteValidator;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 public class ServiceTests {
 
+  /*
   private static Building building;
   private static Room room;
   private static Component component;
@@ -161,4 +147,5 @@ public class ServiceTests {
     when(repository.existsById("f-1")).thenReturn(true);
     assertDoesNotThrow(() -> service.removeFavorite("f-1"));
   }
+   */
 }

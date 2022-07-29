@@ -3,7 +3,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Component;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.filters.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -157,15 +156,21 @@ public class FilterTests {
   @ParameterizedTest
   @ArgumentsSource(BuildingFilterArgumentsProvider.class)
   void filterBuildingCollectionAndValuesResultTest(
-      Collection<Building> expected, Filter<Building> filter, Collection<Building> collection) {
-    Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
+      Collection<Building> expected,
+      Filter<Building> filter,
+      Collection<Building> collection,
+      Collection<?> values) {
+    Assertions.assertTrue(expected.containsAll(filter.filter(collection, values)));
   }
 
   @ParameterizedTest
   @ArgumentsSource(RoomFilterArgumentsProvider.class)
   void filterRoomCollectionAndValuesResultTest(
-      Collection<Room> expected, Filter<Room> filter, Collection<Room> collection) {
-    Assertions.assertTrue(expected.containsAll(filter.filter(collection)));
+      Collection<Room> expected,
+      Filter<Room> filter,
+      Collection<Room> collection,
+      Collection<?> values) {
+    Assertions.assertTrue(expected.containsAll(filter.filter(collection, values)));
   }
 
   private static class RoomFilterArgumentsProvider implements ArgumentsProvider {
@@ -173,13 +178,14 @@ public class FilterTests {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
       return Stream.of(
-          Arguments.of(testRooms, new RoomTypeRoomFilter(ALL_ROOM_TYPES), testRooms),
-          Arguments.of(List.of(), new RoomTypeRoomFilter(NO_ROOM_TYPES), testRooms),
+          Arguments.of(testRooms, RoomFilter.ROOM_TYPE_FILTER, testRooms, ALL_ROOM_TYPES),
+          Arguments.of(List.of(), RoomFilter.ROOM_TYPE_FILTER, testRooms, NO_ROOM_TYPES),
           Arguments.of(
               List.of(
                   testRoomsMap.get(OFFICE), testRoomsMap.get(LIBRARY), testRoomsMap.get(REST_ROOM)),
-              new RoomTypeRoomFilter(SOME_ROOM_TYPES),
-              testRooms),
+              RoomFilter.ROOM_TYPE_FILTER,
+              testRooms,
+              SOME_ROOM_TYPES),
           Arguments.of(
               List.of(
                   testRoomsMap.get(LECTURE_ROOM),
@@ -187,13 +193,15 @@ public class FilterTests {
                   testRoomsMap.get(REST_ROOM),
                   testRoomsMap.get(SPORTS),
                   testRoomsMap.get(LIBRARY)),
-              new ComponentTypeRoomFilter(ALL_COMPONENT_TYPES),
-              testRooms),
-          Arguments.of(List.of(), new ComponentTypeRoomFilter(NO_COMPONENT_TYPES), testRooms),
+              RoomFilter.COMPONENT_TYPE_FILTER,
+              testRooms,
+              ALL_COMPONENT_TYPES),
+          Arguments.of(List.of(), RoomFilter.COMPONENT_TYPE_FILTER, testRooms, NO_COMPONENT_TYPES),
           Arguments.of(
               List.of(testRoomsMap.get(LIBRARY), testRoomsMap.get(SPORTS)),
-              new ComponentTypeRoomFilter(SOME_COMPONENT_TYPES),
-              testRooms));
+              RoomFilter.COMPONENT_TYPE_FILTER,
+              testRooms,
+              SOME_COMPONENT_TYPES));
     }
   }
 
@@ -202,37 +210,48 @@ public class FilterTests {
     @Override
     public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
       return Stream.of(
-          Arguments.of(testBuildings, new RoomTypeBuildingFilter(ALL_ROOM_TYPES), testBuildings),
-          Arguments.of(List.of(), new RoomTypeBuildingFilter(NO_ROOM_TYPES), testBuildings),
+          Arguments.of(
+              testBuildings, BuildingFilter.ROOM_TYPE_FILTER, testBuildings, ALL_ROOM_TYPES),
+          Arguments.of(List.of(), BuildingFilter.ROOM_TYPE_FILTER, testBuildings, NO_ROOM_TYPES),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(WEST_CAMPUS_BUILDING),
                   testBuildingsMap.get(NORTH_CAMPUS_BUILDING),
                   testBuildingsMap.get(SOUTH_CAMPUS_BUILDING)),
-              new RoomTypeBuildingFilter(SOME_ROOM_TYPES),
-              testBuildings),
+              BuildingFilter.ROOM_TYPE_FILTER,
+              testBuildings,
+              SOME_ROOM_TYPES),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(WEST_CAMPUS_BUILDING),
                   testBuildingsMap.get(SOUTH_CAMPUS_BUILDING)),
-              new ComponentTypeBuildingFilter(ALL_COMPONENT_TYPES),
-              testBuildings),
+              BuildingFilter.COMPONENT_TYPE_FILTER,
+              testBuildings,
+              ALL_COMPONENT_TYPES),
           Arguments.of(
-              List.of(), new ComponentTypeBuildingFilter(NO_COMPONENT_TYPES), testBuildings),
+              List.of(), BuildingFilter.COMPONENT_TYPE_FILTER, testBuildings, NO_COMPONENT_TYPES),
           Arguments.of(
               List.of(testBuildingsMap.get(WEST_CAMPUS_BUILDING)),
-              new ComponentTypeBuildingFilter(SOME_COMPONENT_TYPES),
-              testBuildings),
+              BuildingFilter.COMPONENT_TYPE_FILTER,
+              testBuildings,
+              SOME_COMPONENT_TYPES),
           Arguments.of(
               List.of(
                   testBuildingsMap.get(EAST_CAMPUS_BUILDING),
                   testBuildingsMap.get(NORTH_CAMPUS_BUILDING)),
-              new CampusLocationBuildingFilter(SOME_CAMPUS_LOCATIONS),
-              testBuildings),
+              BuildingFilter.CAMPUS_LOCATION_FILTER,
+              testBuildings,
+              SOME_CAMPUS_LOCATIONS),
           Arguments.of(
-              testBuildings, new CampusLocationBuildingFilter(ALL_CAMPUS_LOCATIONS), testBuildings),
+              testBuildings,
+              BuildingFilter.CAMPUS_LOCATION_FILTER,
+              testBuildings,
+              ALL_CAMPUS_LOCATIONS),
           Arguments.of(
-              List.of(), new CampusLocationBuildingFilter(NO_CAMPUS_LOCATIONS), testBuildings));
+              List.of(),
+              BuildingFilter.CAMPUS_LOCATION_FILTER,
+              testBuildings,
+              NO_CAMPUS_LOCATIONS));
     }
   }
 }
