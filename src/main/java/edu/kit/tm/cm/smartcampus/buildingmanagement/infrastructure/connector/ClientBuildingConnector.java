@@ -96,7 +96,6 @@ public class ClientBuildingConnector implements BuildingConnector {
    * @param buildingRequest
    * @param roomRequest
    * @param componentRequest
-   * @param notificationRequest
    * @param restTemplate        rest template
    * @param baseUrl             base url
    */
@@ -155,14 +154,15 @@ public class ClientBuildingConnector implements BuildingConnector {
     headers.setContentType(MediaType.APPLICATION_JSON);
     BuildingRequest request = buildingRequest.buildingToBuildingRequest(building);
     HttpEntity<BuildingRequest> entity = new HttpEntity<>(request, headers);
+    ResponseEntity<BuildingRequest> responseEntity;
 
-    restTemplate.exchange(
+    responseEntity = restTemplate.exchange(
         baseUrl + updateBuildingUrl,
         HttpMethod.PUT,
         entity,
-        Void.class,
+        BuildingRequest.class,
         building.getIdentificationNumber());
-    return building;
+    return buildingRequest.buildingRequestToBuilding(responseEntity.getBody());
   }
 
   @Override
@@ -218,14 +218,15 @@ public class ClientBuildingConnector implements BuildingConnector {
     headers.setContentType(MediaType.APPLICATION_JSON);
     RoomRequest request = roomRequest.roomToRoomRequest(room);
     HttpEntity<RoomRequest> entity = new HttpEntity<>(request, headers);
+    ResponseEntity<RoomRequest> responseEntity;
 
-    restTemplate.exchange(
+    responseEntity = restTemplate.exchange(
         baseUrl + updateRoomUrl,
         HttpMethod.PUT,
         entity,
-        Void.class,
+        RoomRequest.class,
         room.getIdentificationNumber());
-    return room;
+    return roomRequest.roomRequestToRoom(responseEntity.getBody());
   }
 
   @Override
@@ -311,14 +312,15 @@ public class ClientBuildingConnector implements BuildingConnector {
     headers.setContentType(MediaType.APPLICATION_JSON);
     ComponentRequest request = componentRequest.componentToComponentRequest(component);
     HttpEntity<ComponentRequest> entity = new HttpEntity<>(request, headers);
+    ResponseEntity<ComponentRequest> responseEntity;
 
-    restTemplate.exchange(
+    responseEntity = restTemplate.exchange(
         baseUrl + updateComponentUrl,
         HttpMethod.PUT,
         entity,
-        Void.class,
+        ComponentRequest.class,
         component.getIdentificationNumber());
-    return component;
+    return componentRequest.componentRequestToComponent(responseEntity.getBody());
   }
 
   @Override
