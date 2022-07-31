@@ -66,6 +66,7 @@ public class Service {
    * @return collection of the building's rooms
    */
   public Collection<Room> listRooms(Settings<Room> settings, String identificationNumber) {
+    System.out.println("hello");
     Collection<Room> rooms = this.buildingConnector.listRooms(identificationNumber);
     for (Room room : rooms) {
       this.buildRoomComponents(room);

@@ -491,6 +491,7 @@ public final class DataTransferUtils {
       clientCreateBuildingRequest.setName(building.getName());
       clientCreateBuildingRequest.setFloors(building.getFloors());
       clientCreateBuildingRequest.setNumber(building.getNumber());
+      clientCreateBuildingRequest.setCampusLocation(building.getCampusLocation());
       clientCreateBuildingRequest.setGeographicalLocation(building.getGeographicalLocation());
       return clientCreateBuildingRequest;
     }
@@ -500,6 +501,7 @@ public final class DataTransferUtils {
       clientUpdateBuildingRequest.setName(building.getName());
       clientUpdateBuildingRequest.setFloors(building.getFloors());
       clientUpdateBuildingRequest.setNumber(building.getNumber());
+      clientUpdateBuildingRequest.setCampusLocation(building.getCampusLocation());
       clientUpdateBuildingRequest.setGeographicalLocation(building.getGeographicalLocation());
       clientUpdateBuildingRequest.setIdentificationNumber(building.getIdentificationNumber());
       return clientUpdateBuildingRequest;

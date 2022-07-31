@@ -6,14 +6,16 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.GeographicalLoca
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter
 @Setter
 @NoArgsConstructor
 public class ClientCreateBuildingRequest {
-  private Floors floors;
-  private Building.CampusLocation campusLocation;
   private String name;
   private String number;
+  private Building.CampusLocation campusLocation;
   private GeographicalLocation geographicalLocation;
+  private Floors floors;
 }

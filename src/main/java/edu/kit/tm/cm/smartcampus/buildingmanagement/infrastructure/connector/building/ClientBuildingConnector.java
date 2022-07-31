@@ -8,6 +8,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -36,37 +37,37 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Value("${building.removeBuildingUrl}")
   private String removeBuildingUrl;
 
-  @Value("${room.listRoomsUrl}")
+  @Value("${building.listRoomsUrl}")
   private String listRoomsUrl;
 
-  @Value("${room.createRoomUrl}")
+  @Value("${building.createRoomUrl}")
   private String createRoomUrl;
 
-  @Value("${room.getRoomUrl}")
+  @Value("${building.getRoomUrl}")
   private String getRoomUrl;
 
-  @Value("${room.updateRoomUrl}")
+  @Value("${building.updateRoomUrl}")
   private String updateRoomUrl;
 
-  @Value("${room.removeRoomUrl}")
+  @Value("${building.removeRoomUrl}")
   private String removeRoomUrl;
 
-  @Value("${component.listComponentsUrl}")
+  @Value("${building.listComponentsUrl}")
   private String listComponentsUrl;
 
-  @Value("${component.createComponentUrl}")
+  @Value("${building.createComponentUrl}")
   private String createComponentUrl;
 
-  @Value("${component.getComponentUrl}")
+  @Value("${building.getComponentUrl}")
   private String getComponentUrl;
 
-  @Value("${component.updateComponentUrl}")
+  @Value("${building.updateComponentUrl}")
   private String updateComponentUrl;
 
-  @Value("${component.removeComponentUrl}")
+  @Value("${building.removeComponentUrl}")
   private String removeComponentUrl;
 
-  @Value("${notification.listNotificationsUrl}")
+  @Value("${building.listNotificationsUrl}")
   private String listNotificationsUrl;
 
   /**
@@ -96,27 +97,45 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Building createBuilding(ClientCreateBuildingRequest clientCreateBuildingRequest) {
     return restTemplate
-        .postForEntity(baseUrl + createBuildingUrl, clientCreateBuildingRequest, Building.class)
+        .exchange(
+            baseUrl + createBuildingUrl,
+            HttpMethod.POST,
+            new HttpEntity<>(clientCreateBuildingRequest),
+            Building.class)
         .getBody();
   }
 
   @Override
   public Building getBuilding(String identificationNumber) {
     return restTemplate
-        .getForEntity(baseUrl + getBuildingUrl, Building.class, identificationNumber)
+        .exchange(
+            baseUrl + getBuildingUrl,
+            HttpMethod.GET,
+            HttpEntity.EMPTY,
+            Building.class,
+            identificationNumber)
         .getBody();
   }
 
   @Override
   public Building updateBuilding(ClientUpdateBuildingRequest clientUpdateBuildingRequest) {
     return restTemplate
-        .postForEntity(baseUrl + updateBuildingUrl, clientUpdateBuildingRequest, Building.class)
+        .exchange(
+            baseUrl + updateBuildingUrl,
+            HttpMethod.PUT,
+            new HttpEntity<>(clientUpdateBuildingRequest),
+            Building.class)
         .getBody();
   }
 
   @Override
   public void removeBuilding(String identificationNumber) {
-    restTemplate.delete(baseUrl + removeBuildingUrl, identificationNumber);
+    restTemplate.exchange(
+        baseUrl + removeBuildingUrl,
+        HttpMethod.DELETE,
+        HttpEntity.EMPTY,
+        Void.class,
+        identificationNumber);
   }
 
   @Override
@@ -134,27 +153,45 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Room createRoom(ClientCreateRoomRequest clientCreateRoomRequest) {
     return restTemplate
-        .postForEntity(baseUrl + createRoomUrl, clientCreateRoomRequest, Room.class)
+        .exchange(
+            baseUrl + createRoomUrl,
+            HttpMethod.POST,
+            new HttpEntity<>(clientCreateRoomRequest),
+            Room.class)
         .getBody();
   }
 
   @Override
   public Room getRoom(String identificationNumber) {
     return restTemplate
-        .getForEntity(baseUrl + getRoomUrl, Room.class, identificationNumber)
+        .exchange(
+            baseUrl + getRoomUrl,
+            HttpMethod.GET,
+            HttpEntity.EMPTY,
+            Room.class,
+            identificationNumber)
         .getBody();
   }
 
   @Override
   public Room updateRoom(ClientUpdateRoomRequest clientUpdateRoomRequest) {
     return restTemplate
-        .postForEntity(baseUrl + updateRoomUrl, clientUpdateRoomRequest, Room.class)
+        .exchange(
+            baseUrl + updateRoomUrl,
+            HttpMethod.PUT,
+            new HttpEntity<>(clientUpdateRoomRequest),
+            Room.class)
         .getBody();
   }
 
   @Override
   public void removeRoom(String identificationNumber) {
-    restTemplate.delete(baseUrl + removeRoomUrl, identificationNumber);
+    restTemplate.exchange(
+        baseUrl + removeRoomUrl,
+        HttpMethod.DELETE,
+        HttpEntity.EMPTY,
+        Void.class,
+        identificationNumber);
   }
 
   @Override
@@ -172,27 +209,45 @@ public class ClientBuildingConnector implements BuildingConnector {
   @Override
   public Component createComponent(ClientCreateComponentRequest clientCreateComponentRequest) {
     return restTemplate
-        .postForEntity(baseUrl + createComponentUrl, clientCreateComponentRequest, Component.class)
+        .exchange(
+            baseUrl + createComponentUrl,
+            HttpMethod.POST,
+            new HttpEntity<>(clientCreateComponentRequest),
+            Component.class)
         .getBody();
   }
 
   @Override
   public Component getComponent(String identificationNumber) {
     return restTemplate
-        .getForEntity(baseUrl + getComponentUrl, Component.class, identificationNumber)
+        .exchange(
+            baseUrl + getComponentUrl,
+            HttpMethod.GET,
+            HttpEntity.EMPTY,
+            Component.class,
+            identificationNumber)
         .getBody();
   }
 
   @Override
   public Component updateComponent(ClientUpdateComponentRequest clientUpdateComponentRequest) {
     return restTemplate
-        .postForEntity(baseUrl + updateComponentUrl, clientUpdateComponentRequest, Component.class)
+        .exchange(
+            baseUrl + updateComponentUrl,
+            HttpMethod.PUT,
+            new HttpEntity<>(clientUpdateComponentRequest),
+            Component.class)
         .getBody();
   }
 
   @Override
   public void removeComponent(String identificationNumber) {
-    restTemplate.delete(baseUrl + removeComponentUrl, identificationNumber);
+    restTemplate.exchange(
+        baseUrl + removeComponentUrl,
+        HttpMethod.DELETE,
+        HttpEntity.EMPTY,
+        Void.class,
+        identificationNumber);
   }
 
   @Override
