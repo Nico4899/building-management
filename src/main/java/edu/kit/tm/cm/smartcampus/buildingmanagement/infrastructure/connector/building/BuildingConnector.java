@@ -10,7 +10,7 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 import java.util.Collection;
 
 /**
- * This class describes a building connector which is being used by {@link Service}* to provide an
+ * This class describes a building connector which is being used by {@link Service}+ to provide an
  * interface for a REST connector to the building domain microservice.
  */
 public interface BuildingConnector {

@@ -1,9 +1,17 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.configuration;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.ClientExceptionInterceptor;
+import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents a {@link Configuration} for spring, it contains of important application
@@ -24,5 +32,17 @@ public class ServerConfiguration {
     RestTemplate restTemplate = new RestTemplate();
     restTemplate.setErrorHandler(new ClientExceptionInterceptor());
     return restTemplate;
+  }
+
+  public static class SecurityConfiguration {
+    @Bean
+    public AuthenticationManager authenticationManager() {
+      final List<AuthenticationProvider> authenticationProviders = new ArrayList<>();
+      authenticationProviders.add(new KeycloakAuthenticationProvider());
+      return new ProviderManager(authenticationProviders);
+    }
+
+    @Bean
+    public GrpcAuthenticationReader authenticationReader() {}
   }
 }
