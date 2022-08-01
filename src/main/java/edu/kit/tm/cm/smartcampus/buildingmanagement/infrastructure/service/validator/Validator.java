@@ -1,6 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.validator;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.ResourceNotFoundException;
 import lombok.NoArgsConstructor;

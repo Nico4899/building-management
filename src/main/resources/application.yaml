@@ -26,6 +26,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  security:
+    oauth2:
+      client:
+        provider:
+          cm-pse-22:
+            authorization-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/auth
+            token-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/token
+            user-info-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/userinfo
+            jwk-set-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/certs
+            issuer-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM
 
 # domain urls
 
@@ -47,3 +57,8 @@ building:
   updateComponentUrl: /components
   removeComponentUrl: /components/{cin}
   listNotificationsUrl: /{in}/notifications
+
+# role authorities
+role:
+  admin: ROLE_TM-CM-MuleSoft
+  user: ROLE_TM-CM_JuniorStudent

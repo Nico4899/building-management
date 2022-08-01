@@ -10,7 +10,6 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.utility.Dat
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 
 import java.util.Collection;
 
@@ -33,7 +32,6 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
     this.service = service;
   }
 
-  @Secured("USER")
   @Override
   public void getBuilding(
       GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {

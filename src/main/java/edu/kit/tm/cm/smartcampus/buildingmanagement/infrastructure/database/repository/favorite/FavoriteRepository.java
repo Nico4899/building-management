@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.generator;
 
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;

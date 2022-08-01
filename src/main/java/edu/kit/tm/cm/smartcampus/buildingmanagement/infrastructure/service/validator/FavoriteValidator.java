@@ -1,6 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.validator;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;

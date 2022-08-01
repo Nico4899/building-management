@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.configuration.error;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller.configuration.error;
 
 import com.google.rpc.ErrorInfo;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InternalServerErrorException;

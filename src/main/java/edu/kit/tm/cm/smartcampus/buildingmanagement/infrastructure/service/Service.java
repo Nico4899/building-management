@@ -1,7 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.building.BuildingConnector;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.FavoriteRepository;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.validator.FavoriteValidator;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
@@ -66,7 +66,6 @@ public class Service {
    * @return collection of the building's rooms
    */
   public Collection<Room> listRooms(Settings<Room> settings, String identificationNumber) {
-    System.out.println("hello");
     Collection<Room> rooms = this.buildingConnector.listRooms(identificationNumber);
     for (Room room : rooms) {
       this.buildRoomComponents(room);

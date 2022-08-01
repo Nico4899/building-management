@@ -1,6 +1,6 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.generator.PrefixSequenceGenerator;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,25 +20,34 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Entity(name = "favorite")
+@Entity(name = Favorite.FAVORITE_ENTITY)
 @Table
 public class Favorite {
 
+  // must be public since the {@Entity} annotation can't read it if its private
+  public static final String FAVORITE_ENTITY = "favorite";
+
+  private static final String GENERATOR_PATH =
+      "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.generator.PrefixSequenceGenerator";
+  private static final String FAVORITE_SEQUENCE = "favorite_sequence";
+  private static final String IDENTIFICATION_NUMBER = "identification_number";
+  private static final String REFERENCE_IDENTIFICATION_NUMBER = "reference_identification_number";
+  private static final String PREFIX = "f-";
+
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_sequence")
-  @SequenceGenerator(name = "favorite_sequence", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(name = FAVORITE_SEQUENCE, allocationSize = 1)
   @GenericGenerator(
-      name = "favorite_sequence",
-      strategy =
-          "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.PrefixSequenceGenerator",
+      name = FAVORITE_SEQUENCE,
+      strategy = GENERATOR_PATH,
       parameters = {
-        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")
+        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = PREFIX)
       })
-  @Column(name = "identification_number")
+  @Column(name = IDENTIFICATION_NUMBER)
   private String identificationNumber;
 
   private String owner;
 
-  @Column(name = "reference_identification_number")
+  @Column(name = REFERENCE_IDENTIFICATION_NUMBER)
   private String referenceIdentificationNumber;
 }
