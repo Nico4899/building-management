@@ -6,7 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-/** The main entry point of the Application. */
+/**
+ * The main entry point of the Application. This application ist a microservice implementation of
+ * the microservice "building-management" it provides logical operations on "building" domain
+ * objects, retrieved from to connected domain microservices.
+ */
 @SpringBootApplication
 public class Application {
 
@@ -17,17 +21,5 @@ public class Application {
    */
   public static void main(String[] args) {
     SpringApplication.run(Application.class, args);
-  }
-
-  /**
-   * The {@link RestTemplate} {@link Bean} used for the connectors
-   *
-   * @return the rest template
-   */
-  @Bean
-  public RestTemplate getRestTemplate() {
-    RestTemplate restTemplate = new RestTemplate();
-    restTemplate.setErrorHandler(new ClientExceptionInterceptor());
-    return restTemplate;
   }
 }
