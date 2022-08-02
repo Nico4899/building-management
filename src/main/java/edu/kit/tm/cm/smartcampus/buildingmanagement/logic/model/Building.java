@@ -10,8 +10,7 @@ import java.util.Collection;
  * Component}, further it holds information about geographical location and campus location. This
  * class provides {@link CampusLocation} to describe its location on KIT-Campus.
  *
- * @version 1.0
- * @author Bastian Bacher
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @Getter
@@ -34,8 +33,7 @@ public class Building {
   /**
    * This nested enum contains various KIT-Campus locations.
    *
-   * @version 1.0
-   * @author Bastian Bacher
+   * @author Bastian Bacher, Dennis Fadeev
    */
   public enum CampusLocation {
     /** North campus location. */

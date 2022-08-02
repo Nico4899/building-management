@@ -9,8 +9,7 @@ import lombok.Setter;
  * This class describes a component model object which can be held by {@link Building} or {@link
  * Room}.
  *
- * @version 1.0
- * @author Bastian Bacher
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @Getter
@@ -25,8 +24,7 @@ public class Component {
   /**
    * This enum describes various types a {@link Component} can have.
    *
-   * @version 1.0
-   * @author Bastian Bacher
+   * @author Bastian Bacher, Dennis Fadeev
    */
   public enum Type {
     /** Elevator type. */

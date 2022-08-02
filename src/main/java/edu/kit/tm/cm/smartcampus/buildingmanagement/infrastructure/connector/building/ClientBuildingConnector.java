@@ -15,7 +15,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 
-/** Implementation of {@link BuildingConnector}. */
+/**
+ * Implementation of {@link BuildingConnector}.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
+ */
 @Service
 public class ClientBuildingConnector implements BuildingConnector {
 

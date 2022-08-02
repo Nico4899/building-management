@@ -5,7 +5,12 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Building;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * This enum represents a variety of {@link Filter} strategies to filter objects of type {@link
+ * Building}.
+ */
 public enum BuildingFilter implements Filter<Building> {
+  /** The Campus location filter strategy. */
   CAMPUS_LOCATION_FILTER {
     @Override
     public Collection<Building> filter(Collection<Building> collection, Collection<?> values) {
@@ -14,6 +19,7 @@ public enum BuildingFilter implements Filter<Building> {
           .toList();
     }
   },
+  /** The Room type filter strategy. */
   ROOM_TYPE_FILTER {
     @Override
     public Collection<Building> filter(Collection<Building> collection, Collection<?> values) {
@@ -27,6 +33,7 @@ public enum BuildingFilter implements Filter<Building> {
       return filtered;
     }
   },
+  /** The Component type filter strategy. */
   COMPONENT_TYPE_FILTER {
     @Override
     public Collection<Building> filter(Collection<Building> collection, Collection<?> values) {

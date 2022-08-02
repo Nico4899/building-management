@@ -12,6 +12,8 @@ import java.util.Collection;
 /**
  * This class describes a building connector which is being used by {@link Service}+ to provide an
  * interface for a REST connector to the building domain microservice.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 public interface BuildingConnector {
 

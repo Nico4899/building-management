@@ -14,6 +14,8 @@ import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 /**
  * This class represents a custom REST error handler. It throws custom exceptions on error codes in
  * building management context.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 public class ClientExceptionInterceptor implements ResponseErrorHandler {
 

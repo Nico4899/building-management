@@ -6,6 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * This class represents a dto for a create component request, to the building domain.
+ *
+ * @author Bastian Bacher
+ */
 @Getter
 @Setter
 @NoArgsConstructor

@@ -6,9 +6,12 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.GeographicalLoca
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
-@ToString
+/**
+ * This class represents a dto for a create building request, to the building domain.
+ *
+ * @author Bastian Bacher
+ */
 @Getter
 @Setter
 @NoArgsConstructor

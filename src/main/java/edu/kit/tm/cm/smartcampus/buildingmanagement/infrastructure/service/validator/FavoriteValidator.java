@@ -11,6 +11,8 @@ import java.util.Map;
 /**
  * This class is a child implementation of the {@link Validator}, it focuses on validating {@link
  * Favorite} requests. It calls parent methods to validate certain attributes.
+ *
+ * @author Bastian Bacher
  */
 @Component
 public class FavoriteValidator extends Validator<Favorite> {

@@ -17,6 +17,7 @@ import java.util.Map;
  * given objects in the database, it throws {@link ResourceNotFoundException}.
  *
  * @param <T> the type of which this validator validates objects
+ * @author Jonathan Kramer, Bastian Bacher, Johannes von Geisau
  */
 public abstract class Validator<T> {
 

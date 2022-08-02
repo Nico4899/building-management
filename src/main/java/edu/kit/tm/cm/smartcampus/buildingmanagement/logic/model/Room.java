@@ -10,7 +10,9 @@ import java.util.Collection;
 
 /**
  * This class represents a room which can hold {@link Component} and is being held by {@link
- * Building}*.
+ * Building}*
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @Getter
@@ -30,8 +32,7 @@ public class Room {
   /**
    * This enum describes various types a {@link Component} can have.
    *
-   * @version 1.0
-   * @author Bastian Bacher
+   * @author Bastian Bacher, Dennis Fadeev
    */
   public enum Type {
     /** Cafeteria type. */

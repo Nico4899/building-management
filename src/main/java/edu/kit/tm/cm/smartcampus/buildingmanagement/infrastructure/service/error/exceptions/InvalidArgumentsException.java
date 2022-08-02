@@ -7,6 +7,8 @@ import java.util.Arrays;
 /**
  * This exception is thrown whenever invalid arguments are found, it contains a proper error
  * message.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @NoArgsConstructor
 public class InvalidArgumentsException extends RuntimeException {

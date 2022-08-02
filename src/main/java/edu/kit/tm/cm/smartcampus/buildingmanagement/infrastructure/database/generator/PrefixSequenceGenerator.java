@@ -17,6 +17,8 @@ import java.util.Properties;
  * This class represents a custom prefix sequence generator for database primary key generation. It
  * generates a prefixed sequence from {@link SequenceStyleGenerator}. The prefix can now be
  * configured by the {@link GenericGenerator} annotation.
+ *
+ * @author Bastian Bacher
  */
 public class PrefixSequenceGenerator extends SequenceStyleGenerator {
 

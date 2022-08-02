@@ -16,6 +16,8 @@ import javax.persistence.*;
  * identification of the referred entity (e.g., {@link Building}, {@link Room} or {@link
  * Component}). Its owner represents an email value, which represents the person to which this
  * favorite belongs.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @Getter

@@ -14,6 +14,8 @@ import java.util.Collection;
 /**
  * This class represents the building management application microservice service. It holds and
  * manages all the microservice logic.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @org.springframework.stereotype.Component
 public class Service {

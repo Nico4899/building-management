@@ -8,10 +8,10 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 /**
- * This class describes a notification model object.
+ * This class describes a notification model object, relating to a {@link Room}, {@link Building} or
+ * {@link Component}.
  *
- * @version 1.0
- * @author Bastian Bacher
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @Getter

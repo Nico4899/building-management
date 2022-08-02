@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller.configuration.error;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.error;
 
 import com.google.rpc.ErrorInfo;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InternalServerErrorException;
@@ -61,7 +61,7 @@ public class ServerExceptionInterceptor {
 
   /**
    * This method provides a proper response on {@link InternalServerErrorException} thrown, it
-   * provides a {@link Status#INTERNAL} and the exception message. Cause and error code are also *
+   * provides a {@link Status#INTERNAL} and the exception message. Cause and error code are also
    * given, the error is being sent as {@link StatusRuntimeException} for the grpc client.
    *
    * @param exception thrown exception
@@ -78,7 +78,7 @@ public class ServerExceptionInterceptor {
 
   /**
    * This method provides a proper response on all other {@link Exception} thrown, it provides a
-   * {@link Status#UNKNOWN} and the exception message. Cause and error code are also * given, the
+   * {@link Status#UNKNOWN} and the exception message. Cause and error code are also given, the
    * error is being sent as {@link StatusRuntimeException} for the grpc client.
    *
    * @param exception thrown exception

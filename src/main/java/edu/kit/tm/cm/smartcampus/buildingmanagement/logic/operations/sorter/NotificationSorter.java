@@ -4,8 +4,14 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Notification;
 
 import java.util.Collection;
 import java.util.Comparator;
-
+/**
+ * This enum describes various {@link Sorter} to sort {@link Notification}. Each enum constant
+ * represents a certain sorting strategy.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
+ */
 public enum NotificationSorter implements Sorter<Notification> {
+  /** The Ascending time stamp sorter strategy. */
   ASCENDING_TIME_STAMP_SORTER {
     @Override
     public Collection<Notification> sort(Collection<Notification> collection) {
@@ -14,6 +20,7 @@ public enum NotificationSorter implements Sorter<Notification> {
           .toList();
     }
   },
+  /** The Descending time stamp sorter strategy. */
   DESCENDING_TIME_STAMP_SORTER {
     @Override
     public Collection<Notification> sort(Collection<Notification> collection) {
@@ -22,6 +29,7 @@ public enum NotificationSorter implements Sorter<Notification> {
           .toList();
     }
   },
+  /** The Default sorter strategy. */
   DEFAULT_SORTER {
     @Override
     public Collection<Notification> sort(Collection<Notification> collection) {

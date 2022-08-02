@@ -1,4 +1,4 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller.configuration.converter;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.configuration.converter;
 
 import com.nimbusds.jose.shaded.json.JSONArray;
 import lombok.NonNull;
@@ -11,8 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class represents a {@link Converter} for Keycloak Access Tokens, it extracts granted
- * authorities from the {@link Jwt} token.
+ * This class represents an implementation of {@link Converter} for Keycloak Access Tokens, it
+ * extracts granted authorities from the {@link Jwt} token and converts then to {@link
+ * GrantedAuthority} objects.
  *
  * @author Bastian Bacher, Dennis Fadeev
  */

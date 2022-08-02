@@ -4,14 +4,19 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+/**
+ * This enum represents a variety of {@link Filter} strategies to filter objects of type {@link
+ * Room}.
+ */
 public enum RoomFilter implements Filter<Room> {
+  /** The Room type filter strategy. */
   ROOM_TYPE_FILTER {
     @Override
     public Collection<Room> filter(Collection<Room> collection, Collection<?> values) {
       return collection.stream().filter(room -> values.contains(room.getType())).toList();
     }
   },
+  /** The Component type filter strategy. */
   COMPONENT_TYPE_FILTER {
     @Override
     public Collection<Room> filter(Collection<Room> collection, Collection<?> values) {
@@ -25,6 +30,7 @@ public enum RoomFilter implements Filter<Room> {
       return filtered;
     }
   },
+  /** The Floor filter strategy. */
   FLOOR_FILTER {
     @Override
     public Collection<Room> filter(Collection<Room> collection, Collection<?> values) {

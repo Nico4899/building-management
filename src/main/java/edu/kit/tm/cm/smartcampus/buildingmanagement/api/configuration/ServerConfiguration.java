@@ -1,7 +1,7 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller.configuration;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.api.configuration;
 
 import edu.kit.tm.cm.proto.BuildingManagementGrpc;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller.configuration.converter.KeyCloakGrantedAuthoritiesConverter;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.api.configuration.converter.KeyCloakGrantedAuthoritiesConverter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.ClientExceptionInterceptor;
 import net.devh.boot.grpc.server.security.authentication.BearerAuthenticationReader;
 import net.devh.boot.grpc.server.security.authentication.GrpcAuthenticationReader;
