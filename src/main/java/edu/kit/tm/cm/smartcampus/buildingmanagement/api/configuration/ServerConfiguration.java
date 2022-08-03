@@ -149,6 +149,12 @@ public class ServerConfiguration {
       return NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
     }
 
+    /**
+     * This bean represents some {@link GrpcSecurityMetadataSource}, set to provide access
+     * information about various rpc methods.
+     *
+     * @return the grpc metadata source bean
+     */
     @Bean
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
       return new ManualGrpcSecurityMetadataSource()
@@ -161,18 +167,30 @@ public class ServerConfiguration {
           .set(BuildingManagementGrpc.getRemoveBuildingMethod(), AccessPredicate.hasRole(admin))
           .set(BuildingManagementGrpc.getRemoveComponentMethod(), AccessPredicate.hasRole(admin))
           .set(BuildingManagementGrpc.getRemoveRoomMethod(), AccessPredicate.hasRole(admin))
-          .set(BuildingManagementGrpc.getRemoveFavoriteMethod(), AccessPredicate.hasRole(user))
-          .set(BuildingManagementGrpc.getCreateFavoriteMethod(), AccessPredicate.hasRole(user))
+          .set(
+              BuildingManagementGrpc.getRemoveFavoriteMethod(),
+              AccessPredicate.hasAnyRole(user, admin))
+          .set(
+              BuildingManagementGrpc.getCreateFavoriteMethod(),
+              AccessPredicate.hasAnyRole(user, admin))
           .set(
               BuildingManagementGrpc.getListFavoriteBuildingsMethod(),
-              AccessPredicate.hasRole(user))
+              AccessPredicate.hasAnyRole(user, admin))
           .set(
               BuildingManagementGrpc.getListFavoriteComponentsMethod(),
-              AccessPredicate.hasRole(user))
-          .set(BuildingManagementGrpc.getListFavoriteRoomsMethod(), AccessPredicate.hasRole(user))
+              AccessPredicate.hasAnyRole(user, admin))
+          .set(
+              BuildingManagementGrpc.getListFavoriteRoomsMethod(),
+              AccessPredicate.hasAnyRole(user, admin))
           .setDefault(AccessPredicate.permitAll());
     }
 
+    /**
+     * Create an access {@link AccessDecisionManager} bean, which decides if access is granted or
+     * denied based on AccessPredicates.
+     *
+     * @return the access decision manager bean
+     */
     @Bean
     AccessDecisionManager accessDecisionManager() {
       final List<AccessDecisionVoter<?>> voters = new ArrayList<>();
