@@ -1,7 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.api.controller;
 
 public class ControllerTests {
-  /*
+  /* //t
    private static final Service service = mock(Service.class);
    private static final Controller BUILDING_MANAGEMENT_CONTROLLER = new Controller(service);
    private static GrpcBuilding grpcTestBuilding;
