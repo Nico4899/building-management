@@ -51,7 +51,7 @@ message GetBuildingResponse{
 }
 
 message ListBuildingsRequest{
-  GrpcListSettings grpc_list_settings = 1;
+  GrpcFilterValueSelection grpc_filter_value_selection = 1;
 }
 
 message ListBuildingsResponse{
@@ -75,7 +75,7 @@ message GetComponentResponse{
 }
 
 message ListRoomsRequest{
-  GrpcListSettings grpc_list_settings = 1;
+  GrpcFilterValueSelection grpc_filter_value_selection = 1;
   string identification_number = 2;
 }
 
@@ -84,7 +84,6 @@ message ListRoomsResponse{
 }
 
 message ListComponentsRequest{
-  GrpcListSettings grpc_list_settings = 1;
   string identification_number = 2;
 }
 
@@ -93,17 +92,17 @@ message ListComponentsResponse{
 }
 
 message ListFavoriteBuildingsRequest{
-  GrpcListSettings grpc_list_settings = 1;
+  GrpcFilterValueSelection grpc_filter_value_selection = 1;
   string owner = 2;
 }
 
 message ListFavoriteRoomsRequest{
-  GrpcListSettings grpc_list_settings = 1;
+  GrpcFilterValueSelection grpc_filter_value_selection = 1;
   string owner = 2;
 }
 
 message ListFavoriteComponentsRequest{
-  GrpcListSettings grpc_list_settings = 1;
+  GrpcFilterValueSelection grpc_filter_value_selection = 1;
   string owner = 2;
 }
 
@@ -120,7 +119,6 @@ message ListFavoriteComponentsResponse{
 }
 
 message ListNotificationsRequest{
-  GrpcListSettings grpc_list_settings = 1;
   string identification_number = 2;
 }
 
@@ -255,11 +253,6 @@ enum GrpcCampusLocation{
   SOUTH_CAMPUS = 4;
 }
 
-message GrpcListSettings {
-  Values values = 1;
-  Selection selection = 2;
-}
-
 message GrpcGeographicalLocation{
   double latitude = 1;
   double longitude = 2;
@@ -296,24 +289,7 @@ enum GrpcComponentType{
   STAIRS = 2;
 }
 
-enum GrpcSortOption{
-  UNKNOWN_SORT_OPTION = 0;
-  DESCENDING_TIME_STAMP_SORTER = 1;
-  ASCENDING_TIME_STAMP_SORTER = 2;
-  LEXICOGRAPHIC_NAME_SORTER = 3;
-  LEXICOGRAPHIC_NUMBER_SORTER = 4;
-  DEFAULT_SORTER = 5;
-}
-
-message Selection{
-  bool campus_location_filter_selected = 1;
-  bool room_type_filter_selected = 2;
-  bool component_type_filter_selected = 3;
-  bool floor_filter_selected = 4;
-  GrpcSortOption grpc_sort_option = 5;
-}
-
-message Values{
+message GrpcFilterValueSelection{
   repeated GrpcComponentType grpc_component_types = 1;
   repeated GrpcRoomType grpc_room_types = 2;
   repeated GrpcCampusLocation grpc_campus_locations = 3;

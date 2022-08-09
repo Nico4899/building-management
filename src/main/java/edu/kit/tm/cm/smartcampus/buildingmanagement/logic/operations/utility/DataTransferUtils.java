@@ -10,10 +10,6 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.Filt
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.filter.RoomFilter;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.ListSettings;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.BuildingSorter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.NotificationSorter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.RoomSorter;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.sorter.Sorter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -506,7 +502,7 @@ public final class DataTransferUtils {
     public static Collection<Building> readListBuildingsRequest(
         ListBuildingsRequest listBuildingsRequest, Service service) {
       return service.listBuildings(
-          readListBuildingSettings(listBuildingsRequest.getGrpcListSettings()));
+          readListBuildingSettings(listBuildingsRequest.getGrpcFilterValueSelection()));
     }
 
     /**
@@ -519,7 +515,7 @@ public final class DataTransferUtils {
     public static Collection<Room> readListRoomsRequest(
         ListRoomsRequest listRoomsRequest, Service service) {
       return service.listRooms(
-          readListRoomsSettings(listRoomsRequest.getGrpcListSettings()),
+          readListRoomsSettings(listRoomsRequest.getGrpcFilterValueSelection()),
           listRoomsRequest.getIdentificationNumber());
     }
 
@@ -544,9 +540,7 @@ public final class DataTransferUtils {
      */
     public static Collection<Notification> readListNotificationsRequest(
         ListNotificationsRequest listNotificationsRequest, Service service) {
-      return service.listNotifications(
-          readListNotificationsSettings(listNotificationsRequest.getGrpcListSettings()),
-          listNotificationsRequest.getIdentificationNumber());
+      return service.listNotifications(listNotificationsRequest.getIdentificationNumber());
     }
 
     /**
@@ -559,7 +553,7 @@ public final class DataTransferUtils {
     public static Collection<Building> readListFavoriteBuildings(
         ListFavoriteBuildingsRequest listFavoriteBuildingsRequest, Service service) {
       return service.listFavoriteBuildings(
-          readListBuildingSettings(listFavoriteBuildingsRequest.getGrpcListSettings()),
+          readListBuildingSettings(listFavoriteBuildingsRequest.getGrpcFilterValueSelection()),
           listFavoriteBuildingsRequest.getOwner());
     }
 
@@ -573,7 +567,7 @@ public final class DataTransferUtils {
     public static Collection<Room> readListFavoriteRooms(
         ListFavoriteRoomsRequest listFavoriteRoomsRequest, Service service) {
       return service.listFavoriteRooms(
-          readListRoomsSettings(listFavoriteRoomsRequest.getGrpcListSettings()),
+          readListRoomsSettings(listFavoriteRoomsRequest.getGrpcFilterValueSelection()),
           listFavoriteRoomsRequest.getOwner());
     }
 
@@ -657,80 +651,62 @@ public final class DataTransferUtils {
       return Enum.valueOf(Component.Type.class, grpcComponentType.name());
     }
 
-    private static Settings<Building> readListBuildingSettings(GrpcListSettings grpcListSettings) {
+    private static Settings<Building> readListBuildingSettings(
+        GrpcFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Building>, Collection<?>> filters = new HashMap<>();
-      if (grpcListSettings.getSelection().getCampusLocationFilterSelected()) {
+      if (!grpcFilterValueSelection.getGrpcCampusLocationsList().isEmpty()) {
         filters.put(
             BuildingFilter.CAMPUS_LOCATION_FILTER,
-            grpcListSettings.getValues().getGrpcCampusLocationsList().stream()
+            grpcFilterValueSelection.getGrpcCampusLocationsList().stream()
                 .map(DataTransferUtils.ServerRequestReader::readCampusLocation)
                 .toList());
       }
-      if (grpcListSettings.getSelection().getComponentTypeFilterSelected()) {
+      if (!grpcFilterValueSelection.getGrpcRoomTypesList().isEmpty()) {
         filters.put(
             BuildingFilter.COMPONENT_TYPE_FILTER,
-            grpcListSettings.getValues().getGrpcComponentTypesList().stream()
+            grpcFilterValueSelection.getGrpcComponentTypesList().stream()
                 .map(DataTransferUtils.ServerRequestReader::readComponentType)
                 .toList());
       }
-      if (grpcListSettings.getSelection().getRoomTypeFilterSelected()) {
+      if (!grpcFilterValueSelection.getGrpcComponentTypesList().isEmpty()) {
         filters.put(
             BuildingFilter.ROOM_TYPE_FILTER,
-            grpcListSettings.getValues().getGrpcRoomTypesList().stream()
+            grpcFilterValueSelection.getGrpcRoomTypesList().stream()
                 .map(DataTransferUtils.ServerRequestReader::readRoomType)
                 .toList());
       }
+      if ((!grpcFilterValueSelection.getFloorsList().isEmpty()))
+        throw new IllegalArgumentException();
       ListSettings<Building> settings = new ListSettings<>();
       settings.setFilters(filters);
-      settings.setSorter(readBuildingSorter(grpcListSettings.getSelection().getGrpcSortOption()));
       return settings;
     }
 
-    private static Settings<Room> readListRoomsSettings(GrpcListSettings grpcListSettings) {
+    private static Settings<Room> readListRoomsSettings(
+        GrpcFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Room>, Collection<?>> filters = new HashMap<>();
-      if (grpcListSettings.getSelection().getCampusLocationFilterSelected()) {
-        filters.put(RoomFilter.FLOOR_FILTER, grpcListSettings.getValues().getFloorsList());
+      if (!grpcFilterValueSelection.getFloorsList().isEmpty()) {
+        filters.put(RoomFilter.FLOOR_FILTER, grpcFilterValueSelection.getFloorsList());
       }
-      if (grpcListSettings.getSelection().getComponentTypeFilterSelected()) {
+      if (!grpcFilterValueSelection.getGrpcComponentTypesList().isEmpty()) {
         filters.put(
             RoomFilter.COMPONENT_TYPE_FILTER,
-            grpcListSettings.getValues().getGrpcComponentTypesList().stream()
+            grpcFilterValueSelection.getGrpcComponentTypesList().stream()
                 .map(DataTransferUtils.ServerRequestReader::readComponentType)
                 .toList());
       }
-      if (grpcListSettings.getSelection().getRoomTypeFilterSelected()) {
+      if (!grpcFilterValueSelection.getGrpcRoomTypesList().isEmpty()) {
         filters.put(
             RoomFilter.ROOM_TYPE_FILTER,
-            grpcListSettings.getValues().getGrpcRoomTypesList().stream()
+            grpcFilterValueSelection.getGrpcRoomTypesList().stream()
                 .map(DataTransferUtils.ServerRequestReader::readRoomType)
                 .toList());
       }
+      if (!grpcFilterValueSelection.getGrpcCampusLocationsList().isEmpty())
+        throw new IllegalArgumentException();
       ListSettings<Room> settings = new ListSettings<>();
       settings.setFilters(filters);
-      settings.setSorter(readRoomSorter(grpcListSettings.getSelection().getGrpcSortOption()));
       return settings;
-    }
-
-    private static Settings<Notification> readListNotificationsSettings(
-        GrpcListSettings grpcListSettings) {
-      Map<Filter<Notification>, Collection<?>> filters = new HashMap<>();
-      ListSettings<Notification> settings = new ListSettings<>();
-      settings.setFilters(filters);
-      settings.setSorter(
-          readNotificationSorter(grpcListSettings.getSelection().getGrpcSortOption()));
-      return settings;
-    }
-
-    private static Sorter<Building> readBuildingSorter(GrpcSortOption grpcSortOption) {
-      return Enum.valueOf(BuildingSorter.class, grpcSortOption.name());
-    }
-
-    private static Sorter<Room> readRoomSorter(GrpcSortOption grpcSortOption) {
-      return Enum.valueOf(RoomSorter.class, grpcSortOption.name());
-    }
-
-    private static Sorter<Notification> readNotificationSorter(GrpcSortOption grpcSortOption) {
-      return Enum.valueOf(NotificationSorter.class, grpcSortOption.name());
     }
   }
 

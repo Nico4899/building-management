@@ -23,7 +23,6 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity(name = Favorite.FAVORITE_ENTITY)
-@Table
 public class Favorite {
 
   // must be public since the {@Entity} annotation can't read it if its private
@@ -37,7 +36,7 @@ public class Favorite {
   private static final String PREFIX = "f-";
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = FAVORITE_SEQUENCE)
   @SequenceGenerator(name = FAVORITE_SEQUENCE, allocationSize = 1)
   @GenericGenerator(
       name = FAVORITE_SEQUENCE,
@@ -45,11 +44,19 @@ public class Favorite {
       parameters = {
         @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = PREFIX)
       })
-  @Column(name = IDENTIFICATION_NUMBER)
   private String identificationNumber;
 
+  @Column(
+      nullable = false,
+      updatable = false,
+      columnDefinition =
+          "varchar(255) constraint match_email_regex CHECK (OWNER ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$')")
   private String owner;
 
-  @Column(name = REFERENCE_IDENTIFICATION_NUMBER)
+  @Column(
+      nullable = false,
+      updatable = false,
+      columnDefinition =
+          "varchar(255) constraint match_id_regex CHECK (REFERENCE_IDENTIFICATION_NUMBER ~* '^(b|c|r)-[1-9]+$')")
   private String referenceIdentificationNumber;
 }

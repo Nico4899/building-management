@@ -2,7 +2,7 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.building.BuildingConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepository;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.validator.FavoriteValidator;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepositoryImplementation;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.settings.Settings;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.operations.utility.DataTransferUtils;
@@ -19,30 +19,21 @@ import java.util.Collection;
  */
 @org.springframework.stereotype.Component
 public class Service {
-
-  private static final String BIN_SQL_PATTERN = "b-%";
-  private static final String RIN_SQL_PATTERN = "r-%";
-  private static final String CIN_SQL_PATTERN = "c-%";
-
   private final BuildingConnector buildingConnector;
-  private final FavoriteRepository favoriteRepository;
-  private final FavoriteValidator favoriteValidator;
+  private final FavoriteRepositoryImplementation favoriteRepositoryImplementation;
 
   /**
    * Constructs a building management manager.
    *
    * @param buildingConnector the building connector of the microservice (constructor injection)
-   * @param favoriteRepository the favorite repository (constructor injection)
-   * @param favoriteValidator the input validator (constructor injection)
+   * @param favoriteRepositoryImplementation the favorite repository (constructor injection)
    */
   @Autowired
   public Service(
       BuildingConnector buildingConnector,
-      FavoriteRepository favoriteRepository,
-      FavoriteValidator favoriteValidator) {
-    this.favoriteRepository = favoriteRepository;
+      FavoriteRepositoryImplementation favoriteRepositoryImplementation) {
+    this.favoriteRepositoryImplementation = favoriteRepositoryImplementation;
     this.buildingConnector = buildingConnector;
-    this.favoriteValidator = favoriteValidator;
   }
 
   /**
@@ -91,8 +82,7 @@ public class Service {
    * @param identificationNumber of the parent building or room
    * @return collection of notifications
    */
-  public Collection<Notification> listNotifications(
-      Settings<Notification> settings, String identificationNumber) {
+  public Collection<Notification> listNotifications(String identificationNumber) {
     return settings.apply(this.buildingConnector.listNotifications(identificationNumber));
   }
 
@@ -104,7 +94,9 @@ public class Service {
    */
   public Collection<Component> listFavoriteComponents(String owner) {
     Collection<Component> components = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, CIN_SQL_PATTERN)) {
+    for (Favorite favorite :
+        favoriteRepositoryImplementation.findByOwnerAndRegex(
+            owner, FavoriteRepository.CIN_SQL_PATTERN)) {
       components.add(buildingConnector.getComponent(favorite.getReferenceIdentificationNumber()));
     }
     return components;
@@ -118,7 +110,9 @@ public class Service {
    */
   public Collection<Room> listFavoriteRooms(Settings<Room> settings, String owner) {
     Collection<Room> rooms = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, RIN_SQL_PATTERN)) {
+    for (Favorite favorite :
+        favoriteRepositoryImplementation.findByOwnerAndRegex(
+            owner, FavoriteRepository.RIN_SQL_PATTERN)) {
       rooms.add(buildingConnector.getRoom(favorite.getReferenceIdentificationNumber()));
     }
     for (Room room : rooms) {
@@ -135,7 +129,9 @@ public class Service {
    */
   public Collection<Building> listFavoriteBuildings(Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
-    for (Favorite favorite : favoriteRepository.findByOwnerAndRegex(owner, BIN_SQL_PATTERN)) {
+    for (Favorite favorite :
+        favoriteRepositoryImplementation.findByOwnerAndRegex(
+            owner, FavoriteRepository.BIN_SQL_PATTERN)) {
       buildings.add(buildingConnector.getBuilding(favorite.getReferenceIdentificationNumber()));
     }
     for (Building building : buildings) {
@@ -214,8 +210,7 @@ public class Service {
    * @param favorite favorite object without identification number
    */
   public void createFavorite(Favorite favorite) {
-    this.favoriteValidator.validateCreate(favorite);
-    this.favoriteRepository.save(favorite);
+    this.favoriteRepositoryImplementation.save(favorite);
   }
 
   /**
@@ -284,8 +279,7 @@ public class Service {
    * @param identificationNumber identification number of the favorite to be removed
    */
   public void removeFavorite(String identificationNumber) {
-    this.favoriteValidator.validate(identificationNumber);
-    this.favoriteRepository.deleteById(identificationNumber);
+    this.favoriteRepositoryImplementation.deleteById(identificationNumber);
   }
 
   private void buildBuildingRooms(Building building) {

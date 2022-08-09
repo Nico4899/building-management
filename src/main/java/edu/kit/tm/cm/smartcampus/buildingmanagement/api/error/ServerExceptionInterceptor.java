@@ -2,7 +2,6 @@ package edu.kit.tm.cm.smartcampus.buildingmanagement.api.error;
 
 import com.google.rpc.ErrorInfo;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InternalServerErrorException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InvalidArgumentsException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.ResourceNotFoundException;
 import io.grpc.Metadata;
 import io.grpc.Status;
@@ -26,15 +25,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ServerExceptionInterceptor {
 
   /**
-   * This method provides a proper response on {@link InvalidArgumentsException} thrown, it provides
+   * This method provides a proper response on {@link IllegalArgumentException} thrown, it provides
    * a {@link Status#INVALID_ARGUMENT} and the exception message. Cause and error code are also
    * given, the error is being sent as {@link StatusRuntimeException} for the grpc client.
    *
    * @param exception thrown exception
    * @return a proper {@link StatusRuntimeException}
    */
-  @GrpcExceptionHandler(InvalidArgumentsException.class)
-  public StatusRuntimeException onError(InvalidArgumentsException exception) {
+  @GrpcExceptionHandler(IllegalArgumentException.class)
+  public StatusRuntimeException onError(IllegalArgumentException exception) {
     Metadata trailers = new Metadata();
     ErrorInfo errorInfo = ErrorInfo.newBuilder().setReason(exception.getMessage()).build();
     Metadata.Key<ErrorInfo> errorInfoTrailerKey = ProtoUtils.keyForProto(errorInfo);

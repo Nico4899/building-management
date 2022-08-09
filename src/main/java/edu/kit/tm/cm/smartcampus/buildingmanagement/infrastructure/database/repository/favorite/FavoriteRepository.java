@@ -1,8 +1,9 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,11 @@ import java.util.Collection;
  * @author Bastian Bacher, Dennis Fadeev
  */
 @Repository
-public interface FavoriteRepository extends JpaRepository<Favorite, String> {
+public interface FavoriteRepository extends CrudRepository<Favorite, String> {
+
+  String BIN_SQL_PATTERN = "^b-%$";
+  String RIN_SQL_PATTERN = "^r-%$";
+  String CIN_SQL_PATTERN = "^c-%$";
 
   /**
    * Obtain all favorites where owner matches and regex of reference number matches.
@@ -23,8 +28,9 @@ public interface FavoriteRepository extends JpaRepository<Favorite, String> {
    * @param regex regex of bin, cin, rin
    * @return Collection of favorites
    */
+  @NonNull
   @Query(
       "SELECT favorite FROM favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE :#{#regex})")
   Collection<Favorite> findByOwnerAndRegex(
-      @Param("owner") String owner, @Param("regex") String regex);
+      @NonNull @Param("owner") String owner, @NonNull @Param("regex") String regex);
 }
