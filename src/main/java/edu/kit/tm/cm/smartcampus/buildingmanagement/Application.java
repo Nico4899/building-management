@@ -1,10 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.ClientExceptionInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * The main entry point of the Application. This application ist a microservice implementation of

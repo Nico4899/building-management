@@ -1,11 +1,10 @@
-package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error;
+package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.error;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.InternalServerErrorException;
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.ResourceNotFoundException;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
 import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
@@ -28,10 +27,10 @@ public class ClientExceptionInterceptor implements ResponseErrorHandler {
   @Override
   public void handleError(ClientHttpResponse response) throws IOException {
     switch (response.getStatusCode()) {
-      case NOT_FOUND -> throw new ResourceNotFoundException(response.getStatusText());
-      case BAD_REQUEST -> throw new IllegalArgumentException(response.getStatusCode().toString());
-      case INTERNAL_SERVER_ERROR -> throw new InternalServerErrorException(response.getStatusText());
-      default -> throw new IOException(response.getStatusText());
+      case NOT_FOUND -> throw new NoSuchElementException();
+      case BAD_REQUEST -> throw new IllegalArgumentException();
+      case INTERNAL_SERVER_ERROR -> throw new InternalError();
+      default -> throw new IOException();
     }
   }
 }

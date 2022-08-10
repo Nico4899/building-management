@@ -1,12 +1,12 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite;
 
-import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service.error.exceptions.ResourceNotFoundException;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Favorite;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -71,9 +71,7 @@ public class FavoriteRepositoryImplementation implements FavoriteRepository {
 
   @Override
   public void deleteById(@NonNull String s) {
-    if (!existsById(s))
-      throw new ResourceNotFoundException(
-          String.format(ResourceNotFoundException.RESOURCE_NOT_FOUND_MESSAGE, s));
+    if (!existsById(s)) throw new NoSuchElementException();
     this.favoriteRepository.deleteById(s);
   }
 

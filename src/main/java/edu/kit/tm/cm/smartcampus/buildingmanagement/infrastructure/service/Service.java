@@ -83,7 +83,7 @@ public class Service {
    * @return collection of notifications
    */
   public Collection<Notification> listNotifications(String identificationNumber) {
-    return settings.apply(this.buildingConnector.listNotifications(identificationNumber));
+    return this.buildingConnector.listNotifications(identificationNumber);
   }
 
   /**
