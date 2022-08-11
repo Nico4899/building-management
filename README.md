@@ -20,18 +20,17 @@ This Microservice provides functionality to add, edit, remove buildings or their
 
 ## Implementation
 
- [Local Installation](pages/installation.md)
+[Local Installation](pages/installation.md)
 
-[Project Structure](pages/project_structure.md)
+[Repository Structure](pages/repository_structure.md)
 
 ## Test
 
- [Unit Tests](pages/unit_tests.md)
+[Unit Tests](pages/unit_tests.md)
 
- [Integration Tests](pages/integration_tests.md)
+[Integration Tests](pages/integration_tests.md)
 
- [End-to-End Tests](pages/end_to_end_tests.md) 
-
+[End-to-End Tests](pages/end_to_end_tests.md)
 
 ## Organization
 
