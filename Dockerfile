@@ -1,4 +1,6 @@
 FROM openjdk:latest
-EXPOSE 8080
-ADD target/building-management.jar building-management.jar
-ENTRYPOINT ["java","-jar","building-management.jar"]
+ARG projectname
+ARG version
+COPY target/*.jar /usr/app/
+EXPOSE 80
+ENTRYPOINT ["/bin/sh", "-c", "java -jar /usr/app/*.jar"]
