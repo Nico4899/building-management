@@ -19,15 +19,11 @@ import java.util.Collection;
 public class Building {
   private final Collection<Room> rooms = new ArrayList<>();
   private final Collection<Component> components = new ArrayList<>();
-
   private Floors floors;
   private CampusLocation campusLocation;
-
   private String name;
   private String number;
-
   private String identificationNumber;
-
   private GeographicalLocation geographicalLocation;
 
   /**

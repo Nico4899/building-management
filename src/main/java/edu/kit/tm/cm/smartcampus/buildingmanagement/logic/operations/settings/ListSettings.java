@@ -14,6 +14,7 @@ import java.util.Map;
  * a given collection.
  *
  * @param <T> the type of the collection to be operated on
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @Setter
 @NoArgsConstructor

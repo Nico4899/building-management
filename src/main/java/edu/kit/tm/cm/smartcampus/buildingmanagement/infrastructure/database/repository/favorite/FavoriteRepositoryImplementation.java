@@ -9,11 +9,22 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * Favorite repository implementation. Acts as Wrapper class to extend functionality of the {@link
+ * FavoriteRepository}
+ *
+ * @author Bastian Bacher, Dennis Fadeev
+ */
 @Repository
 public class FavoriteRepositoryImplementation implements FavoriteRepository {
 
   private final FavoriteRepository favoriteRepository;
 
+  /**
+   * Instantiates a new Favorite repository implementation.
+   *
+   * @param favoriteRepository the favorite repository
+   */
   @Autowired
   public FavoriteRepositoryImplementation(FavoriteRepository favoriteRepository) {
     this.favoriteRepository = favoriteRepository;

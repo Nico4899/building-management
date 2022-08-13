@@ -6,6 +6,7 @@ import java.util.Collection;
  * The interface Configuration.
  *
  * @param <T> the type the collection contains
+ * @author Bastian Bacher, Dennis Fadeev
  */
 public interface Settings<T> {
   /**

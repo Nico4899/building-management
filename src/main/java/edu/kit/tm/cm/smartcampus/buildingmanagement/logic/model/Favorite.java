@@ -22,27 +22,18 @@ import javax.persistence.*;
 @Setter
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
-@Entity(name = Favorite.FAVORITE_ENTITY)
+@Entity
 public class Favorite {
 
-  // must be public since the {@Entity} annotation can't read it if its private
-  public static final String FAVORITE_ENTITY = "favorite";
-
-  private static final String GENERATOR_PATH =
-      "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.generator.PrefixSequenceGenerator";
-  private static final String FAVORITE_SEQUENCE = "favorite_sequence";
-  private static final String IDENTIFICATION_NUMBER = "identification_number";
-  private static final String REFERENCE_IDENTIFICATION_NUMBER = "reference_identification_number";
-  private static final String PREFIX = "f-";
-
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = FAVORITE_SEQUENCE)
-  @SequenceGenerator(name = FAVORITE_SEQUENCE, allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "favorite_sequence")
+  @SequenceGenerator(name = "favorite_sequence", allocationSize = 1)
   @GenericGenerator(
-      name = FAVORITE_SEQUENCE,
-      strategy = GENERATOR_PATH,
+      name = "favorite_sequence",
+      strategy =
+          "edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.generator.PrefixSequenceGenerator",
       parameters = {
-        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = PREFIX)
+        @Parameter(name = PrefixSequenceGenerator.VALUE_PREFIX_PARAMETER, value = "f-")
       })
   private String identificationNumber;
 

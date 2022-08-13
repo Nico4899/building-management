@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * This class represents a room which can hold {@link Component} and is being held by {@link
- * Building}*
+ * Building}
  *
  * @author Bastian Bacher, Dennis Fadeev
  */
@@ -50,6 +50,8 @@ public class Room {
     /** Lecture room type. */
     LECTURE_ROOM,
     /** Sports type. */
-    SPORTS
+    SPORTS,
+    /** Sports type. */
+    LABORATORY
   }
 }

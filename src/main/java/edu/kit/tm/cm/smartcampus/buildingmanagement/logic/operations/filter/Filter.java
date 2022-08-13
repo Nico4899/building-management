@@ -6,6 +6,7 @@ import java.util.Collection;
  * This interface describes a generic building management service filter.
  *
  * @param <T> the object type to filter a collection of
+ * @author Bastian Bacher, Dennis Fadeev
  */
 public interface Filter<T> {
   /**

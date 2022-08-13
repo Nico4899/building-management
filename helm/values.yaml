@@ -94,6 +94,10 @@ base-chart:
     postgresqlDatabase: postgresDB
     #existingSecret:   #used for postgres-password, (key: postgresql-password)
 
+  #POSTGRESQL_DATABASE_HOST
+  #POSTGRESQL_DATABASE_USER
+  #POSTGRESQL_DATABASE_NAME
+
   # Enable only if this path and health probes are provided
   probe:
     enabled: false

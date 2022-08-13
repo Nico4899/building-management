@@ -7,6 +7,8 @@ import java.util.Collection;
 /**
  * This enum represents a variety of {@link Filter} strategies to filter objects of type {@link
  * Room}.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 public enum RoomFilter implements Filter<Room> {
   /** The Room type filter strategy. */

@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * The main entry point of the Application. This application ist a microservice implementation of
  * the microservice "building-management" it provides logical operations on "building" domain
  * objects, retrieved from to connected domain microservices.
+ *
+ * @author Bastian Bacher, Dennis Fadeev
  */
 @SpringBootApplication
 public class Application {

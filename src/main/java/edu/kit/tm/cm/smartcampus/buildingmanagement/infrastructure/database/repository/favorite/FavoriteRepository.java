@@ -30,7 +30,7 @@ public interface FavoriteRepository extends CrudRepository<Favorite, String> {
    */
   @NonNull
   @Query(
-      "SELECT favorite FROM favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE :#{#regex})")
+      "SELECT favorite FROM Favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE :#{#regex})")
   Collection<Favorite> findByOwnerAndRegex(
       @NonNull @Param("owner") String owner, @NonNull @Param("regex") String regex);
 }
