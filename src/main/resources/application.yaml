@@ -16,8 +16,8 @@ spring:
 
   datasource:
     url: jdbc:postgresql://${POSTGRESQL_DATABASE_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRESQL_DATABASE_NAME:BuildingManagementDB}
-    username: postgres
-    password: 1234
+    username: ${POSTGRESQL_DATABASE_USER:postgres}
+    password: ${POSTGRESQL_DATABASE_PASSWORD:1234}
   jpa:
     hibernate:
       ddl-auto: create
