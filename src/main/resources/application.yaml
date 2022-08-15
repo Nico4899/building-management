@@ -1,10 +1,10 @@
 # testing properties
 
 server:
-  port: 8081
+  port: 80
 grpc:
   server:
-    port: 9091
+    port: ${GRPC_PORT:9090}
 
 # application properties
 
@@ -15,7 +15,7 @@ spring:
     # database properties
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/BuildingManagementDB
+    url: jdbc:postgresql://${POSTGRESQL_DATABASE_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRESQL_DATABASE_NAME:BuildingManagementDB}
     username: postgres
     password: 1234
   jpa:
@@ -31,11 +31,11 @@ spring:
       client:
         provider:
           cm-pse-22:
-            authorization-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/auth
-            token-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/token
-            user-info-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/userinfo
-            jwk-set-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM/protocol/openid-connect/certs
-            issuer-uri: https://cm-keycloak.cloud.iai.kit.edu/auth/realms/CM
+            authorization-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/auth
+            token-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/token
+            user-info-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/userinfo
+            jwk-set-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/certs
+            issuer-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM
 
 # domain urls
 

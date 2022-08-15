@@ -67,9 +67,9 @@ base-chart:
       database: mongoDB
       # existingSecret: (keys: mongodb-password, mongodb-root-password, mongodb-replica-set-key)
 
-  # (beta) Enables a envoy proxy as sidecar get additional metrics, should not be enabled atm
-  monitoring:
-    enabled: false
+
+grpcweb:
+  enabled: true
 
   nodeSelector: {}
 
