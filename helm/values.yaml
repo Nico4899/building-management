@@ -68,13 +68,13 @@ base-chart:
       # existingSecret: (keys: mongodb-password, mongodb-root-password, mongodb-replica-set-key)
 
 
-grpcweb:
-  enabled: true
+  grpcweb:
+    enabled: true
 
-  nodeSelector: {}
+    nodeSelector: {}
 
-  podSecurityContext: {}
-  # fsGroup: 2000
+    podSecurityContext: {}
+    # fsGroup: 2000
 
   # Subchart configuration for upstream postgres chart from bitnami
   postgresql:
