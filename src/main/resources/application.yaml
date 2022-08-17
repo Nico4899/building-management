@@ -40,7 +40,7 @@ spring:
 # domain urls
 
 building:
-  baseUrl: http://localhost:8083
+  baseUrl: http://cm-building-impl.cloud.iai.kit.edu
   listBuildingsUrl: /buildings
   createBuildingUrl: /buildings
   getBuildingUrl: /buildings/{bin}
