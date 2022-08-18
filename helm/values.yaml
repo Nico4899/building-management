@@ -62,8 +62,8 @@ base-chart:
     auth:
       # Enable Authentication
       enablePostgresUser: false
-      username: postgres      # Default
-      password: postgres
+      username: postgresUser      # Default
+      password: postgresPW
       database: postgresDB
 
       # existingSecret: (keys: mongodb-password, mongodb-root-password, mongodb-replica-set-key)
