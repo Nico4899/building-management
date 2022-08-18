@@ -92,6 +92,8 @@ base-chart:
     postgresqlUsername: postgres      # Default
     postgresqlPassword: postgres
     postgresqlDatabase: postgresDB
+    auth:
+      enablePostgresUser: true
     #existingSecret:   #used for postgres-password, (key: postgresql-password)
 
   # Enable only if this path and health probes are provided
