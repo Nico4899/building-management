@@ -61,10 +61,11 @@ base-chart:
     # Authentication configuration
     auth:
       # Enable Authentication
-      enabled: true
-      username: mongodb #mandatory if database is set
-      password: mongodb
-      database: mongoDB
+      enablePostgresUser: false
+      username: postgres      # Default
+      password: postgres
+      database: postgresDB
+
       # existingSecret: (keys: mongodb-password, mongodb-root-password, mongodb-replica-set-key)
 
 
