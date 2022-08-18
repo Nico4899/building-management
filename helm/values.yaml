@@ -61,10 +61,11 @@ base-chart:
     # Authentication configuration
     auth:
       # Enable Authentication
-      enablePostgresUser: false
-      username: postgresUser      # Default
-      password: postgresPW
-      database: postgresDB
+      enabled: true
+      username: mongodb #mandatory if database is set
+      password: mongodb
+      database: mongoDB
+
 
       # existingSecret: (keys: mongodb-password, mongodb-root-password, mongodb-replica-set-key)
 
@@ -90,11 +91,12 @@ base-chart:
     # Necessary because no default storageclass is predefined
     global:
       storageClass: shared
-    postgresqlUsername: postgres      # Default
-    postgresqlPassword: postgres
-    postgresqlDatabase: postgresDB
     auth:
-      enablePostgresUser: true
+      enablePostgresUser: false
+      username: postgresUser      # Default
+      password: postgresPassword
+      database: postgresDB
+
     #existingSecret:   #used for postgres-password, (key: postgresql-password)
 
   # Enable only if this path and health probes are provided
