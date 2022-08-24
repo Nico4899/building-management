@@ -1,16 +1,15 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 /**
- * This class represents a room which can hold {@link Component} and is being held by {@link
- * Building}
+ * This class represents a room which can hold {@link Component} and is being held by
+ * {@link Building}
  *
  * @author Bastian Bacher, Dennis Fadeev
  */
@@ -35,23 +34,41 @@ public class Room {
    * @author Bastian Bacher, Dennis Fadeev
    */
   public enum Type {
-    /** Cafeteria type. */
+    /**
+     * Cafeteria.
+     */
     CAFETERIA,
-    /** Restroom type. */
+    /**
+     * Restroom.
+     */
     RESTROOM,
-    /** Restroom handicapped type. */
+    /**
+     * Restroom for Handicapped people.
+     */
     RESTROOM_HANDICAPPED,
-    /** Office type. */
+    /**
+     * Office.
+     */
     OFFICE,
-    /** Library type. */
-    LIBRARY,
-    /** Seminar room type. */
+    /**
+     * Laboratory.
+     */
+    LABORATORY,
+    /**
+     * Seminar room.
+     */
     SEMINAR_ROOM,
-    /** Lecture room type. */
+    /**
+     * Lecture Room.
+     */
     LECTURE_ROOM,
-    /** Sports type. */
+    /**
+     * Sports.
+     */
     SPORTS,
-    /** Sports type. */
-    LABORATORY
+    /**
+     * Library.
+     */
+    LIBRARY
   }
 }
