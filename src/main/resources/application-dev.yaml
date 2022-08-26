@@ -1,0 +1,68 @@
+# testing properties
+
+server:
+  port: 8082
+grpc:
+  server:
+    port: 9091
+
+# application properties
+
+spring:
+  autoconfigure:
+    exclude[0]: net.devh.boot.grpc.server.autoconfigure.GrpcServerSecurityAutoConfiguration
+    exclude[1]: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+    exclude[2]: org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration
+  application:
+    name: building-management
+
+    # database properties
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/BuildingManagementDB
+    username: postgres
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        provider:
+          cm-pse-22:
+            authorization-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/auth
+            token-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/token
+            user-info-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/userinfo
+            jwk-set-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/certs
+            issuer-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM
+
+# domain urls
+
+building:
+  baseUrl: http://localhost:8081
+  listBuildingsUrl: /buildings
+  createBuildingUrl: /buildings
+  getBuildingUrl: /buildings/{bin}
+  updateBuildingUrl: /buildings
+  removeBuildingUrl: /buildings/{bin}
+  listRoomsUrl: /{in}/rooms
+  createRoomUrl: /rooms
+  getRoomUrl: /rooms/{rin}
+  updateRoomUrl: /rooms
+  removeRoomUrl: /rooms/{rin}
+  listComponentsUrl: /{in}/components
+  createComponentUrl: /components
+  getComponentUrl: /components/{cin}
+  updateComponentUrl: /components
+  removeComponentUrl: /components/{cin}
+  listNotificationsUrl: /{in}/notifications
+
+# role authorities
+role:
+  admin: TM-CM-MULESOFT
+  user: TM-CM-JUNIORSTUDENTS

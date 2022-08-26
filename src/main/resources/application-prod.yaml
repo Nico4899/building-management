@@ -1,0 +1,64 @@
+# testing properties
+
+server:
+  port: 80
+grpc:
+  server:
+    port: ${GRPC_PORT:9090}
+
+# application properties
+
+spring:
+  application:
+    name: building-management
+
+    # database properties
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRESQL_DATABASE_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRESQL_DATABASE_NAME:BuildingManagementDB}
+    username: ${POSTGRESQL_DATABASE_USER:postgres}
+    password: ${POSTGRESQL_DATABASE_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        provider:
+          cm-pse-22:
+            authorization-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/auth
+            token-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/token
+            user-info-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/userinfo
+            jwk-set-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM/protocol/openid-connect/certs
+            issuer-uri: https://cm-keycloak.cloud.iai.kit.edu/realms/CM
+
+# domain urls
+
+building:
+  baseUrl: http://cm-building-impl.cloud.iai.kit.edu
+  listBuildingsUrl: /buildings
+  createBuildingUrl: /buildings
+  getBuildingUrl: /buildings/{bin}
+  updateBuildingUrl: /buildings
+  removeBuildingUrl: /buildings/{bin}
+  listRoomsUrl: /{in}/rooms
+  createRoomUrl: /rooms
+  getRoomUrl: /rooms/{rin}
+  updateRoomUrl: /rooms
+  removeRoomUrl: /rooms/{rin}
+  listComponentsUrl: /{in}/components
+  createComponentUrl: /components
+  getComponentUrl: /components/{cin}
+  updateComponentUrl: /components
+  removeComponentUrl: /components/{cin}
+  listNotificationsUrl: /{in}/notifications
+
+# role authorities
+role:
+  admin: TM-CM-MULESOFT
+  user: TM-CM-JUNIORSTUDENTS
