@@ -15,8 +15,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class ClientCreateComponentRequest {
-  private String description;
-  private GeographicalLocation geographicalLocation;
   private String parentIdentificationNumber;
   private Component.Type type;
+  private String description;
+  private GeographicalLocation geographicalLocation;
 }

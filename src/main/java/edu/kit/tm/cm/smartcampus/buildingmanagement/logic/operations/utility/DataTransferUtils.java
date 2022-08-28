@@ -797,7 +797,7 @@ public final class DataTransferUtils {
         Component component) {
       ClientCreateComponentRequest clientCreateComponentRequest =
           new ClientCreateComponentRequest();
-      clientCreateComponentRequest.setDescription(clientCreateComponentRequest.getDescription());
+      clientCreateComponentRequest.setDescription(component.getDescription());
       clientCreateComponentRequest.setType(component.getType());
       clientCreateComponentRequest.setGeographicalLocation(component.getGeographicalLocation());
       clientCreateComponentRequest.setParentIdentificationNumber(
