@@ -102,7 +102,6 @@ message ListFavoriteRoomsRequest{
 }
 
 message ListFavoriteComponentsRequest{
-  GrpcFilterValueSelection grpc_filter_value_selection = 1;
   string owner = 2;
 }
 

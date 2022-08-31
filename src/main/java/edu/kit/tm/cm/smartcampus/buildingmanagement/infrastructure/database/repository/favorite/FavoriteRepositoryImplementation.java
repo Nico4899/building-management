@@ -40,7 +40,17 @@ public class FavoriteRepositoryImplementation implements FavoriteRepository {
   @Override
   public <S extends Favorite> S save(@NonNull S entity) {
     try {
-      return this.favoriteRepository.save(entity);
+      boolean exists = false;
+      for (Favorite favorite : findAll()) {
+        if (favorite.getReferenceIdentificationNumber().equals(entity.getReferenceIdentificationNumber()) && favorite.getOwner().equals(entity.getOwner())) {
+          exists = true;
+          break;
+        }
+      }
+      if (!exists) {
+        return this.favoriteRepository.save(entity);
+      }
+      return entity;
     } catch (Exception exception) {
       throw new IllegalArgumentException();
     }
