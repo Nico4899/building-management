@@ -27,7 +27,7 @@ public class FilterTests {
   public static final String REST_ROOM_HANDICAPPED = "restRoomHandicapped";
   public static final String OFFICE = "office";
   public static final String SPORTS = "sports";
-  public static final String LIBRARY = "library";
+  public static final String LABORATORY = "laboratory";
   public static final String CAFETERIA = "cafeteria";
   public static final String EAST_CAMPUS_BUILDING = "eastCampusBuilding";
   public static final String WEST_CAMPUS_BUILDING = "westCampusBuilding";
@@ -36,7 +36,7 @@ public class FilterTests {
 
   private static final Collection<Room.Type> ALL_ROOM_TYPES = List.of(Room.Type.values());
   private static final Collection<Room.Type> SOME_ROOM_TYPES =
-      List.of(Room.Type.OFFICE, Room.Type.LIBRARY, Room.Type.RESTROOM);
+      List.of(Room.Type.OFFICE, Room.Type.LABORATORY, Room.Type.RESTROOM);
   private static final Collection<Room.Type> NO_ROOM_TYPES = List.of();
 
   private static final Collection<Component.Type> ALL_COMPONENT_TYPES =
@@ -88,7 +88,7 @@ public class FilterTests {
     Room room6 = new Room();
     room6.setType(Room.Type.SPORTS);
     Room room7 = new Room();
-    room7.setType(Room.Type.LIBRARY);
+    room7.setType(Room.Type.LABORATORY);
     Room room8 = new Room();
     room8.setType(Room.Type.CAFETERIA);
 
@@ -99,14 +99,14 @@ public class FilterTests {
     testRoomsMap.put(REST_ROOM_HANDICAPPED, room4);
     testRoomsMap.put(OFFICE, room5);
     testRoomsMap.put(SPORTS, room6);
-    testRoomsMap.put(LIBRARY, room7);
+    testRoomsMap.put(LABORATORY, room7);
     testRoomsMap.put(CAFETERIA, room8);
 
     testRoomsMap.get(LECTURE_ROOM).getComponents().add(testComponentsMap.get(ELEVATOR_COMPONENT));
     testRoomsMap.get(SEMINAR_ROOM).getComponents().add(testComponentsMap.get(ELEVATOR_COMPONENT));
     testRoomsMap.get(REST_ROOM).getComponents().add(testComponentsMap.get(ELEVATOR_COMPONENT));
     testRoomsMap.get(SPORTS).getComponents().add(testComponentsMap.get(STAIRS_COMPONENT));
-    testRoomsMap.get(LIBRARY).getComponents().add(testComponentsMap.get(STAIRS_COMPONENT));
+    testRoomsMap.get(LABORATORY).getComponents().add(testComponentsMap.get(STAIRS_COMPONENT));
 
     Building building1 = new Building();
     building1.setCampusLocation(Building.CampusLocation.EAST_CAMPUS);
@@ -142,7 +142,7 @@ public class FilterTests {
     testBuildingsMap
         .get(SOUTH_CAMPUS_BUILDING)
         .getRooms()
-        .addAll(List.of(testRoomsMap.get(LIBRARY), testRoomsMap.get(CAFETERIA)));
+        .addAll(List.of(testRoomsMap.get(LABORATORY), testRoomsMap.get(CAFETERIA)));
     testBuildingsMap
         .get(SOUTH_CAMPUS_BUILDING)
         .getComponents()
@@ -182,7 +182,7 @@ public class FilterTests {
           Arguments.of(List.of(), RoomFilter.ROOM_TYPE_FILTER, testRooms, NO_ROOM_TYPES),
           Arguments.of(
               List.of(
-                  testRoomsMap.get(OFFICE), testRoomsMap.get(LIBRARY), testRoomsMap.get(REST_ROOM)),
+                  testRoomsMap.get(OFFICE), testRoomsMap.get(LABORATORY), testRoomsMap.get(REST_ROOM)),
               RoomFilter.ROOM_TYPE_FILTER,
               testRooms,
               SOME_ROOM_TYPES),
@@ -192,13 +192,13 @@ public class FilterTests {
                   testRoomsMap.get(SEMINAR_ROOM),
                   testRoomsMap.get(REST_ROOM),
                   testRoomsMap.get(SPORTS),
-                  testRoomsMap.get(LIBRARY)),
+                  testRoomsMap.get(LABORATORY)),
               RoomFilter.COMPONENT_TYPE_FILTER,
               testRooms,
               ALL_COMPONENT_TYPES),
           Arguments.of(List.of(), RoomFilter.COMPONENT_TYPE_FILTER, testRooms, NO_COMPONENT_TYPES),
           Arguments.of(
-              List.of(testRoomsMap.get(LIBRARY), testRoomsMap.get(SPORTS)),
+              List.of(testRoomsMap.get(LABORATORY), testRoomsMap.get(SPORTS)),
               RoomFilter.COMPONENT_TYPE_FILTER,
               testRooms,
               SOME_COMPONENT_TYPES));
