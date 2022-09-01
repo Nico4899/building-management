@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -34,6 +35,15 @@ public class FavoriteRepositoryImplementation implements FavoriteRepository {
   @Override
   public Collection<Favorite> findByOwnerAndRegex(@NonNull String owner, @NonNull String regex) {
     return this.favoriteRepository.findByOwnerAndRegex(owner, regex);
+  }
+
+  @NonNull
+  public void removeFavorite(@NonNull String identificationNumber, String owner) {
+    for (Favorite favorite: findAll()) {
+      if (Objects.equals(favorite.getOwner(), owner) && Objects.equals(favorite.getReferenceIdentificationNumber(), identificationNumber)) {
+        this.favoriteRepository.deleteById(favorite.getIdentificationNumber());
+      }
+    }
   }
 
   @NonNull

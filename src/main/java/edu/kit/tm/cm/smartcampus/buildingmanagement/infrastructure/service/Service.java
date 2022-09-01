@@ -278,8 +278,8 @@ public class Service {
    *
    * @param identificationNumber identification number of the favorite to be removed
    */
-  public void removeFavorite(String identificationNumber) {
-    this.favoriteRepositoryImplementation.deleteById(identificationNumber);
+  public void removeFavorite(String identificationNumber, String owner) {
+    this.favoriteRepositoryImplementation.removeFavorite(identificationNumber, owner);
   }
 
   private void buildBuildingRooms(Building building) {

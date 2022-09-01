@@ -619,8 +619,8 @@ public final class DataTransferUtils {
      * @param removeRequest the remove request
      * @param service the service
      */
-    public static void readRemoveFavoriteRequest(RemoveRequest removeRequest, Service service) {
-      service.removeFavorite(removeRequest.getIdentificationNumber());
+    public static void readRemoveFavoriteRequest(RemoveFavoriteRequest removeRequest, Service service) {
+      service.removeFavorite(removeRequest.getIdentificationNumber(), removeRequest.getOwner());
     }
 
     private static GeographicalLocation readGeographicalLocation(
@@ -652,7 +652,7 @@ public final class DataTransferUtils {
     }
 
     private static Settings<Building> readListBuildingSettings(
-        GrpcFilterValueSelection grpcFilterValueSelection) {
+        GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Building>, Collection<?>> filters = new HashMap<>();
       if (!grpcFilterValueSelection.getGrpcCampusLocationsList().isEmpty()) {
         filters.put(
@@ -683,7 +683,7 @@ public final class DataTransferUtils {
     }
 
     private static Settings<Room> readListRoomsSettings(
-        GrpcFilterValueSelection grpcFilterValueSelection) {
+        GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Room>, Collection<?>> filters = new HashMap<>();
       if (!grpcFilterValueSelection.getFloorsList().isEmpty()) {
         filters.put(RoomFilter.FLOOR_FILTER, grpcFilterValueSelection.getFloorsList());

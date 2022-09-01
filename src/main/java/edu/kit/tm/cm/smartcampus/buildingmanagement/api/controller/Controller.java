@@ -245,7 +245,7 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
 
   @Override
   public void removeFavorite(
-    RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+    RemoveFavoriteRequest request, StreamObserver<RemoveResponse> responseObserver) {
     DataTransferUtils.ServerRequestReader.readRemoveFavoriteRequest(request, service);
     RemoveResponse response = DataTransferUtils.ServerResponseWriter.writeRemoveResponse();
     responseObserver.onNext(response);
