@@ -237,6 +237,7 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
   @Override
   public void removeComponent(
     RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+    System.out.println(request);
     DataTransferUtils.ServerRequestReader.readRemoveComponentRequest(request, service);
     RemoveResponse response = DataTransferUtils.ServerResponseWriter.writeRemoveResponse();
     responseObserver.onNext(response);

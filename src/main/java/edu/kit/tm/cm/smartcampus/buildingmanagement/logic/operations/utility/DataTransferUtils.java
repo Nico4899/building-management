@@ -94,8 +94,8 @@ public final class DataTransferUtils {
      */
     public static CreateComponentResponse writeCreateComponentResponse(Component component) {
       return CreateComponentResponse.newBuilder()
-          .setComponent(writeGrpcComponent(component))
-          .build();
+        .setComponent(writeGrpcComponent(component))
+        .build();
     }
 
     /**
@@ -135,8 +135,8 @@ public final class DataTransferUtils {
      */
     public static UpdateComponentResponse writeUpdateComponentResponse(Component component) {
       return UpdateComponentResponse.newBuilder()
-          .setComponent(writeGrpcComponent(component))
-          .build();
+        .setComponent(writeGrpcComponent(component))
+        .build();
     }
 
     /**
@@ -148,8 +148,8 @@ public final class DataTransferUtils {
      */
     public static ListBuildingsResponse writeListBuildingsResponse(Collection<Building> buildings) {
       return ListBuildingsResponse.newBuilder()
-          .addAllBuildings(buildings.stream().map(ServerResponseWriter::writeGrpcBuilding).toList())
-          .build();
+        .addAllBuildings(buildings.stream().map(ServerResponseWriter::writeGrpcBuilding).toList())
+        .build();
     }
 
     /**
@@ -160,8 +160,8 @@ public final class DataTransferUtils {
      */
     public static ListRoomsResponse writeListRoomsResponse(Collection<Room> rooms) {
       return ListRoomsResponse.newBuilder()
-          .addAllRooms(rooms.stream().map(ServerResponseWriter::writeGrpcRoom).toList())
-          .build();
+        .addAllRooms(rooms.stream().map(ServerResponseWriter::writeGrpcRoom).toList())
+        .build();
     }
 
     /**
@@ -172,11 +172,11 @@ public final class DataTransferUtils {
      * @return the list components response
      */
     public static ListComponentsResponse writeListComponentsResponse(
-        Collection<Component> components) {
+      Collection<Component> components) {
       return ListComponentsResponse.newBuilder()
-          .addAllComponents(
-              components.stream().map(ServerResponseWriter::writeGrpcComponent).toList())
-          .build();
+        .addAllComponents(
+          components.stream().map(ServerResponseWriter::writeGrpcComponent).toList())
+        .build();
     }
 
     /**
@@ -187,11 +187,11 @@ public final class DataTransferUtils {
      * @return the list notifications response
      */
     public static ListNotificationsResponse writeListNotificationsResponse(
-        Collection<Notification> notifications) {
+      Collection<Notification> notifications) {
       return ListNotificationsResponse.newBuilder()
-          .addAllNotifications(
-              notifications.stream().map(ServerResponseWriter::writeGrpcNotification).toList())
-          .build();
+        .addAllNotifications(
+          notifications.stream().map(ServerResponseWriter::writeGrpcNotification).toList())
+        .build();
     }
 
     /**
@@ -202,10 +202,10 @@ public final class DataTransferUtils {
      * @return the list favorite buildings response to be parsed into the response
      */
     public static ListFavoriteBuildingsResponse writeListFavoriteBuildingsResponse(
-        Collection<Building> buildings) {
+      Collection<Building> buildings) {
       return ListFavoriteBuildingsResponse.newBuilder()
-          .addAllBuildings(buildings.stream().map(ServerResponseWriter::writeGrpcBuilding).toList())
-          .build();
+        .addAllBuildings(buildings.stream().map(ServerResponseWriter::writeGrpcBuilding).toList())
+        .build();
     }
 
     /**
@@ -217,8 +217,8 @@ public final class DataTransferUtils {
      */
     public static ListFavoriteRoomsResponse writeListFavoriteRoomsResponse(Collection<Room> rooms) {
       return ListFavoriteRoomsResponse.newBuilder()
-          .addAllRooms(rooms.stream().map(ServerResponseWriter::writeGrpcRoom).toList())
-          .build();
+        .addAllRooms(rooms.stream().map(ServerResponseWriter::writeGrpcRoom).toList())
+        .build();
     }
 
     /**
@@ -229,11 +229,11 @@ public final class DataTransferUtils {
      * @return the list favorite components response to be parsed into the response
      */
     public static ListFavoriteComponentsResponse writeListFavoriteComponentsResponse(
-        Collection<Component> components) {
+      Collection<Component> components) {
       return ListFavoriteComponentsResponse.newBuilder()
-          .addAllComponents(
-              components.stream().map(ServerResponseWriter::writeGrpcComponent).toList())
-          .build();
+        .addAllComponents(
+          components.stream().map(ServerResponseWriter::writeGrpcComponent).toList())
+        .build();
     }
 
     /**
@@ -247,59 +247,60 @@ public final class DataTransferUtils {
 
     private static GrpcComponent writeGrpcComponent(Component component) {
       return GrpcComponent.newBuilder()
-          .setComponentDescription(component.getDescription())
-          .setGrpcGeographicalLocation(
-              writeGrpcGeographicalLocation(component.getGeographicalLocation()))
-          .setParentIdentificationNumber(component.getParentIdentificationNumber())
-          .setIdentificationNumber(component.getIdentificationNumber())
-          .build();
+        .setComponentDescription(component.getDescription())
+        .setGrpcGeographicalLocation(
+          writeGrpcGeographicalLocation(component.getGeographicalLocation()))
+        .setParentIdentificationNumber(component.getParentIdentificationNumber())
+        .setIdentificationNumber(component.getIdentificationNumber())
+        .setComponentType(writeGrpcComponentType(component.getType()))
+        .build();
     }
 
     private static GrpcRoom writeGrpcRoom(Room room) {
       return GrpcRoom.newBuilder()
-          .setFloor(room.getFloor())
-          .setGrpcGeographicalLocation(
-              writeGrpcGeographicalLocation(room.getGeographicalLocation()))
-          .setRoomName(room.getName())
-          .setRoomNumber(room.getNumber())
-          .setParentIdentificationNumber(room.getParentIdentificationNumber())
-          .setRoomType(writeGrpcRoomType(room.getType()))
-          .setIdentificationNumber(room.getIdentificationNumber())
-          .build();
+        .setFloor(room.getFloor())
+        .setGrpcGeographicalLocation(
+          writeGrpcGeographicalLocation(room.getGeographicalLocation()))
+        .setRoomName(room.getName())
+        .setRoomNumber(room.getNumber())
+        .setParentIdentificationNumber(room.getParentIdentificationNumber())
+        .setRoomType(writeGrpcRoomType(room.getType()))
+        .setIdentificationNumber(room.getIdentificationNumber())
+        .build();
     }
 
     private static GrpcBuilding writeGrpcBuilding(Building building) {
       return GrpcBuilding.newBuilder()
-          .setBuildingName(building.getName())
-          .setBuildingNumber(building.getNumber())
-          .setIdentificationNumber(building.getIdentificationNumber())
-          .setCampusLocation(writeGrpcCampusLocation(building.getCampusLocation()))
-          .setGrpcGeographicalLocation(
-              writeGrpcGeographicalLocation(building.getGeographicalLocation()))
-          .setGrpcFloors(writeGrpcFloors(building.getFloors()))
-          .build();
+        .setBuildingName(building.getName())
+        .setBuildingNumber(building.getNumber())
+        .setIdentificationNumber(building.getIdentificationNumber())
+        .setCampusLocation(writeGrpcCampusLocation(building.getCampusLocation()))
+        .setGrpcGeographicalLocation(
+          writeGrpcGeographicalLocation(building.getGeographicalLocation()))
+        .setGrpcFloors(writeGrpcFloors(building.getFloors()))
+        .build();
     }
 
     private static GrpcNotification writeGrpcNotification(Notification notification) {
       return GrpcNotification.newBuilder()
-          .setNotificationTitle(notification.getTitle())
-          .setNotificationDescription(notification.getDescription())
-          .setParentIdentificationNumber(notification.getParentIdentificationNumber())
-          .setIdentificationNumber(notification.getIdentificationNumber())
-          .setCreationTime(
-              Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
-          .build();
+        .setNotificationTitle(notification.getTitle())
+        .setNotificationDescription(notification.getDescription())
+        .setParentIdentificationNumber(notification.getParentIdentificationNumber())
+        .setIdentificationNumber(notification.getIdentificationNumber())
+        .setCreationTime(
+          Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
+        .build();
     }
 
     private static GrpcFloors writeGrpcFloors(Floors floors) {
       return GrpcFloors.newBuilder()
-          .setLowestFloor(floors.getLowestFloor())
-          .setHighestFloor(floors.getHighestFloor())
-          .build();
+        .setLowestFloor(floors.getLowestFloor())
+        .setHighestFloor(floors.getHighestFloor())
+        .build();
     }
 
     private static GrpcCampusLocation writeGrpcCampusLocation(
-        Building.CampusLocation campusLocation) {
+      Building.CampusLocation campusLocation) {
       return Enum.valueOf(GrpcCampusLocation.class, campusLocation.name());
     }
 
@@ -307,12 +308,16 @@ public final class DataTransferUtils {
       return Enum.valueOf(GrpcRoomType.class, roomType.name());
     }
 
+    private static GrpcComponentType writeGrpcComponentType(Component.Type componentType) {
+      return Enum.valueOf(GrpcComponentType.class, componentType.name());
+    }
+
     private static GrpcGeographicalLocation writeGrpcGeographicalLocation(
-        GeographicalLocation geographicalLocation) {
+      GeographicalLocation geographicalLocation) {
       return GrpcGeographicalLocation.newBuilder()
-          .setLongitude(geographicalLocation.getLongitude())
-          .setLatitude(geographicalLocation.getLatitude())
-          .build();
+        .setLongitude(geographicalLocation.getLongitude())
+        .setLatitude(geographicalLocation.getLatitude())
+        .build();
     }
   }
 
@@ -329,11 +334,11 @@ public final class DataTransferUtils {
      * Read get building request building.
      *
      * @param getBuildingRequest the get building request
-     * @param service the service
+     * @param service            the service
      * @return the building
      */
     public static Building readGetBuildingRequest(
-        GetBuildingRequest getBuildingRequest, Service service) {
+      GetBuildingRequest getBuildingRequest, Service service) {
       return service.getBuilding(getBuildingRequest.getIdentificationNumber());
     }
 
@@ -341,7 +346,7 @@ public final class DataTransferUtils {
      * Read get room request room.
      *
      * @param getRoomRequest the get room request
-     * @param service the service
+     * @param service        the service
      * @return the room
      */
     public static Room readGetRoomRequest(GetRoomRequest getRoomRequest, Service service) {
@@ -352,11 +357,11 @@ public final class DataTransferUtils {
      * Read get component request component.
      *
      * @param getComponentRequest the get component request
-     * @param service the service
+     * @param service             the service
      * @return the component
      */
     public static Component readGetComponentRequest(
-        GetComponentRequest getComponentRequest, Service service) {
+      GetComponentRequest getComponentRequest, Service service) {
       return service.getComponent(getComponentRequest.getIdentificationNumber());
     }
 
@@ -364,18 +369,18 @@ public final class DataTransferUtils {
      * Read create building request building.
      *
      * @param createBuildingRequest the create building request
-     * @param service the service
+     * @param service               the service
      * @return the building
      */
     public static Building readCreateBuildingRequest(
-        CreateBuildingRequest createBuildingRequest, Service service) {
+      CreateBuildingRequest createBuildingRequest, Service service) {
       Building building = new Building();
       building.setFloors(readFloors(createBuildingRequest.getGrpcFloors()));
       building.setNumber(createBuildingRequest.getBuildingNumber());
       building.setName(createBuildingRequest.getBuildingName());
       building.setCampusLocation(readCampusLocation(createBuildingRequest.getCampusLocation()));
       building.setGeographicalLocation(
-          readGeographicalLocation(createBuildingRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(createBuildingRequest.getGrpcGeographicalLocation()));
       return service.createBuilding(building);
     }
 
@@ -383,11 +388,11 @@ public final class DataTransferUtils {
      * Read update building request building.
      *
      * @param updateBuildingRequest the update building request
-     * @param service the service
+     * @param service               the service
      * @return the building
      */
     public static Building readUpdateBuildingRequest(
-        UpdateBuildingRequest updateBuildingRequest, Service service) {
+      UpdateBuildingRequest updateBuildingRequest, Service service) {
       Building building = new Building();
       building.setIdentificationNumber(updateBuildingRequest.getIdentificationNumber());
       building.setFloors(readFloors(updateBuildingRequest.getGrpcFloors()));
@@ -395,7 +400,7 @@ public final class DataTransferUtils {
       building.setName(updateBuildingRequest.getBuildingName());
       building.setCampusLocation(readCampusLocation(updateBuildingRequest.getCampusLocation()));
       building.setGeographicalLocation(
-          readGeographicalLocation(updateBuildingRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(updateBuildingRequest.getGrpcGeographicalLocation()));
       return service.updateBuilding(building);
     }
 
@@ -403,7 +408,7 @@ public final class DataTransferUtils {
      * Read create room request room.
      *
      * @param createRoomRequest the create room request
-     * @param service the service
+     * @param service           the service
      * @return the room
      */
     public static Room readCreateRoomRequest(CreateRoomRequest createRoomRequest, Service service) {
@@ -414,7 +419,7 @@ public final class DataTransferUtils {
       room.setFloor(createRoomRequest.getFloor());
       room.setParentIdentificationNumber(createRoomRequest.getParentIdentificationNumber());
       room.setGeographicalLocation(
-          readGeographicalLocation(createRoomRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(createRoomRequest.getGrpcGeographicalLocation()));
       return service.createRoom(room);
     }
 
@@ -422,7 +427,7 @@ public final class DataTransferUtils {
      * Read update room request room.
      *
      * @param updateRoomRequest the update room request
-     * @param service the service
+     * @param service           the service
      * @return the room
      */
     public static Room readUpdateRoomRequest(UpdateRoomRequest updateRoomRequest, Service service) {
@@ -433,7 +438,7 @@ public final class DataTransferUtils {
       room.setFloor(updateRoomRequest.getFloor());
       room.setParentIdentificationNumber(updateRoomRequest.getParentIdentificationNumber());
       room.setGeographicalLocation(
-          readGeographicalLocation(updateRoomRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(updateRoomRequest.getGrpcGeographicalLocation()));
       room.setType(readRoomType(updateRoomRequest.getRoomType()));
       return service.updateRoom(room);
     }
@@ -442,17 +447,17 @@ public final class DataTransferUtils {
      * Read create component request component.
      *
      * @param createComponentRequest the create component request
-     * @param service the service
+     * @param service                the service
      * @return the component
      */
     public static Component readCreateComponentRequest(
-        CreateComponentRequest createComponentRequest, Service service) {
+      CreateComponentRequest createComponentRequest, Service service) {
       Component component = new Component();
       component.setDescription(createComponentRequest.getComponentDescription());
       component.setParentIdentificationNumber(
-          createComponentRequest.getParentIdentificationNumber());
+        createComponentRequest.getParentIdentificationNumber());
       component.setGeographicalLocation(
-          readGeographicalLocation(createComponentRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(createComponentRequest.getGrpcGeographicalLocation()));
       component.setType(readComponentType(createComponentRequest.getComponentType()));
       return service.createComponent(component);
     }
@@ -461,18 +466,18 @@ public final class DataTransferUtils {
      * Read update component request component.
      *
      * @param updateComponentRequest the update component request
-     * @param service the service
+     * @param service                the service
      * @return the component
      */
     public static Component readUpdateComponentRequest(
-        UpdateComponentRequest updateComponentRequest, Service service) {
+      UpdateComponentRequest updateComponentRequest, Service service) {
       Component component = new Component();
       component.setIdentificationNumber(updateComponentRequest.getIdentificationNumber());
       component.setDescription(updateComponentRequest.getComponentDescription());
       component.setParentIdentificationNumber(
-          updateComponentRequest.getParentIdentificationNumber());
+        updateComponentRequest.getParentIdentificationNumber());
       component.setGeographicalLocation(
-          readGeographicalLocation(updateComponentRequest.getGrpcGeographicalLocation()));
+        readGeographicalLocation(updateComponentRequest.getGrpcGeographicalLocation()));
       component.setType(readComponentType(updateComponentRequest.getComponentType()));
       return service.updateComponent(component);
     }
@@ -481,14 +486,14 @@ public final class DataTransferUtils {
      * Read create favorite request.
      *
      * @param createFavoriteRequest the create favorite request
-     * @param service the service
+     * @param service               the service
      */
     public static void readCreateFavoriteRequest(
-        CreateFavoriteRequest createFavoriteRequest, Service service) {
+      CreateFavoriteRequest createFavoriteRequest, Service service) {
       Favorite favorite = new Favorite();
       favorite.setOwner(createFavoriteRequest.getOwner());
       favorite.setReferenceIdentificationNumber(
-          createFavoriteRequest.getReferenceIdentificationNumber());
+        createFavoriteRequest.getReferenceIdentificationNumber());
       service.createFavorite(favorite);
     }
 
@@ -496,38 +501,38 @@ public final class DataTransferUtils {
      * Read list buildings request collection.
      *
      * @param listBuildingsRequest the list buildings request
-     * @param service the service
+     * @param service              the service
      * @return the collection
      */
     public static Collection<Building> readListBuildingsRequest(
-        ListBuildingsRequest listBuildingsRequest, Service service) {
+      ListBuildingsRequest listBuildingsRequest, Service service) {
       return service.listBuildings(
-          readListBuildingSettings(listBuildingsRequest.getGrpcFilterValueSelection()));
+        readListBuildingSettings(listBuildingsRequest.getGrpcFilterValueSelection()));
     }
 
     /**
      * Read list rooms request collection.
      *
      * @param listRoomsRequest the list rooms request
-     * @param service the service
+     * @param service          the service
      * @return the collection
      */
     public static Collection<Room> readListRoomsRequest(
-        ListRoomsRequest listRoomsRequest, Service service) {
+      ListRoomsRequest listRoomsRequest, Service service) {
       return service.listRooms(
-          readListRoomsSettings(listRoomsRequest.getGrpcFilterValueSelection()),
-          listRoomsRequest.getIdentificationNumber());
+        readListRoomsSettings(listRoomsRequest.getGrpcFilterValueSelection()),
+        listRoomsRequest.getIdentificationNumber());
     }
 
     /**
      * Read list components request collection.
      *
      * @param listComponentsRequest the list components request
-     * @param service the service
+     * @param service               the service
      * @return the collection
      */
     public static Collection<Component> readListComponentsRequest(
-        ListComponentsRequest listComponentsRequest, Service service) {
+      ListComponentsRequest listComponentsRequest, Service service) {
       return service.listComponents(listComponentsRequest.getIdentificationNumber());
     }
 
@@ -535,11 +540,11 @@ public final class DataTransferUtils {
      * Read list notifications request collection.
      *
      * @param listNotificationsRequest the list notifications request
-     * @param service the service
+     * @param service                  the service
      * @return the collection
      */
     public static Collection<Notification> readListNotificationsRequest(
-        ListNotificationsRequest listNotificationsRequest, Service service) {
+      ListNotificationsRequest listNotificationsRequest, Service service) {
       return service.listNotifications(listNotificationsRequest.getIdentificationNumber());
     }
 
@@ -547,39 +552,39 @@ public final class DataTransferUtils {
      * Read list favorite buildings collection.
      *
      * @param listFavoriteBuildingsRequest the list favorite buildings request
-     * @param service the service
+     * @param service                      the service
      * @return the collection
      */
     public static Collection<Building> readListFavoriteBuildings(
-        ListFavoriteBuildingsRequest listFavoriteBuildingsRequest, Service service) {
+      ListFavoriteBuildingsRequest listFavoriteBuildingsRequest, Service service) {
       return service.listFavoriteBuildings(
-          readListBuildingSettings(listFavoriteBuildingsRequest.getGrpcFilterValueSelection()),
-          listFavoriteBuildingsRequest.getOwner());
+        readListBuildingSettings(listFavoriteBuildingsRequest.getGrpcFilterValueSelection()),
+        listFavoriteBuildingsRequest.getOwner());
     }
 
     /**
      * Read list favorite rooms collection.
      *
      * @param listFavoriteRoomsRequest the list favorite rooms request
-     * @param service the service
+     * @param service                  the service
      * @return the collection
      */
     public static Collection<Room> readListFavoriteRooms(
-        ListFavoriteRoomsRequest listFavoriteRoomsRequest, Service service) {
+      ListFavoriteRoomsRequest listFavoriteRoomsRequest, Service service) {
       return service.listFavoriteRooms(
-          readListRoomsSettings(listFavoriteRoomsRequest.getGrpcFilterValueSelection()),
-          listFavoriteRoomsRequest.getOwner());
+        readListRoomsSettings(listFavoriteRoomsRequest.getGrpcFilterValueSelection()),
+        listFavoriteRoomsRequest.getOwner());
     }
 
     /**
      * Read list favorite components request collection.
      *
      * @param listFavoriteComponentsRequest the list favorite components request
-     * @param service the service
+     * @param service                       the service
      * @return the collection
      */
     public static Collection<Component> readListFavoriteComponentsRequest(
-        ListFavoriteComponentsRequest listFavoriteComponentsRequest, Service service) {
+      ListFavoriteComponentsRequest listFavoriteComponentsRequest, Service service) {
       return service.listFavoriteComponents(listFavoriteComponentsRequest.getOwner());
     }
 
@@ -587,7 +592,7 @@ public final class DataTransferUtils {
      * Read remove building request.
      *
      * @param removeRequest the remove request
-     * @param service the service
+     * @param service       the service
      */
     public static void readRemoveBuildingRequest(RemoveRequest removeRequest, Service service) {
       service.removeBuilding(removeRequest.getIdentificationNumber());
@@ -597,7 +602,7 @@ public final class DataTransferUtils {
      * Read remove component request.
      *
      * @param removeRequest the remove request
-     * @param service the service
+     * @param service       the service
      */
     public static void readRemoveComponentRequest(RemoveRequest removeRequest, Service service) {
       service.removeComponent(removeRequest.getIdentificationNumber());
@@ -607,7 +612,7 @@ public final class DataTransferUtils {
      * Read remove room request.
      *
      * @param removeRequest the remove request
-     * @param service the service
+     * @param service       the service
      */
     public static void readRemoveRoomRequest(RemoveRequest removeRequest, Service service) {
       service.removeRoom(removeRequest.getIdentificationNumber());
@@ -617,14 +622,14 @@ public final class DataTransferUtils {
      * Read remove favorite request.
      *
      * @param removeRequest the remove request
-     * @param service the service
+     * @param service       the service
      */
     public static void readRemoveFavoriteRequest(RemoveFavoriteRequest removeRequest, Service service) {
       service.removeFavorite(removeRequest.getIdentificationNumber(), removeRequest.getOwner());
     }
 
     private static GeographicalLocation readGeographicalLocation(
-        GrpcGeographicalLocation grpcGeographicalLocation) {
+      GrpcGeographicalLocation grpcGeographicalLocation) {
       GeographicalLocation geographicalLocation = new GeographicalLocation();
       geographicalLocation.setLongitude(grpcGeographicalLocation.getLongitude());
       geographicalLocation.setLatitude(grpcGeographicalLocation.getLatitude());
@@ -643,7 +648,7 @@ public final class DataTransferUtils {
     }
 
     private static Building.CampusLocation readCampusLocation(
-        GrpcCampusLocation grpcCampusLocation) {
+      GrpcCampusLocation grpcCampusLocation) {
       return Enum.valueOf(Building.CampusLocation.class, grpcCampusLocation.name());
     }
 
@@ -652,28 +657,28 @@ public final class DataTransferUtils {
     }
 
     private static Settings<Building> readListBuildingSettings(
-        GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
+      GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Building>, Collection<?>> filters = new HashMap<>();
       if (!grpcFilterValueSelection.getGrpcCampusLocationsList().isEmpty()) {
         filters.put(
-            BuildingFilter.CAMPUS_LOCATION_FILTER,
-            grpcFilterValueSelection.getGrpcCampusLocationsList().stream()
-                .map(DataTransferUtils.ServerRequestReader::readCampusLocation)
-                .toList());
+          BuildingFilter.CAMPUS_LOCATION_FILTER,
+          grpcFilterValueSelection.getGrpcCampusLocationsList().stream()
+            .map(DataTransferUtils.ServerRequestReader::readCampusLocation)
+            .toList());
       }
       if (!grpcFilterValueSelection.getGrpcRoomTypesList().isEmpty()) {
         filters.put(
-            BuildingFilter.COMPONENT_TYPE_FILTER,
-            grpcFilterValueSelection.getGrpcComponentTypesList().stream()
-                .map(DataTransferUtils.ServerRequestReader::readComponentType)
-                .toList());
+          BuildingFilter.COMPONENT_TYPE_FILTER,
+          grpcFilterValueSelection.getGrpcComponentTypesList().stream()
+            .map(DataTransferUtils.ServerRequestReader::readComponentType)
+            .toList());
       }
       if (!grpcFilterValueSelection.getGrpcComponentTypesList().isEmpty()) {
         filters.put(
-            BuildingFilter.ROOM_TYPE_FILTER,
-            grpcFilterValueSelection.getGrpcRoomTypesList().stream()
-                .map(DataTransferUtils.ServerRequestReader::readRoomType)
-                .toList());
+          BuildingFilter.ROOM_TYPE_FILTER,
+          grpcFilterValueSelection.getGrpcRoomTypesList().stream()
+            .map(DataTransferUtils.ServerRequestReader::readRoomType)
+            .toList());
       }
       if ((!grpcFilterValueSelection.getFloorsList().isEmpty()))
         throw new IllegalArgumentException();
@@ -683,24 +688,24 @@ public final class DataTransferUtils {
     }
 
     private static Settings<Room> readListRoomsSettings(
-        GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
+      GrpcBuildingFilterValueSelection grpcFilterValueSelection) {
       Map<Filter<Room>, Collection<?>> filters = new HashMap<>();
       if (!grpcFilterValueSelection.getFloorsList().isEmpty()) {
         filters.put(RoomFilter.FLOOR_FILTER, grpcFilterValueSelection.getFloorsList());
       }
       if (!grpcFilterValueSelection.getGrpcComponentTypesList().isEmpty()) {
         filters.put(
-            RoomFilter.COMPONENT_TYPE_FILTER,
-            grpcFilterValueSelection.getGrpcComponentTypesList().stream()
-                .map(DataTransferUtils.ServerRequestReader::readComponentType)
-                .toList());
+          RoomFilter.COMPONENT_TYPE_FILTER,
+          grpcFilterValueSelection.getGrpcComponentTypesList().stream()
+            .map(DataTransferUtils.ServerRequestReader::readComponentType)
+            .toList());
       }
       if (!grpcFilterValueSelection.getGrpcRoomTypesList().isEmpty()) {
         filters.put(
-            RoomFilter.ROOM_TYPE_FILTER,
-            grpcFilterValueSelection.getGrpcRoomTypesList().stream()
-                .map(DataTransferUtils.ServerRequestReader::readRoomType)
-                .toList());
+          RoomFilter.ROOM_TYPE_FILTER,
+          grpcFilterValueSelection.getGrpcRoomTypesList().stream()
+            .map(DataTransferUtils.ServerRequestReader::readRoomType)
+            .toList());
       }
       if (!grpcFilterValueSelection.getGrpcCampusLocationsList().isEmpty())
         throw new IllegalArgumentException();
@@ -794,14 +799,14 @@ public final class DataTransferUtils {
      * @return the client create component request
      */
     public static ClientCreateComponentRequest writeClientCreateComponentRequest(
-        Component component) {
+      Component component) {
       ClientCreateComponentRequest clientCreateComponentRequest =
-          new ClientCreateComponentRequest();
+        new ClientCreateComponentRequest();
       clientCreateComponentRequest.setDescription(component.getDescription());
       clientCreateComponentRequest.setType(component.getType());
       clientCreateComponentRequest.setGeographicalLocation(component.getGeographicalLocation());
       clientCreateComponentRequest.setParentIdentificationNumber(
-          component.getParentIdentificationNumber());
+        component.getParentIdentificationNumber());
       return clientCreateComponentRequest;
     }
 
@@ -812,14 +817,14 @@ public final class DataTransferUtils {
      * @return the client update component request
      */
     public static ClientUpdateComponentRequest writeClientUpdateComponentRequest(
-        Component component) {
+      Component component) {
       ClientUpdateComponentRequest clientUpdateComponentRequest =
-          new ClientUpdateComponentRequest();
+        new ClientUpdateComponentRequest();
       clientUpdateComponentRequest.setDescription(component.getDescription());
       clientUpdateComponentRequest.setType(component.getType());
       clientUpdateComponentRequest.setGeographicalLocation(component.getGeographicalLocation());
       clientUpdateComponentRequest.setParentIdentificationNumber(
-          component.getParentIdentificationNumber());
+        component.getParentIdentificationNumber());
       return clientUpdateComponentRequest;
     }
   }
