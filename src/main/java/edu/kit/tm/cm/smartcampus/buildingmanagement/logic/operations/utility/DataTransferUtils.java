@@ -825,6 +825,7 @@ public final class DataTransferUtils {
       clientUpdateComponentRequest.setGeographicalLocation(component.getGeographicalLocation());
       clientUpdateComponentRequest.setParentIdentificationNumber(
         component.getParentIdentificationNumber());
+      clientUpdateComponentRequest.setIdentificationNumber(component.getIdentificationNumber());
       return clientUpdateComponentRequest;
     }
   }
