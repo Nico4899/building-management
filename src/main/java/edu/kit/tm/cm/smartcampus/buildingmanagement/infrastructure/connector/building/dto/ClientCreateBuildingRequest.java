@@ -18,6 +18,7 @@ import lombok.Setter;
 public class ClientCreateBuildingRequest {
   private String name;
   private String number;
+  private String address;
   private Building.CampusLocation campusLocation;
   private GeographicalLocation geographicalLocation;
   private Floors floors;

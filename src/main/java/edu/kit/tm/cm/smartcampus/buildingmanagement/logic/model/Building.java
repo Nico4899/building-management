@@ -23,6 +23,7 @@ public class Building {
   private CampusLocation campusLocation;
   private String name;
   private String number;
+  private String address;
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
 

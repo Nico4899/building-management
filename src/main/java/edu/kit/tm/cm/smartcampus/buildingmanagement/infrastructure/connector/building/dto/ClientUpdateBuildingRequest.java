@@ -20,6 +20,7 @@ public class ClientUpdateBuildingRequest {
   private Building.CampusLocation campusLocation;
   private String name;
   private String number;
+  private String address;
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
 }

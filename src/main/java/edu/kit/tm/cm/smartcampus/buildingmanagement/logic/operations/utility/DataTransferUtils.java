@@ -272,6 +272,7 @@ public final class DataTransferUtils {
     private static GrpcBuilding writeGrpcBuilding(Building building) {
       return GrpcBuilding.newBuilder()
         .setBuildingName(building.getName())
+        .setBuildingAddress(building.getAddress())
         .setBuildingNumber(building.getNumber())
         .setIdentificationNumber(building.getIdentificationNumber())
         .setCampusLocation(writeGrpcCampusLocation(building.getCampusLocation()))
@@ -733,6 +734,7 @@ public final class DataTransferUtils {
     public static ClientCreateBuildingRequest writeClientCreateBuildingRequest(Building building) {
       ClientCreateBuildingRequest clientCreateBuildingRequest = new ClientCreateBuildingRequest();
       clientCreateBuildingRequest.setName(building.getName());
+      clientCreateBuildingRequest.setAddress(building.getAddress());
       clientCreateBuildingRequest.setFloors(building.getFloors());
       clientCreateBuildingRequest.setNumber(building.getNumber());
       clientCreateBuildingRequest.setCampusLocation(building.getCampusLocation());
@@ -749,6 +751,7 @@ public final class DataTransferUtils {
     public static ClientUpdateBuildingRequest writeClientUpdateBuildingRequest(Building building) {
       ClientUpdateBuildingRequest clientUpdateBuildingRequest = new ClientUpdateBuildingRequest();
       clientUpdateBuildingRequest.setName(building.getName());
+      clientUpdateBuildingRequest.setAddress(building.getAddress());
       clientUpdateBuildingRequest.setFloors(building.getFloors());
       clientUpdateBuildingRequest.setNumber(building.getNumber());
       clientUpdateBuildingRequest.setCampusLocation(building.getCampusLocation());

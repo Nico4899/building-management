@@ -131,6 +131,7 @@ message CreateBuildingRequest{
   GrpcCampusLocation campus_location = 3;
   GrpcGeographicalLocation grpc_geographical_location = 5;
   GrpcFloors grpc_floors = 6;
+  string building_address = 7;
 }
 
 message CreateBuildingResponse{
@@ -176,6 +177,7 @@ message UpdateBuildingRequest{
   string identification_number = 4;
   GrpcGeographicalLocation grpc_geographical_location = 5;
   GrpcFloors grpc_floors = 6;
+  string building_address = 7;
 }
 
 message UpdateBuildingResponse{
@@ -247,6 +249,7 @@ message GrpcBuilding{
   string identification_number = 4;
   GrpcGeographicalLocation grpc_geographical_location = 5;
   GrpcFloors grpc_floors = 6;
+  string building_address = 7;
 }
 
 enum GrpcCampusLocation{
