@@ -290,6 +290,8 @@ public final class DataTransferUtils {
         .setIdentificationNumber(notification.getIdentificationNumber())
         .setCreationTime(
           Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
+        .setLastModified(
+            Timestamp.newBuilder().setNanos(notification.getLastModified().getNanos()).build())
         .build();
     }
 

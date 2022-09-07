@@ -230,6 +230,7 @@ message GrpcNotification{
   string parent_identification_number = 3;
   string notification_title = 4;
   string notification_description = 5;
+  google.protobuf.Timestamp last_modified = 6;
 }
 
 message GrpcRoom{
