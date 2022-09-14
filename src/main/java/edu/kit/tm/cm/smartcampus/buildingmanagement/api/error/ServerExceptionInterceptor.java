@@ -10,6 +10,7 @@ import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 /**

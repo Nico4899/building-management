@@ -11,6 +11,7 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.swing.plaf.IconUIResource;
 import java.util.Collection;
 
 /**
