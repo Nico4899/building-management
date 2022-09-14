@@ -291,7 +291,7 @@ public final class DataTransferUtils {
         .setCreationTime(
           Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
         .setLastModified(
-            Timestamp.newBuilder().setNanos(notification.getLastModified().getNanos()).build())
+            Timestamp.newBuilder().setNanos(notification.getLastModifiedTime().getNanos()).build())
         .build();
     }
 
