@@ -48,6 +48,6 @@ public class Favorite {
       nullable = false,
       updatable = false,
       columnDefinition =
-          "varchar(255) constraint match_id_regex CHECK (REFERENCE_IDENTIFICATION_NUMBER ~* '^(b|c|r)-[1-9]+$')")
+          "varchar(255) constraint match_id_regex CHECK (REFERENCE_IDENTIFICATION_NUMBER ~* '^(b|c|r)-[0-9]+$')")
   private String referenceIdentificationNumber;
 }
