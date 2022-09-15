@@ -225,12 +225,12 @@ message RemoveResponse{
 // single message constructions
 
 message GrpcNotification{
-  google.protobuf.Timestamp creation_time = 1;
+  google.protobuf.Timestamp created_on = 1;
   string identification_number = 2;
   string parent_identification_number = 3;
   string notification_title = 4;
   string notification_description = 5;
-  google.protobuf.Timestamp last_modified = 6;
+  google.protobuf.Timestamp last_modified_on = 6;
 }
 
 message GrpcRoom{

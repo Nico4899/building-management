@@ -288,9 +288,9 @@ public final class DataTransferUtils {
         .setNotificationDescription(notification.getDescription())
         .setParentIdentificationNumber(notification.getParentIdentificationNumber())
         .setIdentificationNumber(notification.getIdentificationNumber())
-        .setCreationTime(
+        .setCreatedOn(
           Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
-        .setLastModified(
+        .setLastModifiedOn(
             Timestamp.newBuilder().setNanos(notification.getLastModifiedTime().getNanos()).build())
         .build();
     }
