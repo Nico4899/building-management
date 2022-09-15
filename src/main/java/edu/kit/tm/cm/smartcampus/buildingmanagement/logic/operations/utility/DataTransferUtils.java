@@ -283,8 +283,6 @@ public final class DataTransferUtils {
     }
 
     private static GrpcNotification writeGrpcNotification(Notification notification) {
-      System.out.println(notification.getCreationTime());
-      System.out.println(notification.getLastModifiedTime());
       return GrpcNotification.newBuilder()
         .setNotificationTitle(notification.getTitle())
         .setNotificationDescription(notification.getDescription())
