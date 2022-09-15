@@ -283,15 +283,15 @@ public final class DataTransferUtils {
     }
 
     private static GrpcNotification writeGrpcNotification(Notification notification) {
+      System.out.println(notification.getCreationTime());
+      System.out.println(notification.getLastModifiedTime());
       return GrpcNotification.newBuilder()
         .setNotificationTitle(notification.getTitle())
         .setNotificationDescription(notification.getDescription())
         .setParentIdentificationNumber(notification.getParentIdentificationNumber())
         .setIdentificationNumber(notification.getIdentificationNumber())
-        .setCreatedOn(
-          Timestamp.newBuilder().setNanos(notification.getCreationTime().getNanos()).build())
-        .setLastModifiedOn(
-            Timestamp.newBuilder().setNanos(notification.getLastModifiedTime().getNanos()).build())
+        .setCreatedOn(notification.getCreationTime().getTime())
+        .setLastModifiedOn(notification.getLastModifiedTime().getTime())
         .build();
     }
 
