@@ -12,7 +12,7 @@ This Microservice provides functionality to add, edit, remove buildings or their
 
 [Application Context Sharing View](pages/application_context_sharing_view.md)
 
-[API Specification](api/building_management.proto) 
+[API Specification](pages/api.md) 
 
 [Task Processes](pages/task_processes.md) 
 
