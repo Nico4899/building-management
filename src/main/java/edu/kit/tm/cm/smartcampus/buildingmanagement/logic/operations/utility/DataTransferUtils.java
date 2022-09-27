@@ -382,6 +382,7 @@ public final class DataTransferUtils {
       building.setCampusLocation(readCampusLocation(createBuildingRequest.getCampusLocation()));
       building.setGeographicalLocation(
         readGeographicalLocation(createBuildingRequest.getGrpcGeographicalLocation()));
+      building.setAddress(createBuildingRequest.getBuildingAddress());
       return service.createBuilding(building);
     }
 
@@ -402,6 +403,7 @@ public final class DataTransferUtils {
       building.setCampusLocation(readCampusLocation(updateBuildingRequest.getCampusLocation()));
       building.setGeographicalLocation(
         readGeographicalLocation(updateBuildingRequest.getGrpcGeographicalLocation()));
+      building.setAddress(updateBuildingRequest.getBuildingAddress());
       return service.updateBuilding(building);
     }
 

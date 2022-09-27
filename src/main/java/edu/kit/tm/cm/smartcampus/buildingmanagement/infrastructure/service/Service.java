@@ -129,6 +129,8 @@ public class Service {
    */
   public Collection<Building> listFavoriteBuildings(Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
+    System.out.println(favoriteRepositoryImplementation.findByOwnerAndRegex(
+      owner, FavoriteRepository.BIN_SQL_PATTERN));
     for (Favorite favorite :
         favoriteRepositoryImplementation.findByOwnerAndRegex(
             owner, FavoriteRepository.BIN_SQL_PATTERN)) {

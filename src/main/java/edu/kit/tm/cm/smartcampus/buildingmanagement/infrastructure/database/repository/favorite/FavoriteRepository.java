@@ -17,9 +17,9 @@ import java.util.Collection;
 @Repository
 public interface FavoriteRepository extends CrudRepository<Favorite, String> {
 
-  String BIN_SQL_PATTERN = "^b-%$";
-  String RIN_SQL_PATTERN = "^r-%$";
-  String CIN_SQL_PATTERN = "^c-%$";
+  String BIN_SQL_PATTERN = "b-%";
+  String RIN_SQL_PATTERN = "r-%";
+  String CIN_SQL_PATTERN = "c-%";
 
   /**
    * Obtain all favorites where owner matches and regex of reference number matches.
@@ -30,7 +30,7 @@ public interface FavoriteRepository extends CrudRepository<Favorite, String> {
    */
   @NonNull
   @Query(
-      "SELECT favorite FROM Favorite favorite WHERE (favorite.owner = :#{#owner}) AND (favorite.referenceIdentificationNumber LIKE :#{#regex})")
+      "SELECT favorite FROM Favorite favorite WHERE (favorite.owner = ?1) AND (favorite.referenceIdentificationNumber LIKE ?2)")
   Collection<Favorite> findByOwnerAndRegex(
       @NonNull @Param("owner") String owner, @NonNull @Param("regex") String regex);
 }

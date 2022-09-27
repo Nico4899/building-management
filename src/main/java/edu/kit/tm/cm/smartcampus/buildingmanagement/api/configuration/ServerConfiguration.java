@@ -158,31 +158,21 @@ public class ServerConfiguration {
     @Bean
     GrpcSecurityMetadataSource grpcSecurityMetadataSource() {
       return new ManualGrpcSecurityMetadataSource()
-        .set(BuildingManagementGrpc.getCreateBuildingMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getCreateComponentMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getCreateRoomMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getUpdateBuildingMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getUpdateComponentMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getUpdateRoomMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getRemoveBuildingMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getRemoveComponentMethod(), AccessPredicate.hasRole(admin))
-        .set(BuildingManagementGrpc.getRemoveRoomMethod(), AccessPredicate.hasRole(admin))
-        .set(
-          BuildingManagementGrpc.getRemoveFavoriteMethod(),
-          AccessPredicate.hasAnyRole(user, admin))
-        .set(
-          BuildingManagementGrpc.getCreateFavoriteMethod(),
-          AccessPredicate.hasAnyRole(user, admin))
-        .set(
-          BuildingManagementGrpc.getListFavoriteBuildingsMethod(),
-          AccessPredicate.hasAnyRole(user, admin))
-        .set(
-          BuildingManagementGrpc.getListFavoriteComponentsMethod(),
-          AccessPredicate.hasAnyRole(user, admin))
-        .set(
-          BuildingManagementGrpc.getListFavoriteRoomsMethod(),
-          AccessPredicate.hasAnyRole(user, admin))
-        .setDefault(AccessPredicate.permitAll());
+          .set(BuildingManagementGrpc.getCreateBuildingMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getCreateComponentMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getCreateRoomMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getUpdateBuildingMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getUpdateComponentMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getUpdateRoomMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getRemoveBuildingMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getRemoveComponentMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getRemoveRoomMethod(), AccessPredicate.hasRole(admin))
+          .set(BuildingManagementGrpc.getRemoveFavoriteMethod(), AccessPredicate.hasAnyRole(user, admin))
+          .set(BuildingManagementGrpc.getCreateFavoriteMethod(), AccessPredicate.hasAnyRole(user, admin))
+          .set(BuildingManagementGrpc.getListFavoriteBuildingsMethod(), AccessPredicate.hasAnyRole(user, admin))
+          .set(BuildingManagementGrpc.getListFavoriteComponentsMethod(), AccessPredicate.hasAnyRole(user, admin))
+          .set(BuildingManagementGrpc.getListFavoriteRoomsMethod(), AccessPredicate.hasAnyRole(user, admin))
+          .setDefault(AccessPredicate.permitAll());
     }
 
     /**
