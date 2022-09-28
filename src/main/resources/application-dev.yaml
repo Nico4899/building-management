@@ -59,7 +59,7 @@ building:
   listNotificationsUrl: /{in}/notifications
 
 problem:
-  baseUrl: http//localhost:8082
+  baseUrl: http://localhost:8082
   removeProblemsByReferenceIdentificationNumber: /problems/clear/{in}
 
 # role authorities

@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
  * @author Bastian Bacher
  */
 @Service
-public class ClientProblemConnector implements ProblemConnector{
+public class ClientProblemConnector implements ProblemConnector {
 
   private final String baseUrl;
   private final RestTemplate restTemplate;
@@ -29,7 +29,7 @@ public class ClientProblemConnector implements ProblemConnector{
    */
   @Autowired
   public ClientProblemConnector(
-    RestTemplate restTemplate, @Value("${problem.baseUrl}") String baseUrl) {
+      RestTemplate restTemplate, @Value("${problem.baseUrl}") String baseUrl) {
     this.restTemplate = restTemplate;
     this.baseUrl = baseUrl;
   }
@@ -37,10 +37,10 @@ public class ClientProblemConnector implements ProblemConnector{
   @Override
   public void removeProblemsByReferenceIdentificationNumber(String identificationNumber) {
     restTemplate.exchange(
-      baseUrl + removeProblemsByReferenceIdentificationNumberUrl,
-      HttpMethod.DELETE,
-      HttpEntity.EMPTY,
-      Void.class,
-      identificationNumber);
+        baseUrl + removeProblemsByReferenceIdentificationNumberUrl,
+        HttpMethod.DELETE,
+        HttpEntity.EMPTY,
+        Void.class,
+        identificationNumber);
   }
 }
