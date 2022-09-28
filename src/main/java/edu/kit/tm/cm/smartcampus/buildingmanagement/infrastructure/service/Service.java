@@ -258,6 +258,7 @@ public class Service {
   public void removeBuilding(String identificationNumber) {
     this.buildingConnector.removeBuilding(identificationNumber);
     this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
+    this.favoriteRepositoryImplementation.removeRelictFavorites(identificationNumber);
   }
 
   /**
@@ -268,6 +269,7 @@ public class Service {
   public void removeRoom(String identificationNumber) {
     this.buildingConnector.removeRoom(identificationNumber);
     this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
+    this.favoriteRepositoryImplementation.removeRelictFavorites(identificationNumber);
   }
 
   /**
@@ -278,6 +280,7 @@ public class Service {
   public void removeComponent(String identificationNumber) {
     this.buildingConnector.removeComponent(identificationNumber);
     this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
+    this.favoriteRepositoryImplementation.removeRelictFavorites(identificationNumber);
   }
 
   /**

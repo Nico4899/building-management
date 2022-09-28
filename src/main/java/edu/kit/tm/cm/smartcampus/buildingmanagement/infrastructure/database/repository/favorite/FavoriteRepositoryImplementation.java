@@ -37,6 +37,11 @@ public class FavoriteRepositoryImplementation implements FavoriteRepository {
     return this.favoriteRepository.findByOwnerAndRegex(owner, regex);
   }
 
+  @Override
+  public void removeRelictFavorites(@NonNull String referenceIdentificationNumber) {
+    favoriteRepository.removeRelictFavorites(referenceIdentificationNumber);
+  }
+
   public void removeFavorite(@NonNull String identificationNumber, String owner) {
     for (Favorite favorite: findAll()) {
       if (Objects.equals(favorite.getOwner(), owner) && Objects.equals(favorite.getReferenceIdentificationNumber(), identificationNumber)) {
