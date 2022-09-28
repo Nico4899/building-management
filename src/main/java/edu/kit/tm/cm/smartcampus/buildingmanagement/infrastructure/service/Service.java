@@ -1,6 +1,7 @@
 package edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.service;
 
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.building.BuildingConnector;
+import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.connector.problem.ProblemConnector;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepository;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.infrastructure.database.repository.favorite.FavoriteRepositoryImplementation;
 import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.*;
@@ -20,6 +21,7 @@ import java.util.Collection;
 @org.springframework.stereotype.Component
 public class Service {
   private final BuildingConnector buildingConnector;
+  private final ProblemConnector problemConnector;
   private final FavoriteRepositoryImplementation favoriteRepositoryImplementation;
 
   /**
@@ -30,10 +32,12 @@ public class Service {
    */
   @Autowired
   public Service(
+    ProblemConnector problemConnector,
       BuildingConnector buildingConnector,
       FavoriteRepositoryImplementation favoriteRepositoryImplementation) {
     this.favoriteRepositoryImplementation = favoriteRepositoryImplementation;
     this.buildingConnector = buildingConnector;
+    this.problemConnector = problemConnector;
   }
 
   /**
@@ -129,8 +133,6 @@ public class Service {
    */
   public Collection<Building> listFavoriteBuildings(Settings<Building> settings, String owner) {
     Collection<Building> buildings = new ArrayList<>();
-    System.out.println(favoriteRepositoryImplementation.findByOwnerAndRegex(
-      owner, FavoriteRepository.BIN_SQL_PATTERN));
     for (Favorite favorite :
         favoriteRepositoryImplementation.findByOwnerAndRegex(
             owner, FavoriteRepository.BIN_SQL_PATTERN)) {
@@ -255,6 +257,7 @@ public class Service {
    */
   public void removeBuilding(String identificationNumber) {
     this.buildingConnector.removeBuilding(identificationNumber);
+    this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
   }
 
   /**
@@ -264,6 +267,7 @@ public class Service {
    */
   public void removeRoom(String identificationNumber) {
     this.buildingConnector.removeRoom(identificationNumber);
+    this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
   }
 
   /**
@@ -273,6 +277,7 @@ public class Service {
    */
   public void removeComponent(String identificationNumber) {
     this.buildingConnector.removeComponent(identificationNumber);
+    this.problemConnector.removeProblemsByReferenceIdentificationNumber(identificationNumber);
   }
 
   /**
