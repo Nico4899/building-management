@@ -4,6 +4,8 @@ import edu.kit.tm.cm.smartcampus.buildingmanagement.logic.model.Room;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+
 /**
  * This enum represents a variety of {@link Filter} strategies to filter objects of type {@link
  * Room}.
@@ -22,7 +24,7 @@ public enum RoomFilter implements Filter<Room> {
   COMPONENT_TYPE_FILTER {
     @Override
     public Collection<Room> filter(Collection<Room> collection, Collection<?> values) {
-      Collection<Room> filtered = new ArrayList<>();
+      Collection<Room> filtered = new HashSet<>();
       collection.forEach(
           room ->
               room.getComponents().stream()
