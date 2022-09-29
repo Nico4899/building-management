@@ -187,6 +187,14 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
   }
 
   @Override
+  public void isFavorite(IsFavoriteRequest request, StreamObserver<IsFavoriteResponse> responseObserver) {
+    boolean isFavorite = DataTransferUtils.ServerRequestReader.readIsFavoriteRequest(request, service);
+    IsFavoriteResponse response = DataTransferUtils.ServerResponseWriter.writeIsFavoriteResponse(isFavorite);
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
   public void updateBuilding(
     UpdateBuildingRequest request, StreamObserver<UpdateBuildingResponse> responseObserver) {
     Building building =
