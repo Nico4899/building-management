@@ -11,7 +11,6 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.swing.plaf.IconUIResource;
 import java.util.Collection;
 
 /**
@@ -35,11 +34,11 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
 
   @Override
   public void getBuilding(
-    GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
+      GetBuildingRequest request, StreamObserver<GetBuildingResponse> responseObserver) {
     Building building =
-      DataTransferUtils.ServerRequestReader.readGetBuildingRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readGetBuildingRequest(request, service);
     GetBuildingResponse response =
-      DataTransferUtils.ServerResponseWriter.writeGetBuildingResponse(building);
+        DataTransferUtils.ServerResponseWriter.writeGetBuildingResponse(building);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
@@ -54,173 +53,184 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
 
   @Override
   public void getComponent(
-    GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
+      GetComponentRequest request, StreamObserver<GetComponentResponse> responseObserver) {
     Component component =
-      DataTransferUtils.ServerRequestReader.readGetComponentRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readGetComponentRequest(request, service);
     GetComponentResponse response =
-      DataTransferUtils.ServerResponseWriter.writeGetComponentResponse(component);
+        DataTransferUtils.ServerResponseWriter.writeGetComponentResponse(component);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void createBuilding(
-    CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
+      CreateBuildingRequest request, StreamObserver<CreateBuildingResponse> responseObserver) {
     Building building =
-      DataTransferUtils.ServerRequestReader.readCreateBuildingRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readCreateBuildingRequest(request, service);
     CreateBuildingResponse response =
-      DataTransferUtils.ServerResponseWriter.writeCreateBuildingResponse(building);
+        DataTransferUtils.ServerResponseWriter.writeCreateBuildingResponse(building);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void createRoom(
-    CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
+      CreateRoomRequest request, StreamObserver<CreateRoomResponse> responseObserver) {
     Room room = DataTransferUtils.ServerRequestReader.readCreateRoomRequest(request, service);
     CreateRoomResponse response =
-      DataTransferUtils.ServerResponseWriter.writeCreateRoomResponse(room);
+        DataTransferUtils.ServerResponseWriter.writeCreateRoomResponse(room);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void createComponent(
-    CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
+      CreateComponentRequest request, StreamObserver<CreateComponentResponse> responseObserver) {
     Component component =
-      DataTransferUtils.ServerRequestReader.readCreateComponentRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readCreateComponentRequest(request, service);
     CreateComponentResponse response =
-      DataTransferUtils.ServerResponseWriter.writeCreateComponentResponse(component);
+        DataTransferUtils.ServerResponseWriter.writeCreateComponentResponse(component);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void createFavorite(
-    CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
+      CreateFavoriteRequest request, StreamObserver<CreateFavoriteResponse> responseObserver) {
     DataTransferUtils.ServerRequestReader.readCreateFavoriteRequest(request, service);
     CreateFavoriteResponse response =
-      DataTransferUtils.ServerResponseWriter.writeCreateFavoriteResponse();
+        DataTransferUtils.ServerResponseWriter.writeCreateFavoriteResponse();
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listBuildings(
-    ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
+      ListBuildingsRequest request, StreamObserver<ListBuildingsResponse> responseObserver) {
     Collection<Building> buildings =
-      DataTransferUtils.ServerRequestReader.readListBuildingsRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readListBuildingsRequest(request, service);
     ListBuildingsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListBuildingsResponse(buildings);
+        DataTransferUtils.ServerResponseWriter.writeListBuildingsResponse(buildings);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listRooms(
-    ListRoomsRequest request, StreamObserver<ListRoomsResponse> responseObserver) {
+      ListRoomsRequest request, StreamObserver<ListRoomsResponse> responseObserver) {
     Collection<Room> rooms =
-      DataTransferUtils.ServerRequestReader.readListRoomsRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readListRoomsRequest(request, service);
     ListRoomsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListRoomsResponse(rooms);
+        DataTransferUtils.ServerResponseWriter.writeListRoomsResponse(rooms);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listComponents(
-    ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
+      ListComponentsRequest request, StreamObserver<ListComponentsResponse> responseObserver) {
     Collection<Component> components =
-      DataTransferUtils.ServerRequestReader.readListComponentsRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readListComponentsRequest(request, service);
     ListComponentsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListComponentsResponse(components);
+        DataTransferUtils.ServerResponseWriter.writeListComponentsResponse(components);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listNotifications(
-    ListNotificationsRequest request,
-    StreamObserver<ListNotificationsResponse> responseObserver) {
+      ListNotificationsRequest request,
+      StreamObserver<ListNotificationsResponse> responseObserver) {
     Collection<Notification> notifications =
-      DataTransferUtils.ServerRequestReader.readListNotificationsRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readListNotificationsRequest(request, service);
     ListNotificationsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListNotificationsResponse(notifications);
+        DataTransferUtils.ServerResponseWriter.writeListNotificationsResponse(notifications);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listFavoriteBuildings(
-    ListFavoriteBuildingsRequest request,
-    StreamObserver<ListFavoriteBuildingsResponse> responseObserver) {
+      ListFavoriteBuildingsRequest request,
+      StreamObserver<ListFavoriteBuildingsResponse> responseObserver) {
     Collection<Building> buildings =
-      DataTransferUtils.ServerRequestReader.readListFavoriteBuildings(request, service);
+        DataTransferUtils.ServerRequestReader.readListFavoriteBuildings(request, service);
     ListFavoriteBuildingsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListFavoriteBuildingsResponse(buildings);
+        DataTransferUtils.ServerResponseWriter.writeListFavoriteBuildingsResponse(buildings);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listFavoriteRooms(
-    ListFavoriteRoomsRequest request,
-    StreamObserver<ListFavoriteRoomsResponse> responseObserver) {
+      ListFavoriteRoomsRequest request,
+      StreamObserver<ListFavoriteRoomsResponse> responseObserver) {
     Collection<Room> rooms =
-      DataTransferUtils.ServerRequestReader.readListFavoriteRooms(request, service);
+        DataTransferUtils.ServerRequestReader.readListFavoriteRooms(request, service);
     ListFavoriteRoomsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListFavoriteRoomsResponse(rooms);
+        DataTransferUtils.ServerResponseWriter.writeListFavoriteRoomsResponse(rooms);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void listFavoriteComponents(
-    ListFavoriteComponentsRequest request,
-    StreamObserver<ListFavoriteComponentsResponse> responseObserver) {
+      ListFavoriteComponentsRequest request,
+      StreamObserver<ListFavoriteComponentsResponse> responseObserver) {
     Collection<Component> components =
-      DataTransferUtils.ServerRequestReader.readListFavoriteComponentsRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readListFavoriteComponentsRequest(request, service);
     ListFavoriteComponentsResponse response =
-      DataTransferUtils.ServerResponseWriter.writeListFavoriteComponentsResponse(components);
+        DataTransferUtils.ServerResponseWriter.writeListFavoriteComponentsResponse(components);
+    responseObserver.onNext(response);
+    responseObserver.onCompleted();
+  }
+
+  @Override
+  public void isFavorite(
+      IsFavoriteRequest request, StreamObserver<IsFavoriteResponse> responseObserver) {
+    boolean isFavorite =
+        DataTransferUtils.ServerRequestReader.readIsFavoriteRequest(request, service);
+    IsFavoriteResponse response =
+        DataTransferUtils.ServerResponseWriter.writeIsFavoriteResponse(isFavorite);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void updateBuilding(
-    UpdateBuildingRequest request, StreamObserver<UpdateBuildingResponse> responseObserver) {
+      UpdateBuildingRequest request, StreamObserver<UpdateBuildingResponse> responseObserver) {
     Building building =
-      DataTransferUtils.ServerRequestReader.readUpdateBuildingRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readUpdateBuildingRequest(request, service);
     UpdateBuildingResponse response =
-      DataTransferUtils.ServerResponseWriter.writeUpdateBuildingResponse(building);
+        DataTransferUtils.ServerResponseWriter.writeUpdateBuildingResponse(building);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void updateRoom(
-    UpdateRoomRequest request, StreamObserver<UpdateRoomResponse> responseObserver) {
+      UpdateRoomRequest request, StreamObserver<UpdateRoomResponse> responseObserver) {
     Room room = DataTransferUtils.ServerRequestReader.readUpdateRoomRequest(request, service);
     UpdateRoomResponse response =
-      DataTransferUtils.ServerResponseWriter.writeUpdateRoomResponse(room);
+        DataTransferUtils.ServerResponseWriter.writeUpdateRoomResponse(room);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void updateComponent(
-    UpdateComponentRequest request, StreamObserver<UpdateComponentResponse> responseObserver) {
+      UpdateComponentRequest request, StreamObserver<UpdateComponentResponse> responseObserver) {
     Component component =
-      DataTransferUtils.ServerRequestReader.readUpdateComponentRequest(request, service);
+        DataTransferUtils.ServerRequestReader.readUpdateComponentRequest(request, service);
     UpdateComponentResponse response =
-      DataTransferUtils.ServerResponseWriter.writeUpdateComponentResponse(component);
+        DataTransferUtils.ServerResponseWriter.writeUpdateComponentResponse(component);
     responseObserver.onNext(response);
     responseObserver.onCompleted();
   }
 
   @Override
   public void removeBuilding(
-    RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+      RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
     DataTransferUtils.ServerRequestReader.readRemoveBuildingRequest(request, service);
     RemoveResponse response = DataTransferUtils.ServerResponseWriter.writeRemoveResponse();
     responseObserver.onNext(response);
@@ -237,7 +247,7 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
 
   @Override
   public void removeComponent(
-    RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
+      RemoveRequest request, StreamObserver<RemoveResponse> responseObserver) {
     DataTransferUtils.ServerRequestReader.readRemoveComponentRequest(request, service);
     RemoveResponse response = DataTransferUtils.ServerResponseWriter.writeRemoveResponse();
     responseObserver.onNext(response);
@@ -246,7 +256,7 @@ public class Controller extends BuildingManagementGrpc.BuildingManagementImplBas
 
   @Override
   public void removeFavorite(
-    RemoveFavoriteRequest request, StreamObserver<RemoveResponse> responseObserver) {
+      RemoveFavoriteRequest request, StreamObserver<RemoveResponse> responseObserver) {
     DataTransferUtils.ServerRequestReader.readRemoveFavoriteRequest(request, service);
     RemoveResponse response = DataTransferUtils.ServerResponseWriter.writeRemoveResponse();
     responseObserver.onNext(response);

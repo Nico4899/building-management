@@ -292,6 +292,22 @@ public class Service {
     this.favoriteRepositoryImplementation.removeFavorite(identificationNumber, owner);
   }
 
+  /**
+   * Checks if given values combine to an existing favorite.
+   *
+   * @param identificationNumber identification number
+   * @param owner owner
+   * @return is favorite or not
+   */
+  public boolean isFavorite(String identificationNumber, String owner) {
+    for (Favorite favorite: this.favoriteRepositoryImplementation.findAll()) {
+      if (favorite.getReferenceIdentificationNumber().equals(identificationNumber) && favorite.getOwner().equals(owner)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private void buildBuildingRooms(Building building) {
     Collection<Room> rooms = this.buildingConnector.listRooms(building.getIdentificationNumber());
     building.getRooms().addAll(rooms);

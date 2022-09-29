@@ -319,6 +319,10 @@ public final class DataTransferUtils {
           .setLatitude(geographicalLocation.getLatitude())
           .build();
     }
+
+    public static IsFavoriteResponse writeIsFavoriteResponse(boolean isFavorite) {
+      return IsFavoriteResponse.newBuilder().setIsFavorite(isFavorite).build();
+    }
   }
 
   /**
@@ -618,6 +622,17 @@ public final class DataTransferUtils {
      */
     public static void readRemoveRoomRequest(RemoveRequest removeRequest, Service service) {
       service.removeRoom(removeRequest.getIdentificationNumber());
+    }
+
+    /**
+     * Read is favorite request.
+     *
+     * @param request the is favorite request
+     * @param service the service
+     * @return boolean if is favorite or not
+     */
+    public static boolean readIsFavoriteRequest(IsFavoriteRequest request, Service service) {
+      return service.isFavorite(request.getIdentificationNumber(), request.getOwner());
     }
 
     /**

@@ -22,6 +22,8 @@ service BuildingManagement {
   rpc ListFavoriteRooms(ListFavoriteRoomsRequest) returns (ListFavoriteRoomsResponse);
   rpc ListFavoriteComponents(ListFavoriteComponentsRequest) returns (ListFavoriteComponentsResponse);
 
+  rpc IsFavorite(IsFavoriteRequest) returns (IsFavoriteResponse);
+
   rpc CreateBuilding(CreateBuildingRequest) returns (CreateBuildingResponse);
   rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
   rpc CreateComponent(CreateComponentRequest) returns (CreateComponentResponse);
@@ -39,6 +41,15 @@ service BuildingManagement {
 }
 
 // request and response messages
+
+message IsFavoriteRequest{
+  string owner = 1;
+  string identification_number = 2;
+}
+
+message IsFavoriteResponse{
+  bool is_favorite = 1;
+}
 
 message GetBuildingRequest{
   string identification_number = 1;
