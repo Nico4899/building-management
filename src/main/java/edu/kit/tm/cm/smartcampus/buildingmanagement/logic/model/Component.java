@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * This class describes a component model object which can be held by {@link Building} or {@link
- * Room}.
+ * This class describes a component model object which can be held by {@link Building} or
+ * {@link Room}.
  *
  * @author Bastian Bacher, Dennis Fadeev
  */
@@ -15,6 +15,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Component {
+
   private String description;
   private String identificationNumber;
   private GeographicalLocation geographicalLocation;
@@ -27,9 +28,61 @@ public class Component {
    * @author Bastian Bacher, Dennis Fadeev
    */
   public enum Type {
-    /** Elevator type. */
+    /**
+     * Elevator.
+     */
     ELEVATOR,
-    /** Stairs type. */
-    STAIRS
+    /**
+     * Stairs.
+     */
+    STAIRS,
+    /**
+     * Door.
+     */
+    DOOR,
+    /**
+     * Ramp.
+     */
+    RAMP,
+    /**
+     * Chair.
+     */
+    CHAIR,
+    /**
+     * Table.
+     */
+    TABLE,
+    /**
+     * Lamp.
+     */
+    LAMP,
+    /**
+     * Window.
+     */
+    WINDOW,
+    /**
+     * Canvas.
+     */
+    CANVAS,
+    /**
+     * Whiteboard.
+     */
+    WHITEBOARD,
+    /**
+     * Beamer.
+     */
+    BEAMER,
+    /**
+     * Power outlet.
+     */
+    POWER_OUTLET,
+    /**
+     * Sink.
+     */
+    SINK,
+    /**
+     * Heater.
+     */
+    HEATER
   }
 }

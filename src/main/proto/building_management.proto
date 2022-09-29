@@ -305,6 +305,17 @@ enum GrpcComponentType{
   UNKNOWN_COMPONENT_TYPE = 0;
   ELEVATOR = 1;
   STAIRS = 2;
+  DOOR = 3;
+  RAMP = 4;
+  CHAIR = 5;
+  LAMP = 6;
+  WINDOW = 7;
+  CANVAS = 8;
+  WHITEBOARD = 9;
+  BEAMER = 10;
+  POWER_OUTLET = 11;
+  SINK = 12;
+  HEATER = 13;
 }
 
 message GrpcBuildingFilterValueSelection{
