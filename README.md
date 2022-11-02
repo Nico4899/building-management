@@ -17,21 +17,25 @@ This Microservice provides functionality to add, edit, remove buildings or their
 [Task Processes](pages/task_processes.md) 
 
 [Application Context Class Diagram](pages/application_context_class_diagram.md) 
+<<<<<<< HEAD
 
 ## Implementation and Tests
+=======
+>>>>>>> impl
 
- [Local Installation](pages/installation.md)
+## Implementation
 
- [DevOps Template Configuration](pages/devops.md)
+[Local Installation](pages/installation.md)
 
- [Features](pages/features.md)
+[Repository Structure](pages/repository_structure.md)
 
- [Unit Tests](pages/unit_tests.md)
+## Test
 
- [Integration Tests](pages/integration_tests.md)
+[Unit Tests](pages/unit_tests.md)
 
- [End-to-End Tests](pages/end-to-end-tests.md) 
+[Integration Tests](pages/integration_tests.md)
 
+[End-to-End Tests](pages/end_to_end_tests.md)
 
 ## Organization
 
